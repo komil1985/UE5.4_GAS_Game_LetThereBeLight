@@ -3,3 +3,8 @@
 
 #include "Characters/Player/PlayerCharacter.h"
 
+void APlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}

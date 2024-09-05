@@ -13,5 +13,8 @@ UCLASS()
 class LETTHEREBELIGHT_API APlayerCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
-	
+public:
+
+protected:
+	virtual void BeginPlay() override;
 };
