@@ -3,12 +3,12 @@
 
 #include "Characters/Enemy/EnemyCharacter.h"
 
-//void AEnemyCharacter::HighlightActor()
-//{
-//
-//}
-//
-//void AEnemyCharacter::UnhighlightActor()
-//{
-//
-//}
+void AEnemyCharacter::HighlightActor()
+{
+
+}
+
+void AEnemyCharacter::UnhighlightActor()
+{
+
+}
