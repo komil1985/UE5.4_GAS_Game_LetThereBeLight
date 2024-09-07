@@ -14,4 +14,7 @@ class LETTHEREBELIGHT_API AEnemyCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 	
+public:
+	//virtual void HighlightActor() override;
+	//virtual void UnhighlightActor() override;
 };
