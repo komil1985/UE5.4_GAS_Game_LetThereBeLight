@@ -12,6 +12,7 @@
 class UInputMappingContext;
 struct FInputActionValue;
 class UInputAction;
+class IEnemyInterface;
 UCLASS()
 class LETTHEREBELIGHT_API AMyPlayerController : public APlayerController
 {
@@ -21,7 +22,7 @@ public:
 	AMyPlayerController();
 	void subsystem();
 	void MouseCursorMode();
-
+	virtual void PlayerTick(float DeltaTime) override;
 protected:
 	virtual void BeginPlay() override;
 	
@@ -34,4 +35,9 @@ private:
 	TObjectPtr<UInputAction> MoveAction;
 
 	void Move(const FInputActionValue& InputActionValue);
+
+	void CursorTrace();
+	TScriptInterface<IEnemyInterface> LastActor;
+	TScriptInterface<IEnemyInterface> ThisActor;
+
 };

@@ -2,6 +2,7 @@
 
 
 #include "Characters/Player/MyPlayerController.h"
+#include "Interactions/EnemyInterface.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
@@ -10,11 +11,82 @@ AMyPlayerController::AMyPlayerController()
 	bReplicates = true;
 }
 
-void AMyPlayerController::subsystem()
+void AMyPlayerController::BeginPlay()
 {
-	UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(SubSystem);
-	SubSystem->AddMappingContext(PlayerContext, 0);
+	Super::BeginPlay();
+
+	check(PlayerContext);
+	subsystem();
+	MouseCursorMode();
+
+}
+
+void AMyPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+
+	CursorTrace();
+}
+
+void AMyPlayerController::CursorTrace()
+{
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	if (!CursorHit.bBlockingHit) return;
+
+	LastActor = ThisActor;
+	ThisActor = CursorHit.GetActor();
+	
+
+
+	/*
+	* Line trace from cursor. There are several scenario
+	* A) LastActor && ThisActor is null
+	*       - Do nothing
+	* B) LastActor is null && ThisActor is valid
+	*       - Highlight ThisActor
+	* C) LastActor is valid && This is null
+	*		- UnHighlight LastActor
+	* D) Both Actors are valid but LastActor != ThisActor
+	*		- UnHighlight LastActor && Highlight ThisActor
+	* E) Both Actors are valid and are same Actor
+	*		- Do nothing
+	*/
+
+	if (LastActor == nullptr)
+	{
+		if (ThisActor != nullptr)
+		{
+			// Case B 
+			ThisActor->HighlightActor();
+		}
+		else
+		{
+			// Case A - Both are null, do nothing
+		}
+	}
+	else // LastActor is valid
+	{
+		if (ThisActor == nullptr)
+		{
+			// Case C
+			LastActor->UnHighlightActor();
+		}
+		else // Both actors are valid
+		{
+			if (LastActor != ThisActor) 
+			{
+				// Case D
+				LastActor->UnHighlightActor();
+				ThisActor->HighlightActor();
+			}
+			else
+			{
+				// Case E - do nothing
+			}
+		}
+	}
+
 }
 
 void AMyPlayerController::MouseCursorMode()
@@ -27,15 +99,11 @@ void AMyPlayerController::MouseCursorMode()
 	SetInputMode(InputModeData);
 }
 
-
-void AMyPlayerController::BeginPlay()
+void AMyPlayerController::subsystem()
 {
-	Super::BeginPlay();
-
-	check(PlayerContext);
-	subsystem();
-	MouseCursorMode();
-
+	UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	check(SubSystem);
+	SubSystem->AddMappingContext(PlayerContext, 0);
 }
 
 void AMyPlayerController::SetupInputComponent()
@@ -61,6 +129,4 @@ void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
 		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
 	}
-
-
 }

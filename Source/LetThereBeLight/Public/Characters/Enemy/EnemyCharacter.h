@@ -17,4 +17,7 @@ class LETTHEREBELIGHT_API AEnemyCharacter : public ABaseCharacter, public IEnemy
 public:
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bHighlighted = false;
 };
