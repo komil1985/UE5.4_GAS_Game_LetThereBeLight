@@ -8,7 +8,7 @@ void AEnemyCharacter::HighlightActor()
 
 }
 
-void AEnemyCharacter::UnhighlightActor()
+void AEnemyCharacter::UnHighlightActor()
 {
 
 }

@@ -11,11 +11,10 @@
  * 
  */
 UCLASS()
-class LETTHEREBELIGHT_API AEnemyCharacter : public ABaseCharacter
+class LETTHEREBELIGHT_API AEnemyCharacter : public ABaseCharacter, public IEnemyInterface
 {
 	GENERATED_BODY()
-	
 public:
-	virtual void HighlightActor();
-	virtual void UnhighlightActor();
+	virtual void HighlightActor() override;
+	virtual void UnHighlightActor() override;
 };
