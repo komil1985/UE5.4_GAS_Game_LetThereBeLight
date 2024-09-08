@@ -2,12 +2,14 @@
 
 
 #include "AbilitySystem/KDAttributeSet.h"
-#include "AbilitySystemComponent.h"
 #include "Net/UnrealNetwork.h"
 
 UKDAttributeSet::UKDAttributeSet()
 {
-
+	InitHealth(100.0f);
+	InitMaxHealth(100.0f);
+	InitMana(100.0f);
+	InitMaxMana(100.0f);
 }
 
 void UKDAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
