@@ -15,9 +15,9 @@ class LETTHEREBELIGHT_API AEnemyCharacter : public ABaseCharacter, public IEnemy
 {
 	GENERATED_BODY()
 public:
+	AEnemyCharacter();
+
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
 
-	UPROPERTY(BlueprintReadOnly)
-	bool bHighlighted = false;
 };
