@@ -11,3 +11,7 @@ void UKDWidgetController::SetWidgetControllerParams(const FWidgetControllerParam
 	AttributeSet = WCParams.AttributeSet;
 
 }
+
+void UKDWidgetController::BroadcastInitialValues()
+{
+}
