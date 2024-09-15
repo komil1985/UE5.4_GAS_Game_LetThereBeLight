@@ -102,8 +102,10 @@ void AMyPlayerController::MouseCursorMode()
 void AMyPlayerController::subsystem()
 {
 	UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(SubSystem);
-	SubSystem->AddMappingContext(PlayerContext, 0);
+	if (SubSystem) 
+	{
+		SubSystem->AddMappingContext(PlayerContext, 0);
+	}
 }
 
 void AMyPlayerController::SetupInputComponent()

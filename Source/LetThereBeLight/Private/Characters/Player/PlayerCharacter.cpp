@@ -6,6 +6,8 @@
 #include "AbilitySystem/KDAbilitySystemComponent.h"
 #include "AbilitySystem/KDAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "UI/HUD/KDHUD.h"
+
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -44,5 +46,13 @@ void APlayerCharacter::InitAbilityActorInfo()
 	MyPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(MyPlayerState, this);
 	AbilitySystemComponent = MyPlayerState->GetAbilitySystemComponent();
 	AttributeSet = MyPlayerState->GetAttributeSet();
+
+	if(APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		if (AKDHUD* KDHUD = Cast<AKDHUD>(PlayerController->GetHUD()))
+		{
+			KDHUD->InitOverlay(PlayerController, MyPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
 }
 

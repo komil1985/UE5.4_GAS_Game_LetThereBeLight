@@ -6,6 +6,33 @@
 #include "UObject/NoExportTypes.h"
 #include "KDWidgetController.generated.h"
 
+class UAbilitySystemComponent;
+class UAttributeSet;
+
+USTRUCT(BlueprintType)
+struct FWidgetControllerParams 
+{
+	GENERATED_BODY()
+
+	FWidgetControllerParams() {}
+
+	FWidgetControllerParams(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)
+	: PlayerController(PC), PlayerState(PS), AbilitySystemComponent(ASC), AttributeSet(AS) {}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr <APlayerController> PlayerController = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<APlayerState> PlayerState = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UAttributeSet> AttributeSet = nullptr;
+};
+
+
 /**
  * 
  */
@@ -14,8 +41,11 @@ class LETTHEREBELIGHT_API UKDWidgetController : public UObject
 {
 	GENERATED_BODY()
 
-protected:
+public:
+	UFUNCTION(BlueprintCallable)
+	void SetWidgetControllerParams(const FWidgetControllerParams WCParams);
 
+protected:
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
 	TObjectPtr<APlayerController> PlayerController;
 
@@ -23,8 +53,8 @@ protected:
 	TObjectPtr<APlayerState> PlayerState;
 
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
-	TObjectPtr<class UAbilitySystemComponent> AbilitySystemComponent;
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
-	TObjectPtr<class UAttributeSet> AttributeSet;
+	TObjectPtr<UAttributeSet> AttributeSet;
 };
