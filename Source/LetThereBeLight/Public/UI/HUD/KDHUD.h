@@ -7,7 +7,7 @@
 #include "KDHUD.generated.h"
 
 class APlayerController;
-class AplayerState;
+class APlayerState;
 class UAbilitySystemComponent;
 class UAttributeSet;
 class UKDUserWidget;

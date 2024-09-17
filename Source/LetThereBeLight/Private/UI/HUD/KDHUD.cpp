@@ -4,13 +4,18 @@
 #include "UI/HUD/KDHUD.h"
 #include "UI/Widget/KDUserWidget.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
+#include "UI/WidgetController/KDWidgetController.h"
+
 
 UOverlayWidgetController* AKDHUD::GetOverlayWidgetController(const FWidgetControllerParams& WCParams)
 {
-	if (OverlayWidget == nullptr)
+	if (OverlayWidgetController == nullptr)
 	{
 		OverlayWidgetController = NewObject<UOverlayWidgetController>(this, OverlayWidgetControllerClass);
 		OverlayWidgetController->SetWidgetControllerParams(WCParams);
+		OverlayWidgetController->BindCallbacksToDependencies();
+
+		return OverlayWidgetController;
 	}
 	return OverlayWidgetController;
 }

@@ -15,3 +15,7 @@ void UKDWidgetController::SetWidgetControllerParams(const FWidgetControllerParam
 void UKDWidgetController::BroadcastInitialValues()
 {
 }
+
+void UKDWidgetController::BindCallbacksToDependencies()
+{
+}
