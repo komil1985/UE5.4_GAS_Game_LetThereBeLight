@@ -29,6 +29,7 @@ void AKDEffectActor::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 
 		UKDAttributeSet* MutableAttributeSet = const_cast<UKDAttributeSet*>(AttributeSet);
 		MutableAttributeSet->SetHealth(AttributeSet->GetHealth() + 25.0f);
+		MutableAttributeSet->SetMana(AttributeSet->GetMana() - 25.0f);
 		Destroy();
 	}
 }
