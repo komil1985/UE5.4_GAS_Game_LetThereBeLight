@@ -7,8 +7,8 @@
 #include "KDEffectActor.generated.h"
 
 
-class USphereComponent;
-class UStaticMeshComponent;
+class UGameplayEffect;
+
 UCLASS()
 class LETTHEREBELIGHT_API AKDEffectActor : public AActor
 {
@@ -17,19 +17,13 @@ class LETTHEREBELIGHT_API AKDEffectActor : public AActor
 public:	
 	AKDEffectActor();
 
-	UFUNCTION()
-	virtual void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* otherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	UFUNCTION()
-	virtual void EndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* otherComp, int32 OtherBodyIndex);
 
 protected:
 	virtual void BeginPlay() override;
 
-private:
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USphereComponent> Sphere;
+	UPROPERTY(EditAnywhere, Category = "Effects Applied")
+	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
 
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> Mesh;
+	UFUNCTION(BlueprintCallable)
+	void ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplayEffect> GameplayEffectClass);
 };
