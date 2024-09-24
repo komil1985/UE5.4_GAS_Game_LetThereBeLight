@@ -30,3 +30,13 @@ void AKDEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGamep
 	TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 }
 
+void AKDEffectActor::OnOverlap(AActor* TargetActor)
+{
+
+}
+
+void AKDEffectActor::OnEndOverlap(AActor* TargetActor)
+{
+
+}
+
