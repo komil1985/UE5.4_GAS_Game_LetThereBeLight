@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameplayEffectTypes.h"
 #include "KDEffectActor.generated.h"
 
 UENUM(BlueprintType)
@@ -22,6 +23,7 @@ enum class EEffectRemovePolicy : uint8
 };
 
 class UGameplayEffect;
+class UAbilitySystemComponent;
 UCLASS()
 class LETTHEREBELIGHT_API AKDEffectActor : public AActor
 {
@@ -43,11 +45,11 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnEndOverlap(AActor* TargetActor);
 
-	//////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Effects Applied")
 	bool bDestroyOnEffectRemoval = false;
 
-	//////////////////////// Instant Effect //////////////////////////////////////////
+	//////////////////////// Instant Effect /////////////////////////////////////////////////////////
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Effects Applied")
 	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
@@ -55,7 +57,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Effects Applied")
 	EEffectApplicationPolicy  InstantEffectApplicationPolicy = EEffectApplicationPolicy::DoNotApply;
 
-	///////////////////////// Duration Effect ////////////////////////////////////////
+	///////////////////////// Duration Effect ///////////////////////////////////////////////////////
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly ,Category = "Effects Applied")
 	TSubclassOf<UGameplayEffect> DurationGameplayEffectClass;
@@ -63,7 +65,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Effects Applied")
 	EEffectApplicationPolicy  DurationEffectApplicationPolicy = EEffectApplicationPolicy::DoNotApply;
 
-	////////////////////////// Infinite Effect ///////////////////////////////////////
+	////////////////////////// Infinite Effect //////////////////////////////////////////////////////
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Effects Applied")
 	TSubclassOf<UGameplayEffect> InfiniteGameplayEffectClass;
@@ -74,5 +76,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Effects Applied")
 	EEffectRemovePolicy InfiniteEffectRemovalPolicy = EEffectRemovePolicy::RemoveOnEndOverlap;
 
-	/////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+
+	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*>  ActiveGameplayEffectHandles;
 };
