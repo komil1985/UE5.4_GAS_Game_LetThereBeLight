@@ -95,4 +95,3 @@ void AKDEffectActor::OnEndOverlap(AActor* TargetActor)
 		}
 	}
 }
-
