@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/KDAttributeSet.h"
 #include "Net/UnrealNetwork.h"
+#include "GameplayEffectExtension.h"
 
 UKDAttributeSet::UKDAttributeSet()
 {
@@ -36,6 +37,18 @@ void UKDAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, fl
 		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxMana());
 	}
 }
+
+void UKDAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Health from GetHealth(): %f"), GetHealth());
+		UE_LOG(LogTemp, Warning, TEXT("Magnitude: %f"), Data.EvaluatedData.Magnitude);
+	}
+}
+
 
 void UKDAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
 {
