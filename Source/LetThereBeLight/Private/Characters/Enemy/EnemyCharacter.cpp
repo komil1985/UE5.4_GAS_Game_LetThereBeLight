@@ -21,7 +21,13 @@ void AEnemyCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	check(AbilitySystemComponent);
+	InitAbilityActorInfo();
+}
+
+void AEnemyCharacter::InitAbilityActorInfo()
+{
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UKDAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 }
 
 void AEnemyCharacter::HighlightActor()
