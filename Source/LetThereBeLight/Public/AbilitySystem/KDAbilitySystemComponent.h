@@ -6,6 +6,9 @@
 #include "AbilitySystemComponent.h"
 #include "KDAbilitySystemComponent.generated.h"
 
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer& /* AssetTags */);
+
 /**
  * 
  */
@@ -16,6 +19,8 @@ class LETTHEREBELIGHT_API UKDAbilitySystemComponent : public UAbilitySystemCompo
 	
 public:
 	void AbilityActorInfoSet();
+
+	FEffectAssetTags EffectAssetTags;
 
 protected:
 	void EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);

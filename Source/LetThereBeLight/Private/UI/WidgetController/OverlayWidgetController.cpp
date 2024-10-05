@@ -3,6 +3,8 @@
 
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "AbilitySystem/KDAttributeSet.h"
+#include "AbilitySystem/KDAbilitySystemComponent.h"
+
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -31,6 +33,16 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		KDAttributeSet->GetMaxManaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
 
+	Cast<UKDAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
+		[] (const FGameplayTagContainer& AssetTagsContainer)
+		{
+			for (const FGameplayTag& Tag : AssetTagsContainer)
+			{
+				const FString Msg = FString::Printf(TEXT(" GE Tag: %s"), *Tag.ToString());
+				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, Msg);
+			}
+		}
+	);
 }
 
 void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
