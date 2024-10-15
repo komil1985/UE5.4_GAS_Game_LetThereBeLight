@@ -10,6 +10,13 @@
 
 UKDAttributeSet::UKDAttributeSet()
 {
+	// Primary Attributes
+	InitStrength(10.0f);
+	InitIntelligence(20.0f);
+	InitResilience(15.0f);
+	InitVigor(10.0f);
+
+	// Vital Attributes
 	InitHealth(50.0f);
 	InitMaxHealth(100.0f);
 	InitMana(50.0f);
@@ -19,7 +26,6 @@ UKDAttributeSet::UKDAttributeSet()
 void UKDAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
 
 	// Primary Attributes
 	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, Strength, COND_None, REPNOTIFY_Always);

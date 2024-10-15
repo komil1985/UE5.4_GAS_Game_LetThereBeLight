@@ -9,6 +9,8 @@
 
 class UAbilitySystemComponent;
 class UAttributeSet;
+class UGameplayEffect;
+
 UCLASS(Abstract)
 class LETTHEREBELIGHT_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -35,7 +37,7 @@ protected:
 
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
-	TSubclassOf<class UGameplayEffect> DefaultPrimaryAttributes;
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 
 	void InitializePrimaryAttributes() const;
 };

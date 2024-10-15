@@ -55,5 +55,6 @@ void APlayerCharacter::InitAbilityActorInfo()
 			KDHUD->InitOverlay(PlayerController, MyPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
+	InitializePrimaryAttributes();
 }
 
