@@ -10,8 +10,8 @@
 
 UKDAttributeSet::UKDAttributeSet()
 {
-	InitialPrimaryAttributes();
-	InitialSecondaryAttributes();
+	//InitialPrimaryAttributes();
+	//InitialSecondaryAttributes();
 	InitialVitalAttributes();
 }
 
@@ -27,6 +27,11 @@ void UKDAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 
 	//Secondary Attributes
 	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, Armor, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, ArmorPenetration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, BlockChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, CriticalHitChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, CriticalHitDamage, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, CriticalHitResistance, COND_None, REPNOTIFY_Always);
 
 
 	// Vital Attributes
@@ -126,11 +131,33 @@ void UKDAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) const
 }
 
 
+
 //Secondary Attributes
 void UKDAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, Armor, OldArmor);
 }
+void UKDAttributeSet::OnRep_ArmorPenetration(const FGameplayAttributeData& OldArmorPenetration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, ArmorPenetration, OldArmorPenetration);
+}
+void UKDAttributeSet::OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, BlockChance, OldBlockChance);
+}
+void UKDAttributeSet::OnRep_CriticalHitChance(const FGameplayAttributeData& OldCriticalHitChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, CriticalHitChance, OldCriticalHitChance);
+}
+void UKDAttributeSet::OnRep_CriticalHitDamage(const FGameplayAttributeData& OldCriticalHitDamage) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, CriticalHitDamage, OldCriticalHitDamage);
+}
+void UKDAttributeSet::OnRep_CriticalHitResistance(const FGameplayAttributeData& OldCriticalHitResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, CriticalHitResistance, OldCriticalHitResistance);
+}
+
 
 
 // Vital Attributes
@@ -150,6 +177,7 @@ void UKDAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) co
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, MaxMana, OldMaxMana);
 }
+
 
 void UKDAttributeSet::InitialPrimaryAttributes()
 {
