@@ -22,6 +22,7 @@ struct FEffectProperties
 
 	FGameplayEffectContextHandle EffectContextHandle;
 
+
 	//-- Source --//
 	UPROPERTY()
 	UAbilitySystemComponent* SourceAbilitySystemComponent = nullptr;
@@ -34,6 +35,7 @@ struct FEffectProperties
 	
 	UPROPERTY()
 	ACharacter* SourceCharacter = nullptr;
+
 
 	//-- Target --//
 	UPROPERTY()
@@ -77,10 +79,17 @@ public:
 	FGameplayAttributeData Resilience;
 	ATTRIBUTE_ACCESSORS(UKDAttributeSet, Resilience);
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Vigor, Category = "Primary Attributes");
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Vigor, Category = "Primary Attributes")
 	FGameplayAttributeData Vigor;
 	ATTRIBUTE_ACCESSORS(UKDAttributeSet, Vigor);
 	
+
+
+	// Secondary Attributes //
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Armor, Category = "Secondary Attributes")
+	FGameplayAttributeData Armor;
+	ATTRIBUTE_ACCESSORS(UKDAttributeSet, Armor);
+
 
 
 	// Vital Attributes //
@@ -116,6 +125,10 @@ public:
 	void OnRep_Vigor(const FGameplayAttributeData& OldVigor) const;
 	
 
+	// Secondary Attributes //
+	UFUNCTION()
+	void OnRep_Armor(const FGameplayAttributeData& OldArmor) const;
+
 
 	// Vital Attributes //
 	UFUNCTION()
@@ -130,6 +143,10 @@ public:
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const;
 
+protected:
+	void InitialPrimaryAttributes();
+	void InitialSecondaryAttributes();
+	void InitialVitalAttributes();
 
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;

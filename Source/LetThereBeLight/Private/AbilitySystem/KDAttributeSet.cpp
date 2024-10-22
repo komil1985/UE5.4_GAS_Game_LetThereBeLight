@@ -10,17 +10,9 @@
 
 UKDAttributeSet::UKDAttributeSet()
 {
-	// Primary Attributes
-	InitStrength(10.0f);
-	InitIntelligence(20.0f);
-	InitResilience(15.0f);
-	InitVigor(10.0f);
-
-	// Vital Attributes
-	InitHealth(50.0f);
-	InitMaxHealth(100.0f);
-	InitMana(50.0f);
-	InitMaxMana(100.0f);
+	InitialPrimaryAttributes();
+	InitialSecondaryAttributes();
+	InitialVitalAttributes();
 }
 
 void UKDAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -32,6 +24,9 @@ void UKDAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, Resilience, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
+
+	//Secondary Attributes
+	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, Armor, COND_None, REPNOTIFY_Always);
 
 
 	// Vital Attributes
@@ -131,6 +126,12 @@ void UKDAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) const
 }
 
 
+//Secondary Attributes
+void UKDAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, Armor, OldArmor);
+}
+
 
 // Vital Attributes
 void UKDAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
@@ -148,4 +149,25 @@ void UKDAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
 void UKDAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, MaxMana, OldMaxMana);
+}
+
+void UKDAttributeSet::InitialPrimaryAttributes()
+{
+	InitStrength(10.0f);
+	InitIntelligence(20.0f);
+	InitResilience(15.0f);
+	InitVigor(10.0f);
+}
+
+void UKDAttributeSet::InitialSecondaryAttributes()
+{
+	
+}
+
+void UKDAttributeSet::InitialVitalAttributes()
+{
+	InitHealth(50.0f);
+	InitMaxHealth(100.0f);
+	InitMana(50.0f);
+	InitMaxMana(100.0f);
 }
