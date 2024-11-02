@@ -17,10 +17,15 @@ class LETTHEREBELIGHT_API AEnemyCharacter : public ABaseCharacter, public IEnemy
 public:
 	AEnemyCharacter();
 
-	virtual void HighlightActor() override;
-	virtual void UnHighlightActor() override;
+	virtual void HighlightActor() override;		// Enemy Interface
+	virtual void UnHighlightActor() override;	// End Enemy interface
+
+	virtual int32 GetLevel() override;			// Combat Interface
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo () override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
+	int32 Level = 1;
 };
