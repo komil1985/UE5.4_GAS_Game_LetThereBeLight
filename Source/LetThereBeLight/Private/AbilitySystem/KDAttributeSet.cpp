@@ -12,7 +12,7 @@ UKDAttributeSet::UKDAttributeSet()
 {
 	//InitialPrimaryAttributes();
 	//InitialSecondaryAttributes();
-	InitialVitalAttributes();
+	//InitialVitalAttributes();
 }
 
 void UKDAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -191,6 +191,7 @@ void UKDAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
 
 void UKDAttributeSet::InitialPrimaryAttributes()
 {
+	// Setting primary attributes
 	InitStrength(10.0f);
 	InitIntelligence(20.0f);
 	InitResilience(15.0f);
@@ -199,11 +200,12 @@ void UKDAttributeSet::InitialPrimaryAttributes()
 
 void UKDAttributeSet::InitialSecondaryAttributes()
 {
-	
+	// Setting secondary attributes
 }
 
 void UKDAttributeSet::InitialVitalAttributes()
 {
+	// Setting vital attributes
 	InitHealth(50.0f);
 	InitMana(50.0f);
 }
