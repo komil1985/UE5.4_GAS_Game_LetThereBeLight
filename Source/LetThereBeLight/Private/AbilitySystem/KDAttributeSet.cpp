@@ -201,6 +201,16 @@ void UKDAttributeSet::InitialPrimaryAttributes()
 void UKDAttributeSet::InitialSecondaryAttributes()
 {
 	// Setting secondary attributes
+	InitArmor(10.0f);
+	InitArmorPenetration(7.0f);
+	InitCriticalHitChance(10.0f);
+	InitCriticalHitDamage(15.0f);
+	InitCriticalHitResistance(15.0f);
+	InitBlockChance(12.0f);
+	InitHealthRegeneration(15.0f);
+	InitManaRegeneration(20.0f);
+	InitMaxHealth(100.0f);
+	InitMaxMana(100.0f);
 }
 
 void UKDAttributeSet::InitialVitalAttributes()
