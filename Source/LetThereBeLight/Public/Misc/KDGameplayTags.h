@@ -8,7 +8,7 @@
 /**
  *  KDGameplayTags
  * 
- *  Singleton containing native gameplay tags
+ *  singleton containing native gameplay tags
  */
 
 struct FKDGameplayTags
@@ -17,6 +17,7 @@ public:
 	static const FKDGameplayTags& Get() { return GameplayTags; }
 	static void InitializeNativeGameplayTags();
 	
+	FGameplayTag Attributes_Secondary_Armor;
 protected:
 
 private:
