@@ -24,3 +24,20 @@ UOverlayWidgetController* UKDAbilitySystemLibrary::GetOverlayWidgetController(co
 
 	return nullptr;
 }
+
+UAttributeMenuWidgetController* UKDAbilitySystemLibrary::GetAttributeMenuWidgetController(const UObject* WorldContextObject)
+{
+	if (APlayerController* PC = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
+	{
+		if (AKDHUD* KDHud = Cast<AKDHUD>(PC->GetHUD()))
+		{
+			AMyPlayerState* PS = PC->GetPlayerState<AMyPlayerState>();
+			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
+			UAttributeSet* AS = PS->GetAttributeSet();
+			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
+
+			return KDHud->GetAttributeMenuWidgetController(WidgetControllerParams);
+		}
+	}
+	return nullptr;
+}
