@@ -15,7 +15,8 @@ FKDAttributeInfo UAttributeInfo::FindAttributeInfoForTag(const FGameplayTag& Att
 
 	if (bLogNotFound)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Can't find into for AttributeTag [%s] on AttributeInfo [%s]."), *AttributeTag.ToString(), *GetNameSafe(this));
+		UE_LOG(LogTemp, Error, TEXT("Can't find into for AttributeTag [%s] on AttributeInfo [%s]."),
+			*AttributeTag.ToString(), *GetNameSafe(this));
 	}
 
 	return FKDAttributeInfo();
