@@ -6,6 +6,10 @@
 #include "UI/WidgetController/KDWidgetController.h"
 #include "AttributeMenuWidgetController.generated.h"
 
+class UAttributeInfo;
+struct FKDAttributeInfo;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FKDAttributeInfo&, Info);
+
 /**
  * 
  */
@@ -16,4 +20,11 @@ class LETTHEREBELIGHT_API UAttributeMenuWidgetController : public UKDWidgetContr
 public:
 	virtual void BindCallbacksToDependencies() override;
 	virtual void BroadcastInitialValues() override;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS | Attributes")
+	FAttributeInfoSignature AttributeInfoDelegate;
+
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UAttributeInfo> AttributeInfo;
 };
