@@ -1,17 +1,19 @@
 // Copyright ASKD Games
 
 #pragma once
-	
+
+#include "CoreMinimal.h"
+#include "AbilitySystemComponent.h"
+#include "AttributeSet.h"
+#include "KDAttributeSet.generated.h"
+
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
 		GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
  		GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 		GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
  		GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
-#include "CoreMinimal.h"
-#include "AbilitySystemComponent.h"
-#include "AttributeSet.h"
-#include "KDAttributeSet.generated.h"
+DECLARE_DELEGATE_RetVal(FGameplayAttribute, FAttributeSignature);
 
 USTRUCT()
 struct FEffectProperties
@@ -64,7 +66,7 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
-
+	TMap<FGameplayTag, FAttributeSignature> TagsToAttribute;
 	
 	// Primary Attributes //
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Strength, Category = "Primary Attributes")

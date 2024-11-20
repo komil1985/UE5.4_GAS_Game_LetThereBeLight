@@ -6,6 +6,7 @@
 #include "GameplayEffectExtension.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameFramework/Character.h"
+#include "Misc/KDGameplayTags.h"
 
 
 UKDAttributeSet::UKDAttributeSet()
@@ -13,6 +14,12 @@ UKDAttributeSet::UKDAttributeSet()
 	//InitialPrimaryAttributes();
 	//InitialSecondaryAttributes();
 	//InitialVitalAttributes();
+
+	const FKDGameplayTags& GameplayTags = FKDGameplayTags::Get();
+	FAttributeSignature StrengthDelegate;
+	StrengthDelegate.BindStatic(UKDAttributeSet::GetStrengthAttribute);
+
+	TagsToAttribute.Add(GameplayTags.Attributes_Primary_Strength, StrengthDelegate);
 }
 
 void UKDAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -219,3 +226,4 @@ void UKDAttributeSet::InitialVitalAttributes()
 	InitHealth(50.0f);
 	InitMana(50.0f);
 }
+

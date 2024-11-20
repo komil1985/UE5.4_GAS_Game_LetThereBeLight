@@ -2,9 +2,9 @@
 
 
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
-#include <AbilitySystem/KDAttributeSet.h>
-#include <Misc/KDGameplayTags.h>
-#include <AbilitySystem/Data/AttributeInfo.h>
+#include "AbilitySystem/KDAttributeSet.h"
+#include "Misc/KDGameplayTags.h"
+#include "AbilitySystem/Data/AttributeInfo.h"
 
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
