@@ -9,15 +9,18 @@
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
 	UKDAttributeSet* AS = CastChecked<UKDAttributeSet>(AttributeSet);
+	check(AttributeInfo);
 
 	for (auto& Pair : AS->TagsToAttribute)
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda(
-			[this, Pair, AS](const FOnAttributeChangeData& Data)
+			[this, Pair](const FOnAttributeChangeData& Data)
 			{
-				FKDAttributeInfo Info = AttributeInfo->FindAttributeInfoForTag(Pair.Key);
-				Info.AttributeValue = Pair.Value().GetNumericValue(AS);
-				AttributeInfoDelegate.Broadcast(Info);
+				BroadcastAttributeInfo(Pair.Key, Pair.Value());
+
+				//FKDAttributeInfo Info = AttributeInfo->FindAttributeInfoForTag(Pair.Key);
+				//Info.AttributeValue = Pair.Value().GetNumericValue(AS);
+				//AttributeInfoDelegate.Broadcast(Info);
 			}
 		);
 	}
@@ -26,22 +29,21 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
 	UKDAttributeSet* AS = CastChecked<UKDAttributeSet>(AttributeSet);
-
 	check(AttributeInfo);
 
 	for (auto& Pair : AS->TagsToAttribute)
 	{
-		//BroadcastAttributeInfo(Pair.Key, Pair.Value());
+		BroadcastAttributeInfo(Pair.Key, Pair.Value());
 
-		FKDAttributeInfo Info = AttributeInfo->FindAttributeInfoForTag(Pair.Key);
-		Info.AttributeValue = Pair.Value().GetNumericValue(AS);
-		AttributeInfoDelegate.Broadcast(Info);
+		//FKDAttributeInfo Info = AttributeInfo->FindAttributeInfoForTag(Pair.Key);
+		//Info.AttributeValue = Pair.Value().GetNumericValue(AS);
+		//AttributeInfoDelegate.Broadcast(Info);
 	}
 }
 
-//void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute) const
-//{
-//	FKDAttributeInfo Info = AttributeInfo->FindAttributeInfoForTag(AttributeTag);
-//	Info.AttributeValue = Attribute.GetNumericValue(AttributeSet);
-//	AttributeInfoDelegate.Broadcast(Info);
-//}
+void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute) const
+{
+	FKDAttributeInfo Info = AttributeInfo->FindAttributeInfoForTag(AttributeTag);
+	Info.AttributeValue = Attribute.GetNumericValue(AttributeSet);
+	AttributeInfoDelegate.Broadcast(Info);
+}
