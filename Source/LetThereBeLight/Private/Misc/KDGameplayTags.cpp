@@ -67,4 +67,33 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FName("Attributes.Secondary.MaxMana"),
 		FString("Increases Maximum Mana")
 	);
+
+
+	// Input Tags
+	GameplayTags.InputTag_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.LMB"),
+		FString("Input Tag For Left Mouse Button")
+		);
+	GameplayTags.InputTag_RMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.RMB"),
+		FString("Input Tag For Right Mouse Button")
+		);
+	GameplayTags.InputTag_Num1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.Num1"),
+		FString("Input Tag For Number 1 Key")
+	);
+	GameplayTags.InputTag_Num2 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.Num2"),
+		FString("Input Tag For Number 2 Key")
+	);
+	GameplayTags.InputTag_Num3 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.Num3"),
+		FString("Input Tag For Number 3 Key")
+	);
+	GameplayTags.InputTag_Num4 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.Num4"),
+		FString("Input Tag For Number 4 Key")
+	);
+
+
 }
