@@ -2,6 +2,7 @@
 
 
 #include "Characters/Base/BaseCharacter.h"
+#include "AbilitySystem/KDAbilitySystemComponent.h"
 #include "AbilitySystemComponent.h"
 
 ABaseCharacter::ABaseCharacter()
@@ -46,4 +47,14 @@ void ABaseCharacter::InitializeDefaultAttributes() const
 	ApplyEffectToSelf(DefaultSecondaryAttributes, 1.0f);
 	ApplyEffectToSelf(DefaultVitalAttributes, 1.0f);
 }
+
+void ABaseCharacter::AddCharacterAbilities()
+{
+	UKDAbilitySystemComponent* KDASC = Cast<UKDAbilitySystemComponent>(AbilitySystemComponent);
+	if (!HasAuthority()) return;
+
+	KDASC->AddCharacterAbilities(StartupAbilities);
+	
+}	
+
 

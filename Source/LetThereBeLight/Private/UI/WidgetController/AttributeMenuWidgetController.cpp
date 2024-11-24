@@ -17,10 +17,6 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 			[this, Pair](const FOnAttributeChangeData& Data)
 			{
 				BroadcastAttributeInfo(Pair.Key, Pair.Value());
-
-				//FKDAttributeInfo Info = AttributeInfo->FindAttributeInfoForTag(Pair.Key);
-				//Info.AttributeValue = Pair.Value().GetNumericValue(AS);
-				//AttributeInfoDelegate.Broadcast(Info);
 			}
 		);
 	}
@@ -34,10 +30,6 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 	for (auto& Pair : AS->TagsToAttribute)
 	{
 		BroadcastAttributeInfo(Pair.Key, Pair.Value());
-
-		//FKDAttributeInfo Info = AttributeInfo->FindAttributeInfoForTag(Pair.Key);
-		//Info.AttributeValue = Pair.Value().GetNumericValue(AS);
-		//AttributeInfoDelegate.Broadcast(Info);
 	}
 }
 
