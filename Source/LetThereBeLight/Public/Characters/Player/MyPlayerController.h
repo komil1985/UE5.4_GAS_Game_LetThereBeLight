@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include <GameplayTagContainer.h>
 #include "MyPlayerController.generated.h"
 
 /**
@@ -13,6 +14,8 @@ class UInputMappingContext;
 struct FInputActionValue;
 class UInputAction;
 class IEnemyInterface;
+class UKDInputConfig;
+
 UCLASS()
 class LETTHEREBELIGHT_API AMyPlayerController : public APlayerController
 {
@@ -41,4 +44,10 @@ private:
 	TScriptInterface<IEnemyInterface> LastActor;
 	TScriptInterface<IEnemyInterface> ThisActor;
 
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UKDInputConfig> InputConfig;
 };

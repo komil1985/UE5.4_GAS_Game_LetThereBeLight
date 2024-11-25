@@ -3,8 +3,8 @@
 
 #include "Characters/Player/MyPlayerController.h"
 #include "Interactions/EnemyInterface.h"
-#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include <Input/KDInputComponent.h>
 
 AMyPlayerController::AMyPlayerController()
 {
@@ -89,6 +89,18 @@ void AMyPlayerController::CursorTrace()
 
 }
 
+void AMyPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+}
+
+void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+}
+
+void AMyPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+}
+
 void AMyPlayerController::MouseCursorMode()
 {
 	bShowMouseCursor = true;
@@ -112,9 +124,9 @@ void AMyPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
-
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMyPlayerController::Move);
+	UKDInputComponent* KDInputComponent = CastChecked<UKDInputComponent>(InputComponent);
+	KDInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMyPlayerController::Move);
+	KDInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
 void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
