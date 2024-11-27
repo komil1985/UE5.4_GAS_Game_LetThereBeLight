@@ -15,6 +15,7 @@ struct FInputActionValue;
 class UInputAction;
 class IEnemyInterface;
 class UKDInputConfig;
+class UKDAbilitySystemComponent;
 
 UCLASS()
 class LETTHEREBELIGHT_API AMyPlayerController : public APlayerController
@@ -50,4 +51,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UKDInputConfig> InputConfig;
+
+	UPROPERTY()
+	TObjectPtr<UKDAbilitySystemComponent> KDAbilitySystemComponent;
+
+	UKDAbilitySystemComponent* GetKDASC();
 };

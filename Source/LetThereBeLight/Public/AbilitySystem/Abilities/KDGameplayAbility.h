@@ -15,6 +15,8 @@ class LETTHEREBELIGHT_API UKDGameplayAbility : public UGameplayAbility
 	GENERATED_BODY()
 	
 public:
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	FGameplayTag StartupInputTag;
 	
 protected:
 

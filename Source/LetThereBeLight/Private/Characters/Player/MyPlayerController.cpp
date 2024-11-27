@@ -5,6 +5,9 @@
 #include "Interactions/EnemyInterface.h"
 #include "EnhancedInputSubsystems.h"
 #include <Input/KDInputComponent.h>
+#include <AbilitySystemBlueprintLibrary.h>
+#include "AbilitySystem/KDAbilitySystemComponent.h"
+
 
 AMyPlayerController::AMyPlayerController()
 {
@@ -95,10 +98,23 @@ void AMyPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 
 void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
+	if (GetKDASC() == nullptr) return;
+	GetKDASC()->AbilityInputTagReleased(InputTag);
 }
 
 void AMyPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
+	if (GetKDASC() == nullptr) return;
+	GetKDASC()->AbilityInputTagHeld(InputTag);
+}
+
+UKDAbilitySystemComponent* AMyPlayerController::GetKDASC()
+{
+	if (KDAbilitySystemComponent == nullptr)
+	{
+		KDAbilitySystemComponent = Cast<UKDAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	return KDAbilitySystemComponent;
 }
 
 void AMyPlayerController::MouseCursorMode()
