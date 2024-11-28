@@ -7,11 +7,19 @@
 #include <Input/KDInputComponent.h>
 #include <AbilitySystemBlueprintLibrary.h>
 #include "AbilitySystem/KDAbilitySystemComponent.h"
+#include "Components/SplineComponent.h"
+#include "Misc/KDGameplayTags.h"
+#include <NavigationSystem.h>
+#include "NavigationPath.h"
+
+
 
 
 AMyPlayerController::AMyPlayerController()
 {
 	bReplicates = true;
+
+	Spline = CreateDefaultSubobject<USplineComponent>("Spline");
 }
 
 void AMyPlayerController::BeginPlay()
@@ -94,19 +102,93 @@ void AMyPlayerController::CursorTrace()
 
 void AMyPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
+	if(InputTag.MatchesTagExact(FKDGameplayTags::Get().InputTag_LMB))
+	{
+		bTargeting = ThisActor ? true : false;
+		bAutoRunning = false;
+	}
+
 }
+
 
 void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	if (GetKDASC() == nullptr) return;
-	GetKDASC()->AbilityInputTagReleased(InputTag);
+	if (!InputTag.MatchesTagExact(FKDGameplayTags::Get().InputTag_LMB))
+	{
+		if (GetKDASC())
+		{
+			GetKDASC()->AbilityInputTagReleased(InputTag);
+		}
+		return;
+	}
+
+	if (bTargeting)
+	{
+		if (GetKDASC())
+		{
+			GetKDASC()->AbilityInputTagReleased(InputTag);
+		}
+	}
+	else
+	{
+		APawn* ControlledPawn = GetPawn();
+		if (FollowTime <= ShortPressedThreshold && ControlledPawn)
+		{
+			UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination);
+			if (NavPath)
+			{
+				Spline->ClearSplinePoints();
+				for (const FVector& PointLocation : NavPath->PathPoints)
+				{
+					Spline->AddSplinePoint(PointLocation, ESplineCoordinateSpace::World);
+					DrawDebugSphere(GetWorld(), PointLocation, 8.0f, 8, FColor::Green, false, 5.0f);
+				}
+				bAutoRunning = true;
+			}
+		}
+		FollowTime = 0.0f;
+		bTargeting = false;
+	}
 }
+
 
 void AMyPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	if (GetKDASC() == nullptr) return;
-	GetKDASC()->AbilityInputTagHeld(InputTag);
+	if (!InputTag.MatchesTagExact(FKDGameplayTags::Get().InputTag_LMB))
+	{
+		if (GetKDASC())
+		{
+			GetKDASC()->AbilityInputTagHeld(InputTag);
+		}
+		return;
+	}
+
+	if (bTargeting)
+	{
+		if (GetKDASC())
+		{
+			GetKDASC()->AbilityInputTagHeld(InputTag);
+		}
+	}
+	else
+	{
+		FollowTime += GetWorld()->GetDeltaSeconds();
+
+		FHitResult Hit;
+		if (GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+		{
+			CachedDestination = Hit.ImpactPoint;
+		}
+
+		if (APawn* ControlledPawn = GetPawn())
+		{
+			const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+			ControlledPawn->AddMovementInput(WorldDirection);
+		}
+	}
+
 }
+
 
 UKDAbilitySystemComponent* AMyPlayerController::GetKDASC()
 {

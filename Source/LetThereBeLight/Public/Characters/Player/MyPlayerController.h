@@ -16,6 +16,7 @@ class UInputAction;
 class IEnemyInterface;
 class UKDInputConfig;
 class UKDAbilitySystemComponent;
+class USplineComponent;
 
 UCLASS()
 class LETTHEREBELIGHT_API AMyPlayerController : public APlayerController
@@ -56,4 +57,16 @@ private:
 	TObjectPtr<UKDAbilitySystemComponent> KDAbilitySystemComponent;
 
 	UKDAbilitySystemComponent* GetKDASC();
+
+	FVector CachedDestination = FVector::ZeroVector;
+	float FollowTime = 0.0f;
+	float ShortPressedThreshold = 0.5f;
+	bool bAutoRunning = false;
+	float bTargeting = false;
+
+	UPROPERTY(EditDefaultsOnly)
+	float AutoRunAcceptanceRadius = 50.0f;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USplineComponent> Spline;
 };
