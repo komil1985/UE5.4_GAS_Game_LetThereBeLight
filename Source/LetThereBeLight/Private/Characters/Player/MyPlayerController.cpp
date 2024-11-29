@@ -13,8 +13,6 @@
 #include "NavigationPath.h"
 
 
-
-
 AMyPlayerController::AMyPlayerController()
 {
 	bReplicates = true;
@@ -43,60 +41,21 @@ void AMyPlayerController::PlayerTick(float DeltaTime)
 
 void AMyPlayerController::CursorTrace()
 {
-	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if (!CursorHit.bBlockingHit) return;
 
 	LastActor = ThisActor;
 	ThisActor = CursorHit.GetActor();
 	
-
-
-	/*
-	* Line trace from cursor. There are several scenario
-	* A) LastActor && ThisActor is null
-	*       - Do nothing
-	* B) LastActor is null && ThisActor is valid
-	*       - Highlight ThisActor
-	* C) LastActor is valid && This is null
-	*		- UnHighlight LastActor
-	* D) Both Actors are valid but LastActor != ThisActor
-	*		- UnHighlight LastActor && Highlight ThisActor
-	* E) Both Actors are valid and are same Actor
-	*		- Do nothing
-	*/
-
-	if (LastActor == nullptr)
+	if (LastActor != ThisActor)
 	{
-		if (ThisActor != nullptr)
+		if (LastActor)
 		{
-			// Case B 
-			ThisActor->HighlightActor();
-		}
-		else
-		{
-			// Case A - Both are null, do nothing
-		}
-	}
-	else // LastActor is valid
-	{
-		if (ThisActor == nullptr)
-		{
-			// Case C
 			LastActor->UnHighlightActor();
 		}
-		else // Both actors are valid
+		if (ThisActor)
 		{
-			if (LastActor != ThisActor) 
-			{
-				// Case D
-				LastActor->UnHighlightActor();
-				ThisActor->HighlightActor();
-			}
-			else
-			{
-				// Case E - do nothing
-			}
+			ThisActor->HighlightActor();
 		}
 	}
 
@@ -133,7 +92,7 @@ void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	}
 	else
 	{
-		APawn* ControlledPawn = GetPawn();
+		const APawn* ControlledPawn = GetPawn();
 		if (FollowTime <= ShortPressedThreshold && ControlledPawn)
 		{
 			UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination);
@@ -143,7 +102,6 @@ void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				for (const FVector& PointLocation : NavPath->PathPoints)
 				{
 					Spline->AddSplinePoint(PointLocation, ESplineCoordinateSpace::World);
-					DrawDebugSphere(GetWorld(), PointLocation, 8.0f, 8, FColor::Green, false, 5.0f);
 				}
 				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
 				bAutoRunning = true;
@@ -176,10 +134,9 @@ void AMyPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 	{
 		FollowTime += GetWorld()->GetDeltaSeconds();
 
-		FHitResult Hit;
-		if (GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+		if (CursorHit.bBlockingHit)
 		{
-			CachedDestination = Hit.ImpactPoint;
+			CachedDestination = CursorHit.ImpactPoint;
 		}
 
 		if (APawn* ControlledPawn = GetPawn())
