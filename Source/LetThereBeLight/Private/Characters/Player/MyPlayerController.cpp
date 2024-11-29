@@ -37,6 +37,8 @@ void AMyPlayerController::PlayerTick(float DeltaTime)
 	Super::PlayerTick(DeltaTime);
 
 	CursorTrace();
+	AutoRunning();
+
 }
 
 void AMyPlayerController::CursorTrace()
@@ -100,6 +102,7 @@ void AMyPlayerController::CursorTrace()
 
 }
 
+
 void AMyPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
 	if(InputTag.MatchesTagExact(FKDGameplayTags::Get().InputTag_LMB))
@@ -109,7 +112,6 @@ void AMyPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 	}
 
 }
-
 
 void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
@@ -143,6 +145,7 @@ void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 					Spline->AddSplinePoint(PointLocation, ESplineCoordinateSpace::World);
 					DrawDebugSphere(GetWorld(), PointLocation, 8.0f, 8, FColor::Green, false, 5.0f);
 				}
+				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
 				bAutoRunning = true;
 			}
 		}
@@ -150,7 +153,6 @@ void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 		bTargeting = false;
 	}
 }
-
 
 void AMyPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
@@ -197,6 +199,23 @@ UKDAbilitySystemComponent* AMyPlayerController::GetKDASC()
 		KDAbilitySystemComponent = Cast<UKDAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
 	}
 	return KDAbilitySystemComponent;
+}
+
+void AMyPlayerController::AutoRunning()
+{
+	if (!bAutoRunning) return;
+	if (APawn* ControlledPawn = GetPawn())
+	{
+		const FVector LocationOnSpline = Spline->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
+		const FVector Direction = Spline->FindDirectionClosestToWorldLocation(LocationOnSpline, ESplineCoordinateSpace::World);
+
+		ControlledPawn->AddMovementInput(Direction);
+		const float DistanceToDestination = (LocationOnSpline - CachedDestination).Length();
+		if (DistanceToDestination <= AutoRunAcceptanceRadius)
+		{
+			bAutoRunning = false;
+		}
+	}
 }
 
 void AMyPlayerController::MouseCursorMode()
