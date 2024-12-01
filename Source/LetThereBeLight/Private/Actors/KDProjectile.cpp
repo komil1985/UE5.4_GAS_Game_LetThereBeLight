@@ -8,6 +8,8 @@
 AKDProjectile::AKDProjectile()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	bReplicates = true;
+
 	SphereComp();
 	ProjectileMoveComp();
 }
