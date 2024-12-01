@@ -19,7 +19,7 @@ void UKDProjectileSpell::SpawnProjectile()
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer) return;
 
-	// Projectile Location
+	// Spawning projectile
 	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
 	if (CombatInterface)
 	{
@@ -27,7 +27,6 @@ void UKDProjectileSpell::SpawnProjectile()
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
 
-		// Spawning projectile
 		AKDProjectile* Projectile = GetWorld()->SpawnActorDeferred<AKDProjectile>
 			(
 				ProjectileClass,
