@@ -10,7 +10,7 @@ void UKDProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	//UKismetSystemLibrary::PrintString(this, FString("ActivateAbility (C++)"), true, true, FLinearColor::Green, 3.0f);
+	//UKismetSystemLibrary::PrintString(this, FString("ActivateAbility (C++)"), true, true, FLinearColor::Green, 3.0f);//
 
 	//To check if it is on server or not
 	const bool bIsServer = HasAuthority(&ActivationInfo);
