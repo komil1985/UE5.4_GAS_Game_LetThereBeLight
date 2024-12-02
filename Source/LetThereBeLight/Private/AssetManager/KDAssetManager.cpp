@@ -3,6 +3,7 @@
 
 #include "AssetManager/KDAssetManager.h"
 #include "Misc/KDGameplayTags.h"
+#include <AbilitySystemGlobals.h>
 
 UKDAssetManager& UKDAssetManager::Get()
 {
@@ -16,6 +17,6 @@ UKDAssetManager& UKDAssetManager::Get()
 void UKDAssetManager::StartInitialLoading()
 {
 	Super::StartInitialLoading();
-
 	FKDGameplayTags::InitializeNativeGameplayTags();
+	UAbilitySystemGlobals::Get().InitGlobalData();
 }
