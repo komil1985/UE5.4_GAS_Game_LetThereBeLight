@@ -13,19 +13,23 @@ void UKDProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 	//UKismetSystemLibrary::PrintString(this, FString("ActivateAbility (C++)"), true, true, FLinearColor::Green, 3.0f);//
 }
 
-void UKDProjectileSpell::SpawnProjectile()
+void UKDProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation)
 {
 	//To check if it is on server
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bIsServer) return;
 
-	// Projectile Location
+	// Set Projectile Location
 	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
 	if (CombatInterface)
 	{
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
+		FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
+		Rotation.Pitch = 0.0f;
+
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
+		SpawnTransform.SetRotation(Rotation.Quaternion());
 
 		// Spawning projectile
 		AKDProjectile* Projectile = GetWorld()->SpawnActorDeferred<AKDProjectile>

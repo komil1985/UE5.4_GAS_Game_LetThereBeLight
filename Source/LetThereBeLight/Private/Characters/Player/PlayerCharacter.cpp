@@ -7,10 +7,16 @@
 #include "AbilitySystem/KDAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "UI/HUD/KDHUD.h"
+#include "Components/CapsuleComponent.h"
 
 
 APlayerCharacter::APlayerCharacter()
 {
+	PrimaryActorTick.bCanEverTick = false;
+
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 1000.0f, 0.0f);
 	GetCharacterMovement()->bConstrainToPlane = true;

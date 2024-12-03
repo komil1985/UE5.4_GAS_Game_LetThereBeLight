@@ -83,15 +83,11 @@ void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 		return;
 	}
 
-	if (bTargeting)
-	{
-		if (GetKDASC())
-		{
-			GetKDASC()->AbilityInputTagReleased(InputTag);
-		}
-	}
-	else
-	{
+	if (GetKDASC()) GetKDASC()->AbilityInputTagReleased(InputTag);
+
+	if (!bTargeting && !bIsShiftKeyDown)
+	{		
+		// Check for short press
 		const APawn* ControlledPawn = GetPawn();
 		if (FollowTime <= ShortPressedThreshold && ControlledPawn)
 		{
@@ -123,7 +119,7 @@ void AMyPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 		return;
 	}
 
-	if (bTargeting)
+	if (bTargeting || bIsShiftKeyDown)
 	{
 		if (GetKDASC())
 		{
@@ -200,6 +196,8 @@ void AMyPlayerController::SetupInputComponent()
 
 	UKDInputComponent* KDInputComponent = CastChecked<UKDInputComponent>(InputComponent);
 	KDInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMyPlayerController::Move);
+	KDInputComponent->BindAction(ShiftAction, ETriggerEvent::Started, this, &AMyPlayerController::ShiftPressed);
+	KDInputComponent->BindAction(ShiftAction, ETriggerEvent::Completed, this, &AMyPlayerController::ShiftReleased);
 	KDInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
