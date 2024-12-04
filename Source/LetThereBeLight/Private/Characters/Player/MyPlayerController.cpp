@@ -61,6 +61,7 @@ void AMyPlayerController::CursorTrace()
 
 }
 
+///////////////////////////////////////////////////////////////////////////////////
 
 void AMyPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
@@ -144,6 +145,7 @@ void AMyPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 
 }
 
+///////////////////////////////////////////////////////////////////////////////////
 
 UKDAbilitySystemComponent* AMyPlayerController::GetKDASC()
 {
