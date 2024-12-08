@@ -9,7 +9,8 @@
 #include <NiagaraFunctionLibrary.h>
 #include "Components/AudioComponent.h"
 #include <LetThereBeLight/LetThereBeLight.h>
-
+#include "AbilitySystemComponent.h"
+#include <AbilitySystemBlueprintLibrary.h>
 
 AKDProjectile::AKDProjectile()
 {
@@ -43,6 +44,7 @@ void AKDProjectile::ProjectileMoveComp()
 void AKDProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+
 	SetLifeSpan(LifeSpan);
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AKDProjectile::OnSphereOverlap);
 
@@ -68,6 +70,10 @@ void AKDProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AA
 
 	if (HasAuthority())
 	{
+		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+		{
+			TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+		}
 		Destroy();
 	}
 	else

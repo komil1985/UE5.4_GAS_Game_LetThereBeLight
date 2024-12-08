@@ -5,6 +5,8 @@
 #include "LetThereBeLight/LetThereBeLight.h"
 #include "AbilitySystem/KDAbilitySystemComponent.h"
 #include "AbilitySystem/KDAttributeSet.h"
+#include "Components/WidgetComponent.h"
+#include <UI/Widget/KDUserWidget.h>
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -14,6 +16,40 @@ AEnemyCharacter::AEnemyCharacter()
 	AbilitySystemComponent->SetIsReplicated(true);
 
 	AttributeSet = CreateDefaultSubobject<UKDAttributeSet>("AttributeSet");
+
+	HealthBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBar"));
+	HealthBar->SetupAttachment(RootComponent);
+}
+
+void AEnemyCharacter::SetProgressBar()
+{
+	if (UKDUserWidget* UserWidget = Cast<UKDUserWidget>(HealthBar->GetUserWidgetObject()))
+	{
+		UserWidget->SetWidgetController(this);
+	}
+}
+
+void AEnemyCharacter::BindAndBroadcastDelegate()
+{
+	if (UKDAttributeSet* KDAttSet = Cast<UKDAttributeSet>(AttributeSet))
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(KDAttSet->GetHealthAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data)
+			{
+				OnHealthChanged.Broadcast(Data.NewValue);
+			}
+		);
+
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(KDAttSet->GetMaxHealthAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data)
+			{
+				OnMaxHealthChanged.Broadcast(Data.NewValue);
+			}
+		);
+
+		OnHealthChanged.Broadcast(KDAttSet->GetHealth());
+		OnMaxHealthChanged.Broadcast(KDAttSet->GetMaxHealth());
+	}
 }
 
 void AEnemyCharacter::BeginPlay()
@@ -22,20 +58,25 @@ void AEnemyCharacter::BeginPlay()
 
 	check(AbilitySystemComponent);
 	InitAbilityActorInfo();
+
+	SetProgressBar();
+	BindAndBroadcastDelegate();
 }
 
 void AEnemyCharacter::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UKDAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+
+	InitializeDefaultAttributes();
 }
 
 void AEnemyCharacter::HighlightActor()
 {
 	GetMesh()->SetRenderCustomDepth(true);
-	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	//GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 	Weapon->SetRenderCustomDepth(true);
-	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	//Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 }
 
 void AEnemyCharacter::UnHighlightActor()

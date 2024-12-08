@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameplayEffectTypes.h"
 #include "KDProjectile.generated.h"
 
 class USphereComponent;
@@ -16,11 +17,15 @@ class LETTHEREBELIGHT_API AKDProjectile : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
+public:
 	AKDProjectile();
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
+
+	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
+	FGameplayEffectSpecHandle DamageEffectSpecHandle;
+
 	void SphereComp();
 	void ProjectileMoveComp();
 protected:

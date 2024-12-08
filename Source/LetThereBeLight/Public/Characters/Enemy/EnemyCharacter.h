@@ -5,8 +5,10 @@
 #include "CoreMinimal.h"
 #include "Characters/Base/BaseCharacter.h"
 #include "Interactions/EnemyInterface.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
 #include "EnemyCharacter.generated.h"
 
+class UWidgetComponent;
 /**
  * 
  */
@@ -18,9 +20,18 @@ public:
 	AEnemyCharacter();
 
 	virtual void HighlightActor() override;		// Enemy Interface
-	virtual void UnHighlightActor() override;	// End Enemy interface
+	virtual void UnHighlightActor() override;	// End Enemy Interface
 
 	virtual int32 GetPlayerLevel() override;	// Combat Interface
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnHealthChanged;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnMaxHealthChanged;
+
+	void SetProgressBar();
+	void BindAndBroadcastDelegate();
 
 protected:
 	virtual void BeginPlay() override;
@@ -28,4 +39,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UWidgetComponent> HealthBar;
 };

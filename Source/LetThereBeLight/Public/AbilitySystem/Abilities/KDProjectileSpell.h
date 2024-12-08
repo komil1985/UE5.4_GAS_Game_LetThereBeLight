@@ -7,6 +7,7 @@
 #include "KDProjectileSpell.generated.h"
 
 class AKDProjectile;
+class UGameplayEffect;
 /**
  * 
  */
@@ -23,4 +24,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AKDProjectile> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
 };
