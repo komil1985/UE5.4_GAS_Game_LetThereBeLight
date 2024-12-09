@@ -7,6 +7,7 @@
 #include "AbilitySystem/KDAttributeSet.h"
 #include "Components/WidgetComponent.h"
 #include <UI/Widget/KDUserWidget.h>
+#include <AbilitySystem/KDAbilitySystemLibrary.h>
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -69,6 +70,11 @@ void AEnemyCharacter::InitAbilityActorInfo()
 	Cast<UKDAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 
 	InitializeDefaultAttributes();
+}
+
+void AEnemyCharacter::InitializeDefaultAttributes() const
+{
+	UKDAbilitySystemLibrary::InitilizeDefaultAttributes(this, CharacterClass, Level, AbilitySystemComponent);
 }
 
 void AEnemyCharacter::HighlightActor()
