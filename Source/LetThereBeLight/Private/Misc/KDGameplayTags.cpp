@@ -96,4 +96,9 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 	);
 
 
+
+	GameplayTags.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage"),
+		FString("Damage")
+	);
 }

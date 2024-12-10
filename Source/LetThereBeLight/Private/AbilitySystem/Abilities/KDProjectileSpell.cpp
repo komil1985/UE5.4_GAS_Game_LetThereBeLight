@@ -6,6 +6,8 @@
 #include "Interactions/CombatInterface.h"
 #include "AbilitySystemComponent.h"
 #include <AbilitySystemBlueprintLibrary.h>
+#include "Misc/KDGameplayTags.h"
+
 
 
 void UKDProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -37,6 +39,9 @@ void UKDProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation
 		// Gameplay Effect to causing damage
 		const UAbilitySystemComponent* SourceAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
 		const FGameplayEffectSpecHandle SpecHandle = SourceAsc->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceAsc->MakeEffectContext());
+		
+		FKDGameplayTags GameplayTags = FKDGameplayTags::Get();
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Damage, 50.0f);
 		Projectile->DamageEffectSpecHandle = SpecHandle;
 
 		Projectile->FinishSpawning(SpawnTransform);
