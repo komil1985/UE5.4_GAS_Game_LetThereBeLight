@@ -8,6 +8,8 @@
 #include "Components/WidgetComponent.h"
 #include <UI/Widget/KDUserWidget.h>
 #include <AbilitySystem/KDAbilitySystemLibrary.h>
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Misc/KDGameplayTags.h"
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -48,14 +50,26 @@ void AEnemyCharacter::BindAndBroadcastDelegate()
 			}
 		);
 
+		AbilitySystemComponent->RegisterGameplayTagEvent(FKDGameplayTags::Get().Effect_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
+			this,
+			&AEnemyCharacter::HitReactTagChanged
+		);
+
 		OnHealthChanged.Broadcast(KDAttSet->GetHealth());
 		OnMaxHealthChanged.Broadcast(KDAttSet->GetMaxHealth());
 	}
 }
 
+void AEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bHitReacting = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.0f : BaseWalkSpeed;
+}
+
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 
 	check(AbilitySystemComponent);
 	InitAbilityActorInfo();

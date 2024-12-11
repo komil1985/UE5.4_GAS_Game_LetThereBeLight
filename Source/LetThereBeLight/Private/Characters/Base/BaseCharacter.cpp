@@ -29,6 +29,11 @@ UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+UAnimMontage* ABaseCharacter::GetHitReactMontage_Implementation()
+{
+	return HitReactMontage;
+}
+
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -71,5 +76,3 @@ void ABaseCharacter::AddCharacterAbilities()
 	KDASC->AddCharacterAbilities(StartupAbilities);
 	
 }	
-
-
