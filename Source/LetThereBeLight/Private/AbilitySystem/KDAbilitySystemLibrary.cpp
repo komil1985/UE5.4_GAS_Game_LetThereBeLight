@@ -8,6 +8,7 @@
 #include <UI/HUD/KDHUD.h>
 #include <GameMode/MyGameModeBase.h>
 #include <AbilitySystemComponent.h>
+#include "Abilities/GameplayAbility.h"
 
 UOverlayWidgetController* UKDAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
 {
@@ -68,4 +69,17 @@ void UKDAbilitySystemLibrary::InitilizeDefaultAttributes(const UObject* WorldCon
 	VitalAttributeContextHandle.AddSourceObject(AvatarActor);
 	const FGameplayEffectSpecHandle VitalAttributeSpecHandle = ASC->MakeOutgoingSpec(CharacterClassInfo->VitalAttributes, Level, VitalAttributeContextHandle);
 	ASC->ApplyGameplayEffectSpecToSelf(*VitalAttributeSpecHandle.Data.Get());
+}
+
+void UKDAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC)
+{
+	AMyGameModeBase* MyGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (MyGameMode == nullptr) return;
+
+	UCharacterClassInfo* CharacterClassInfo = MyGameMode->CharacterClassInfo;
+	for (TSubclassOf<UGameplayAbility> AbilityClass : CharacterClassInfo->CommonAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		ASC->GiveAbility(AbilitySpec);
+	}
 }

@@ -7,6 +7,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameFramework/Character.h"
 #include "Misc/KDGameplayTags.h"
+#include <Interactions/CombatInterface.h>
 
 
 UKDAttributeSet::UKDAttributeSet()
@@ -144,6 +145,17 @@ void UKDAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 			SetHealth(FMath::Clamp(NewHealth, 0.0f, GetMaxHealth()));
 
 			const bool bFatal = NewHealth <= 0.0f;
+			if (bFatal)
+			{
+				ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
+				CombatInterface->Die();
+			}
+			else
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FKDGameplayTags::Get().Effect_HitReact);
+				Props.TargetAbilitySystemComponent->TryActivateAbilitiesByTag(TagContainer);
+			}
 		}
 	}
 }

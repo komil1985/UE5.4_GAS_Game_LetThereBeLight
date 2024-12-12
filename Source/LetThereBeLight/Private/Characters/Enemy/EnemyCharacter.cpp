@@ -70,9 +70,9 @@ void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
-
 	check(AbilitySystemComponent);
 	InitAbilityActorInfo();
+	UKDAbilitySystemLibrary::GiveStartupAbilities(this, GetAbilitySystemComponent());
 
 	SetProgressBar();
 	BindAndBroadcastDelegate();
@@ -108,4 +108,10 @@ void AEnemyCharacter::UnHighlightActor()
 int32 AEnemyCharacter::GetPlayerLevel()
 {
 	return Level;
+}
+
+void AEnemyCharacter::Die()
+{
+	SetLifeSpan(LifeSpan);
+	Super::Die();
 }
