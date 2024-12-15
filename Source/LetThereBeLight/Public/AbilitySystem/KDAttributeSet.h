@@ -216,4 +216,6 @@ protected:
 
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
+
+	void ShowFloatingTextDamage(const FEffectProperties Props, float LocalIncomingDamage) const;
 };

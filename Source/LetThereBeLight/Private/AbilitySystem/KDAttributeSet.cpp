@@ -8,6 +8,8 @@
 #include "GameFramework/Character.h"
 #include "Misc/KDGameplayTags.h"
 #include <Interactions/CombatInterface.h>
+#include <Kismet/GameplayStatics.h>
+#include <Characters/Player/MyPlayerController.h>
 
 
 UKDAttributeSet::UKDAttributeSet()
@@ -105,7 +107,7 @@ void UKDAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& 
 		}
 		if (Props.SourceController != nullptr)
 		{
-			ACharacter* SourceCharacter = Cast<ACharacter>(Props.SourceController->GetPawn());
+			Props.SourceCharacter = Cast<ACharacter>(Props.SourceController->GetPawn());
 		}
 	}
 
@@ -115,6 +117,17 @@ void UKDAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& 
 		Props.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
 		Props.TargetCharacter = Cast<ACharacter>(Props.TargetAvatarActor);
 		Props.TargetAbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Props.TargetAvatarActor);
+	}
+}
+
+void UKDAttributeSet::ShowFloatingTextDamage(const FEffectProperties Props, float LocalIncomingDamage) const
+{
+	if (Props.SourceCharacter != Props.TargetCharacter)
+	{
+		if (AMyPlayerController* PC = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
+		{
+			PC->ShowDamageNumber(LocalIncomingDamage, Props.TargetCharacter);
+		}
 	}
 }
 
@@ -156,6 +169,8 @@ void UKDAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 				TagContainer.AddTag(FKDGameplayTags::Get().Effect_HitReact);
 				Props.TargetAbilitySystemComponent->TryActivateAbilitiesByTag(TagContainer);
 			}
+
+			ShowFloatingTextDamage(Props, LocalIncomingDamage);
 		}
 	}
 }

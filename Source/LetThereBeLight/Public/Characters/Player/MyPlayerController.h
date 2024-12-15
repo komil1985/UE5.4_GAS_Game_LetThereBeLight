@@ -10,13 +10,14 @@
 /**
  * 
  */
-class UInputMappingContext;
 struct FInputActionValue;
+class UInputMappingContext;
 class UInputAction;
 class IEnemyInterface;
 class UKDInputConfig;
 class UKDAbilitySystemComponent;
 class USplineComponent;
+class UDamageTextComponent;
 
 UCLASS()
 class LETTHEREBELIGHT_API AMyPlayerController : public APlayerController
@@ -28,6 +29,10 @@ public:
 	void subsystem();
 	void MouseCursorMode();
 	virtual void PlayerTick(float DeltaTime) override;
+	
+	UFUNCTION(Client, Reliable)
+	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
+
 protected:
 	virtual void BeginPlay() override;
 	
@@ -79,4 +84,7 @@ private:
 	TObjectPtr<USplineComponent> Spline;
 
 	void AutoRunning();
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;
 };
