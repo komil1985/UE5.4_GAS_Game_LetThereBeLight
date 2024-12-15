@@ -52,8 +52,10 @@ void ABaseCharacter::MulticastHandleDeath_Implementation()
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-}
 
+	Dissolve();
+}
+ 
 
 void ABaseCharacter::BeginPlay()
 {
@@ -96,4 +98,20 @@ void ABaseCharacter::AddCharacterAbilities()
 
 	KDASC->AddCharacterAbilities(StartupAbilities);
 	
-}	
+}
+void ABaseCharacter::Dissolve()
+{
+	if (IsValid(MeshDissolveMaterialInstance))
+	{
+		UMaterialInstanceDynamic* DynamicMatInst = UMaterialInstanceDynamic::Create(MeshDissolveMaterialInstance, this);
+		GetMesh()->SetMaterial(0, DynamicMatInst);
+		StartMeshDissolveTimeline(DynamicMatInst);
+	}
+	if (IsValid(WeaponDissolveMaterialInstance))
+	{
+		UMaterialInstanceDynamic* DynamicMatInst = UMaterialInstanceDynamic::Create(WeaponDissolveMaterialInstance, this);
+		Weapon->SetMaterial(0, DynamicMatInst);
+		StartWeaponDissolveTimeline(DynamicMatInst);
+	}
+}
+
