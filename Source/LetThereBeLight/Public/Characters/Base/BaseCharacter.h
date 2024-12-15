@@ -25,6 +25,9 @@ public:
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
+
+	TObjectPtr<UAnimMontage> GetDieMontage() { return DieMontage; }
+
 	virtual void Die() override;
 
 	UFUNCTION(NetMulticast, Reliable)
@@ -70,4 +73,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<UAnimMontage> HitReactMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TObjectPtr<UAnimMontage> DieMontage;
 };

@@ -113,5 +113,6 @@ int32 AEnemyCharacter::GetPlayerLevel()
 void AEnemyCharacter::Die()
 {
 	SetLifeSpan(LifeSpan);
+	PlayAnimMontage(GetDieMontage(), 1.0f);
 	Super::Die();
 }

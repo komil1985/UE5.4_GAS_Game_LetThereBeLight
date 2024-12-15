@@ -68,7 +68,6 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("Increases Maximum Mana")
 	);
 
-
 	// Input Tags
 	GameplayTags.InputTag_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("InputTag.LMB"),
@@ -95,15 +94,17 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("Input Tag For Number 4 Key")
 	);
 
-
-
+	// Effects Tags
 	GameplayTags.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Damage"),
 		FString("Damage")
 	);
-
 	GameplayTags.Effect_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Effects.HitReact"),
 		FString("Tag Granted When Hit Reacting")
+	);
+	GameplayTags.Effect_Die = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Effects.Die"),
+		FString("Tag Granted When Owner Dies")
 	);
 }

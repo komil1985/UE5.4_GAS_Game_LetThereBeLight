@@ -46,7 +46,7 @@ void ABaseCharacter::MulticastHandleDeath_Implementation()
 	Weapon->SetEnableGravity(true);
 	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 
-	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->SetSimulatePhysics(false);
 	GetMesh()->SetEnableGravity(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
