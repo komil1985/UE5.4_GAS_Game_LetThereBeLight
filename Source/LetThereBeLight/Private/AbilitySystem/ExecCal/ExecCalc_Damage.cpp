@@ -5,6 +5,9 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/KDAttributeSet.h"
 #include <Misc/KDGameplayTags.h>
+#include <AbilitySystem/Data/CharacterClassInfo.h>
+#include <AbilitySystem/KDAbilitySystemLibrary.h>
+#include <Interactions/CombatInterface.h>
 
 
 struct KDDamageStatics
@@ -43,8 +46,11 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
 	const UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
 
-	AActor* SourceActor = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
-	AActor* TargetActor = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
+	AActor* SourceAvatar = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
+	AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
+
+	ICombatInterface* SourceCombatInterface = Cast<ICombatInterface>(SourceAvatar);
+	ICombatInterface* TargetCombatinterface = Cast<ICombatInterface>(TargetAvatar);
 
 	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
 
@@ -60,7 +66,12 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	// Capture BlockChance On Target, And Determine If There Was A Successful Block
 	float TargetBlockChance = 0.0f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().BlockChanceDef, EvaluationParameters, TargetBlockChance);
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude
+	(
+		DamageStatics().BlockChanceDef, 
+		EvaluationParameters, 
+		TargetBlockChance
+	);
 	TargetBlockChance = FMath::Max<float>(TargetBlockChance, 0.0f);
 	
 	// If Block, Halve The Damage
@@ -69,18 +80,35 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	// Capture Target Armor
 	float TargetArmor = 0.0f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorDef, EvaluationParameters, TargetArmor);
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude
+	(
+		DamageStatics().ArmorDef, 
+		EvaluationParameters, 
+		TargetArmor
+	);
 	TargetArmor = FMath::Max<float>(TargetArmor, 0.0f);
 
 	// Capture Source ArmorPenetration
 	float SourceArmorPenetration = 0.0f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorPenetrationDef, EvaluationParameters, SourceArmorPenetration);
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude
+	(
+		DamageStatics().ArmorPenetrationDef, 
+		EvaluationParameters, 
+		SourceArmorPenetration
+	);
 	SourceArmorPenetration = FMath::Max<float>(SourceArmorPenetration, 0.0f);
 
+	const UCharacterClassInfo* CharacterClassInfo = UKDAbilitySystemLibrary::GetCharacterClassInfo(SourceAvatar);
+	
+	const FRealCurve* ArmorPenetrationCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("ArmorPenetration"), FString());
+	const float ArmorPenetrationCoefficient = ArmorPenetrationCurve->Eval(SourceCombatInterface->GetPlayerLevel());
 	// ArmorPenetration ignores a percentage of the Target's Armor.
-	const float EffectiveArmor = TargetArmor *= (100 - SourceArmorPenetration * 0.25f) / 100.0f;
+	const float EffectiveArmor = TargetArmor * (100 - SourceArmorPenetration * ArmorPenetrationCoefficient) / 100.0f;
+
+	const FRealCurve* EffectiveArmorCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("EffectiveArmor"), FString());
+	const float EffectiveArmorCoefficient = EffectiveArmorCurve->Eval(TargetCombatinterface->GetPlayerLevel());
 	// Armor ignores a precentage of incoming Damage.
-	Damage *= (100 - EffectiveArmor * 0.25f) / 100.0f;
+	Damage *= (100 - EffectiveArmor * EffectiveArmorCoefficient) / 100.0f;
 
 	const FGameplayModifierEvaluatedData EvaluatedData(UKDAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
