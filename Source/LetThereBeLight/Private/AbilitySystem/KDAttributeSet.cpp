@@ -89,7 +89,6 @@ void UKDAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, fl
 void UKDAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
 {
 	// Source = causer of the effect, Target = target of the effect (owner of this AS)
-
 	Props.EffectContextHandle = Data.EffectSpec.GetContext();
 	Props.SourceAbilitySystemComponent = Props.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
 
