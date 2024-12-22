@@ -10,7 +10,6 @@ struct FKDGameplayEffectContext : public FGameplayEffectContext
 	GENERATED_BODY()
 
 public:
-
 	bool IsBlockedHit() const { return bIsBlockedHit; }
 	bool IsCriticalHit() const { return bIsCriticalHit; }
 
@@ -24,7 +23,6 @@ public:
 	virtual bool NetSerialize(FArchive& Ar, class UPackageMap& Map, bool& bOutSuccess);
 
 protected:
-
 	UPROPERTY()
 	bool bIsBlockedHit = false;
 
