@@ -280,4 +280,3 @@ void UKDAttributeSet::InitialVitalAttributes()
 	InitHealth(50.0f);
 	InitMana(50.0f);
 }
-
