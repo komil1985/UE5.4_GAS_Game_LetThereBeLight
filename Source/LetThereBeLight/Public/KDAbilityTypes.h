@@ -17,10 +17,10 @@ public:
 	void SetIsCriticalHit(bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
 
 	// Returns the actual struct used for serialization, subclasses must override this
-	virtual UScriptStruct* GetScriptStruct() const{	return FGameplayEffectContext::StaticStruct(); }
+	virtual UScriptStruct* GetScriptStruct() const { return FGameplayEffectContext::StaticStruct(); }
 
 	// Custom serialization, subclasses must override this
-	virtual bool NetSerialize(FArchive& Ar, class UPackageMap& Map, bool& bOutSuccess);
+	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess);
 
 protected:
 	UPROPERTY()
