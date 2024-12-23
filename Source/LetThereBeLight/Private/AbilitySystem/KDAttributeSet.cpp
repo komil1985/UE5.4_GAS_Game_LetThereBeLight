@@ -2,6 +2,7 @@
 
 
 #include "AbilitySystem/KDAttributeSet.h"
+#include "AbilitySystem/KDAbilitySystemLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
 #include "AbilitySystemBlueprintLibrary.h"
@@ -119,7 +120,7 @@ void UKDAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& 
 	}
 }
 
-void UKDAttributeSet::ShowFloatingTextDamage(const FEffectProperties Props, float LocalIncomingDamage) const
+void UKDAttributeSet::ShowFloatingTextDamage(const FEffectProperties Props, float LocalIncomingDamage, bool bBlockedHit, bool bCriticalHit) const
 {
 	if (Props.SourceCharacter != Props.TargetCharacter)
 	{
@@ -168,8 +169,10 @@ void UKDAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 				TagContainer.AddTag(FKDGameplayTags::Get().Effect_HitReact);
 				Props.TargetAbilitySystemComponent->TryActivateAbilitiesByTag(TagContainer);
 			}
+			const bool bBlock = UKDAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
+			const bool bCritHit = UKDAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
 
-			ShowFloatingTextDamage(Props, LocalIncomingDamage);
+			ShowFloatingTextDamage(Props, LocalIncomingDamage, bBlock, bCritHit);
 		}
 	}
 }

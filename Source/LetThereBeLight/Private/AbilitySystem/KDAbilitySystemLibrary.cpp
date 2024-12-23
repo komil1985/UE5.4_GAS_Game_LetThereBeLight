@@ -104,3 +104,19 @@ bool UKDAbilitySystemLibrary::IsCriticalHit(const FGameplayEffectContextHandle& 
 	}
 	return false;
 }
+
+void UKDAbilitySystemLibrary::SetIsBlockedHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bInIsBlockedHit)
+{
+	if (FKDGameplayEffectContext* KDEffectContext = static_cast<FKDGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		KDEffectContext->SetIsBlockedHit(bInIsBlockedHit);
+	}
+}
+
+void UKDAbilitySystemLibrary::SetIsCriticalHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bInIsCriticalHit)
+{
+	if (FKDGameplayEffectContext* KDEffectContext = static_cast<FKDGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		KDEffectContext->SetIsCriticalHit(bInIsCriticalHit);
+	}
+}
