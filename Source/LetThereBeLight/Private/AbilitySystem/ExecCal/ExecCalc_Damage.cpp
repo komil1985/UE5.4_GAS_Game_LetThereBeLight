@@ -8,6 +8,7 @@
 #include <AbilitySystem/Data/CharacterClassInfo.h>
 #include <AbilitySystem/KDAbilitySystemLibrary.h>
 #include <Interactions/CombatInterface.h>
+#include <KDAbilityTypes.h>
 
 
 struct KDDamageStatics
@@ -83,8 +84,14 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	);
 	TargetBlockChance = FMath::Max<float>(TargetBlockChance, 0.0f);
 	
-	// If Block, Halve The Damage
 	const bool bBlocked = FMath::RandRange(1, 100) < TargetBlockChance;
+
+	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
+	FGameplayEffectContext* Context = EffectContextHandle.Get();
+	FKDGameplayEffectContext* KDContext = static_cast<FKDGameplayEffectContext*>(Context);
+	KDContext->SetIsBlockedHit(bBlocked);
+
+	// If Block, Halve The Damage
 	if (bBlocked) { Damage = Damage / 2.0f; }
 
 	// Capture Target Armor

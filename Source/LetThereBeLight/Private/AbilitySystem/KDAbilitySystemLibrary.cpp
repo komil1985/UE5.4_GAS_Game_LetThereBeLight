@@ -9,6 +9,7 @@
 #include <GameMode/MyGameModeBase.h>
 #include <AbilitySystemComponent.h>
 #include "Abilities/GameplayAbility.h"
+#include <KDAbilityTypes.h>
 
 UOverlayWidgetController* UKDAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
 {
@@ -85,4 +86,21 @@ UCharacterClassInfo* UKDAbilitySystemLibrary::GetCharacterClassInfo(const UObjec
 
 	return MyGameMode->CharacterClassInfo;
 }
-	
+
+bool UKDAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FKDGameplayEffectContext* KDEffectContext = static_cast<const FKDGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return KDEffectContext->IsBlockedHit();
+	}
+	return false;
+}
+
+bool UKDAbilitySystemLibrary::IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FKDGameplayEffectContext* KDEffectContext = static_cast<const FKDGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return KDEffectContext->IsCriticalHit();
+	}
+	return false;
+}
