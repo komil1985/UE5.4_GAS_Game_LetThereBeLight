@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystem/Abilities/KDGameplayAbility.h"
+#include "AbilitySystem/Abilities/KDDamageGameplayAbility.h"
 #include "KDProjectileSpell.generated.h"
 
 class AKDProjectile;
@@ -12,7 +12,7 @@ class UGameplayEffect;
  * 
  */
 UCLASS()
-class LETTHEREBELIGHT_API UKDProjectileSpell : public UKDGameplayAbility
+class LETTHEREBELIGHT_API UKDProjectileSpell : public UKDDamageGameplayAbility
 {
 	GENERATED_BODY()
 	
@@ -25,6 +25,4 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AKDProjectile> ProjectileClass;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<UGameplayEffect> DamageEffectClass;
 };

@@ -94,11 +94,18 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("Input Tag For Number 4 Key")
 	);
 
-	// Effects Tags
+	// Damage Tags
 	GameplayTags.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Damage"),
 		FString("Damage")
 	);
+	GameplayTags.Damage_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage.Fire"),
+		FString("Damage Type Fire")
+	);
+	GameplayTags.DamageTypes.Add(GameplayTags.Damage_Fire);
+
+	// Effects Tags
 	GameplayTags.Effect_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Effects.HitReact"),
 		FString("Tag Granted When Hit Reacting")

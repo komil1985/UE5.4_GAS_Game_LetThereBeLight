@@ -45,8 +45,13 @@ public:
 	
 	// Damage Tag
 	FGameplayTag Damage;
+	FGameplayTag Damage_Fire;
+
+	// Effect Tag
 	FGameplayTag Effect_HitReact;
 	FGameplayTag Effect_Die;
+
+	TArray<FGameplayTag> DamageTypes;
 
 protected:
 
