@@ -72,7 +72,11 @@ void AEnemyCharacter::BeginPlay()
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	check(AbilitySystemComponent);
 	InitAbilityActorInfo();
-	UKDAbilitySystemLibrary::GiveStartupAbilities(this, GetAbilitySystemComponent());
+
+	if (HasAuthority())
+	{
+		UKDAbilitySystemLibrary::GiveStartupAbilities(this, GetAbilitySystemComponent());
+	}
 
 	SetProgressBar();
 	BindAndBroadcastDelegate();
@@ -83,7 +87,10 @@ void AEnemyCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UKDAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 
-	InitializeDefaultAttributes();
+	if (HasAuthority())
+	{
+		InitializeDefaultAttributes();
+	}
 }
 
 void AEnemyCharacter::InitializeDefaultAttributes() const

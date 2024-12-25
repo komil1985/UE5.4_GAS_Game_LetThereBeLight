@@ -37,7 +37,7 @@ UAnimMontage* ABaseCharacter::GetHitReactMontage_Implementation()
 void ABaseCharacter::Die()
 {
 	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
-	MulticastHandleDeath();
+	MulticastHandleDeath();	
 }
 
 void ABaseCharacter::MulticastHandleDeath_Implementation()
