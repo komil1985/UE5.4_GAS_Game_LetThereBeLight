@@ -39,6 +39,11 @@ UKDAttributeSet::UKDAttributeSet()
 	TagsToAttribute.Add(GameplayTags.Attributes_Secondary_MaxHealth, GetMaxHealthAttribute);
 	TagsToAttribute.Add(GameplayTags.Attributes_Secondary_MaxMana, GetMaxManaAttribute);
 
+	// Resistance Attributes
+	TagsToAttribute.Add(GameplayTags.Attributes_Resistance_Fire, GetFireResistanceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attributes_Resistance_Ice, GetIceResistanceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attributes_Resistance_Lightning, GetLightningResistanceAttribute);
+	TagsToAttribute.Add(GameplayTags.Attributes_Resistance_Physical, GetPhysicalResistanceAttribute);
 }
 
 void UKDAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -63,6 +68,13 @@ void UKDAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, ManaRegeneration, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
+
+
+	//Resistance Attributes
+	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, FireResistance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, IceResistance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, LightningResistance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, PhysicalResistance, COND_None, REPNOTIFY_Always);
 
 
 	// Vital Attributes
@@ -199,7 +211,7 @@ void UKDAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) const
 
 
 
-//Secondary Attributes
+// Secondary Attributes
 void UKDAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, Armor, OldArmor);
@@ -240,6 +252,27 @@ void UKDAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) co
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, MaxMana, OldMaxMana);
 }
+
+
+
+// Resistance Attributes
+void UKDAttributeSet::OnRep_FireResistance(const FGameplayAttributeData& OldFireResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, FireResistance, OldFireResistance);
+}
+void UKDAttributeSet::OnRep_IceResistance(const FGameplayAttributeData& OldIceResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, IceResistance, OldIceResistance);
+}
+void UKDAttributeSet::OnRep_LightningResistance(const FGameplayAttributeData& OldLightningResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, LightningResistance, OldLightningResistance);
+}
+void UKDAttributeSet::OnRep_PhysicalResistance(const FGameplayAttributeData& OldPhysicalResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, PhysicalResistance, OldPhysicalResistance);
+}
+
 
 
 // Vital Attributes
