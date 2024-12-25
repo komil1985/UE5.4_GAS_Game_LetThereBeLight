@@ -60,11 +60,10 @@ void UKDProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation
 
 		const FKDGameplayTags GameplayTags = FKDGameplayTags::Get();
 
-		for (auto Pair : DamageTypes)
+		for (TPair<FGameplayTag, FScalableFloat>& Pair : DamageTypes)
 		{
 			const float ScaledDamage = Pair.Value.GetValueAtLevel(GetAbilityLevel());
 			UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, Pair.Key, ScaledDamage);
-
 		}
 
 		Projectile->DamageEffectSpecHandle = SpecHandle;

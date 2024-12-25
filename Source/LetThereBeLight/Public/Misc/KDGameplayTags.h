@@ -35,6 +35,12 @@ public:
 	FGameplayTag Attributes_Secondary_MaxHealth;
 	FGameplayTag Attributes_Secondary_MaxMana;
 
+	// Resistance Tags
+	FGameplayTag Attributes_Resistance_Fire;
+	FGameplayTag Attributes_Resistance_Lightning;
+	FGameplayTag Attributes_Resistance_Ice;
+	FGameplayTag Attributes_Resistance_Physical;
+
 	// Input Tags
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
@@ -46,14 +52,15 @@ public:
 	// Damage Tag
 	FGameplayTag Damage;
 	FGameplayTag Damage_Fire;
+	FGameplayTag Damage_Lightning;
+	FGameplayTag Damage_Ice;
+	FGameplayTag Damage_Physical;
 
 	// Effect Tag
 	FGameplayTag Effect_HitReact;
 	FGameplayTag Effect_Die;
 
-	TArray<FGameplayTag> DamageTypes;
-
-protected:
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 
 private:
 	static FKDGameplayTags GameplayTags;
