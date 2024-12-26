@@ -1,6 +1,5 @@
 // Copyright ASKD Games
 
-
 #include "Characters/Enemy/EnemyCharacter.h"
 #include "LetThereBeLight/LetThereBeLight.h"
 #include "AbilitySystem/KDAbilitySystemComponent.h"
@@ -10,6 +9,10 @@
 #include <AbilitySystem/KDAbilitySystemLibrary.h>
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Misc/KDGameplayTags.h"
+#include "AI/KDAIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/BehaviorTree.h"
+
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -22,6 +25,17 @@ AEnemyCharacter::AEnemyCharacter()
 
 	HealthBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBar"));
 	HealthBar->SetupAttachment(RootComponent);
+}
+
+void AEnemyCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (!HasAuthority()) return;
+	KDAIController = Cast<AKDAIController>(NewController);
+	
+	KDAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+	KDAIController->RunBehaviorTree(BehaviorTree);
 }
 
 void AEnemyCharacter::SetProgressBar()

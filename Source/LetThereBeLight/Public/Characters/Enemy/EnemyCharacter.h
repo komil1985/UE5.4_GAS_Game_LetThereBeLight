@@ -10,6 +10,8 @@
 #include "EnemyCharacter.generated.h"
 
 class UWidgetComponent;
+class UBehaviorTree;
+class AKDAIController;
 /**
  * 
  */
@@ -19,6 +21,8 @@ class LETTHEREBELIGHT_API AEnemyCharacter : public ABaseCharacter, public IEnemy
 	GENERATED_BODY()
 public:
 	AEnemyCharacter();
+
+	virtual void PossessedBy(AController* NewController) override;
 
 	virtual void HighlightActor() override;		// Enemy Interface
 	virtual void UnHighlightActor() override;	// End Enemy Interface
@@ -60,4 +64,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	UPROPERTY()
+	TObjectPtr<AKDAIController> KDAIController;
 };
