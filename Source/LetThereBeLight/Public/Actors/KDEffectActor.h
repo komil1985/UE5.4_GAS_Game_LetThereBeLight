@@ -46,8 +46,12 @@ protected:
 	void OnEndOverlap(AActor* TargetActor);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Effects Applied")
 	bool bDestroyOnEffectRemoval = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Effects Applied")
+	bool bApplyEffectsToEnemies = false;
 
 	//////////////////////// Instant Effect /////////////////////////////////////////////////////////
 	
