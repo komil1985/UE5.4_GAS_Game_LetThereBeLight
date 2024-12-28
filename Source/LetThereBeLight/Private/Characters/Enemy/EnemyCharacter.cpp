@@ -38,9 +38,10 @@ void AEnemyCharacter::PossessedBy(AController* NewController)
 
 	if (!HasAuthority()) return;
 	KDAIController = Cast<AKDAIController>(NewController);
-	
 	KDAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 	KDAIController->RunBehaviorTree(BehaviorTree);
+	KDAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), false);
+	KDAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedAttacker"), CharacterClass != ECharacterClass::Warrior);
 }
 
 void AEnemyCharacter::SetProgressBar()
@@ -83,6 +84,7 @@ void AEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 N
 {
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.0f : BaseWalkSpeed;
+	KDAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
 }
 
 void AEnemyCharacter::BeginPlay()
