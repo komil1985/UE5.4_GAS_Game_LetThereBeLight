@@ -96,7 +96,7 @@ void AEnemyCharacter::BeginPlay()
 
 	if (HasAuthority())
 	{
-		UKDAbilitySystemLibrary::GiveStartupAbilities(this, GetAbilitySystemComponent());
+		UKDAbilitySystemLibrary::GiveStartupAbilities(this, GetAbilitySystemComponent(), CharacterClass);
 	}
 
 	SetProgressBar();

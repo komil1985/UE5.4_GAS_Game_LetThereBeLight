@@ -116,7 +116,7 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("Damage Type Is Physical")
 	);
 
-	// Resistances Types Tags
+	// Resistance Types Tags
 	GameplayTags.Attributes_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Resistance.Fire"),
 		FString("Resistance To Fire Damage")
@@ -134,12 +134,20 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("Resistance To Physical Damage")
 	);
 
-	// Map of damage types to resistances
+	// Abilities Tags
+	GameplayTags.Abilities_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Attack"),
+		FString("Attack Ability Tag")
+	);
+
+	// Map of damage types to resistances /////////////////////////////////////////////////////////////////////////////////////////////
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Fire, GameplayTags.Attributes_Resistance_Fire);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Ice, GameplayTags.Attributes_Resistance_Ice);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Lightning, GameplayTags.Attributes_Resistance_Lightning);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Physical, GameplayTags.Attributes_Resistance_Physical);
-
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	 
+	
 	// Effects Tags
 	GameplayTags.Effect_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Effects.HitReact"),
