@@ -90,4 +90,5 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<UAnimMontage> DieMontage;
+
 };

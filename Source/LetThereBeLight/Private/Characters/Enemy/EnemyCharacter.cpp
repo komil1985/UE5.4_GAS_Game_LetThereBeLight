@@ -144,3 +144,13 @@ void AEnemyCharacter::Die()
 	PlayAnimMontage(GetDieMontage(), 1.0f);
 	Super::Die();
 }
+
+void AEnemyCharacter::SetCombatTarget_Implementation(AActor* InCombatTarget)
+{
+	CombatTarget = InCombatTarget;
+}
+
+AActor* AEnemyCharacter::GetCombatTarget_Implementation() const
+{
+	return CombatTarget;
+}

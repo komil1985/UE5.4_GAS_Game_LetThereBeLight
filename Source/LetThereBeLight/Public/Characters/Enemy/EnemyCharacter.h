@@ -24,11 +24,13 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 
-	virtual void HighlightActor() override;		// Enemy Interface
-	virtual void UnHighlightActor() override;	// End Enemy Interface
+	virtual void HighlightActor() override;			//							<-- Enemy Interface
+	virtual void UnHighlightActor() override;		//							<--	Enemy Interface
 
-	virtual int32 GetPlayerLevel() override;	// Combat Interface
-	virtual void Die() override;
+	virtual int32 GetPlayerLevel() override;		//							<-- Combat Interface
+	virtual void Die() override;					//							<-- Combat Interface
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;	// <-- Combat Interface
+	virtual AActor* GetCombatTarget_Implementation() const override;
 
 
 	UPROPERTY(BlueprintAssignable)
@@ -49,6 +51,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	float LifeSpan = 5.0f;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Combat")
+	TObjectPtr<AActor> CombatTarget;
 
 protected:
 	virtual void BeginPlay() override;
