@@ -63,7 +63,7 @@ void ABaseCharacter::BeginPlay()
 	
 }
 
-FVector ABaseCharacter::GetCombatSocketLocation()
+FVector ABaseCharacter::GetCombatSocketLocation_Implementation()
 {
 	check(Weapon);
 	return Weapon->GetSocketLocation(WeaponTipSocketName);
