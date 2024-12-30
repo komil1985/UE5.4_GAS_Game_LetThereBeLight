@@ -23,11 +23,16 @@ public:
 	ABaseCharacter();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
-
+	
+	/* Combat Interface */
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
-
 	TObjectPtr<UAnimMontage> GetDieMontage() { return DieMontage; }
 	virtual void Die() override;
+	virtual FVector GetCombatSocketLocation_Implementation() override;
+	virtual bool IsDead_Implementation() const override;
+	virtual AActor* GetAvatar_Implementation() override;
+	/* End combat Interface */
+
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
 
@@ -40,8 +45,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName WeaponTipSocketName;
 
-	virtual FVector GetCombatSocketLocation_Implementation() override;
-
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
@@ -49,7 +52,8 @@ protected:
 	TObjectPtr<UAttributeSet> AttributeSet;
 
 	virtual void InitAbilityActorInfo();
-
+	
+	bool bDead = false;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
@@ -66,7 +70,6 @@ protected:
 	void AddCharacterAbilities();
 
 	// Dissolve Effects
-
 	void Dissolve();
 
 	UFUNCTION(BlueprintImplementableEvent)
@@ -80,6 +83,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
+	// End Dissolve Effects
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Abilities")

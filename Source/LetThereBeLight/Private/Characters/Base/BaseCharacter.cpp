@@ -54,8 +54,9 @@ void ABaseCharacter::MulticastHandleDeath_Implementation()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	Dissolve();
+
+	bDead = true;
 }
- 
 
 void ABaseCharacter::BeginPlay()
 {
@@ -69,9 +70,17 @@ FVector ABaseCharacter::GetCombatSocketLocation_Implementation()
 	return Weapon->GetSocketLocation(WeaponTipSocketName);
 }
 
-void ABaseCharacter::InitAbilityActorInfo()
+bool ABaseCharacter::IsDead_Implementation() const
 {
+	return bDead;
 }
+
+AActor* ABaseCharacter::GetAvatar_Implementation()
+{
+	return this;
+}
+
+void ABaseCharacter::InitAbilityActorInfo(){}
 
 void ABaseCharacter::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const
 {
