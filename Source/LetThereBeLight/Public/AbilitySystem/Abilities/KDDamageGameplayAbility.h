@@ -14,8 +14,11 @@ class LETTHEREBELIGHT_API UKDDamageGameplayAbility : public UKDGameplayAbility
 {
 	GENERATED_BODY()
 
-protected:
+public:
+	UFUNCTION(BlueprintCallable)
+	void CauseDamage(AActor* TargetActor);
 
+protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
 

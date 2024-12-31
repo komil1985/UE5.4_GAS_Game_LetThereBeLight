@@ -46,6 +46,15 @@ void APlayerCharacter::OnRep_PlayerState()
 
 }
 
+void APlayerCharacter::Die()
+{
+	SetLifeSpan(LifeSpan);
+	PlayAnimMontage(GetDieMontage(), 1.0f);
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	PlayerController->Destroy();
+	Super::Die();
+}
+
 int32 APlayerCharacter::GetPlayerLevel()
 {
 	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();

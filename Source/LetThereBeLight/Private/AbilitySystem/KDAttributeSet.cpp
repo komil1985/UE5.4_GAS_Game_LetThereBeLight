@@ -139,6 +139,11 @@ void UKDAttributeSet::ShowFloatingTextDamage(const FEffectProperties Props, floa
 		if (AMyPlayerController* PC = Cast<AMyPlayerController>(Props.SourceCharacter->Controller))
 		{
 			PC->ShowDamageNumber(LocalIncomingDamage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
+			return;
+		}
+		if (AMyPlayerController* PC = Cast<AMyPlayerController>(Props.TargetCharacter->Controller))
+		{
+			PC->ShowDamageNumber(LocalIncomingDamage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
 		}
 	}
 }
