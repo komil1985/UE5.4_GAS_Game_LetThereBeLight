@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
 #include <LetThereBeLight/LetThereBeLight.h>
+#include <Misc/KDGameplayTags.h>
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -64,10 +65,22 @@ void ABaseCharacter::BeginPlay()
 	
 }
 
-FVector ABaseCharacter::GetCombatSocketLocation_Implementation()
+FVector ABaseCharacter::GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag)
 {
-	check(Weapon);
-	return Weapon->GetSocketLocation(WeaponTipSocketName);
+	const FKDGameplayTags& GameplayTags = FKDGameplayTags::Get();
+	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_Weapon) && IsValid(Weapon))
+	{	
+		return Weapon->GetSocketLocation(WeaponTipSocketName);
+	}
+	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_RightHand))
+	{
+		return GetMesh()->GetSocketLocation(RightHandSocketName);
+	}
+	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_LeftHand))
+	{
+		return GetMesh()->GetSocketLocation(LeftHandSocketName);
+	}
+	return FVector();
 }
 
 bool ABaseCharacter::IsDead_Implementation() const
@@ -78,6 +91,11 @@ bool ABaseCharacter::IsDead_Implementation() const
 AActor* ABaseCharacter::GetAvatar_Implementation()
 {
 	return this;
+}
+
+TArray<FTaggedMontage> ABaseCharacter::GetAttackMontages_Implementation()
+{
+	return AttackMontages;
 }
 
 void ABaseCharacter::InitAbilityActorInfo(){}
