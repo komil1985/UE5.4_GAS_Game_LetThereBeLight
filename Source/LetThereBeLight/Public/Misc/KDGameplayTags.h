@@ -49,17 +49,22 @@ public:
 	FGameplayTag InputTag_Num3;
 	FGameplayTag InputTag_Num4;
 	
-	// Damage Types Tag
+	// Damage Types Tags
 	FGameplayTag Damage;
 	FGameplayTag Damage_Fire;
 	FGameplayTag Damage_Ice;
 	FGameplayTag Damage_Lightning;
 	FGameplayTag Damage_Physical;
 
-	// Attack Types Abilities
+	// Attack Types Abilities Tags
 	FGameplayTag Abilities_Attack;
 
-	// Effect Tag
+	// Montage & Socket Tags
+	FGameplayTag Montage_Attack_Weapon;
+	FGameplayTag Montage_Attack_RightHand;
+	FGameplayTag Montage_Attack_LeftHand;
+
+	// Effect Tags
 	FGameplayTag Effect_HitReact;
 	FGameplayTag Effect_Die;
 

@@ -51,7 +51,7 @@ void APlayerCharacter::Die()
 	SetLifeSpan(LifeSpan);
 	PlayAnimMontage(GetDieMontage(), 1.0f);
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
-	PlayerController->Destroy();
+	PlayerController->DisableInput(PlayerController);
 	Super::Die();
 }
 

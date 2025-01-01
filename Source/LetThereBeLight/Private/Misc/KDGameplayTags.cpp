@@ -26,6 +26,7 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("Increases Max Health")
 	);
 
+
 	// Secondary Attributes Tags
 	GameplayTags.Attributes_Secondary_Armor = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.Armor"), 
@@ -68,6 +69,7 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("Increases Maximum Mana")
 	);
 
+
 	// Input Tags
 	GameplayTags.InputTag_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("InputTag.LMB"),
@@ -94,6 +96,7 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("Input Tag For Number 4 Key")
 	);
 
+
 	// Damage Types Tags
 	GameplayTags.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Damage"),
@@ -116,6 +119,7 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("Damage Type Is Physical")
 	);
 
+
 	// Resistance Types Tags
 	GameplayTags.Attributes_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Resistance.Fire"),
@@ -134,20 +138,29 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("Resistance To Physical Damage")
 	);
 
+
 	// Abilities Tags
 	GameplayTags.Abilities_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Attack"),
 		FString("Attack Ability Tag")
 	);
 
-	// Map of damage types to resistances /////////////////////////////////////////////////////////////////////////////////////////////
-	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Fire, GameplayTags.Attributes_Resistance_Fire);
-	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Ice, GameplayTags.Attributes_Resistance_Ice);
-	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Lightning, GameplayTags.Attributes_Resistance_Lightning);
-	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Physical, GameplayTags.Attributes_Resistance_Physical);
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	 
-	
+
+	// Montage & Socket Tags
+	GameplayTags.Montage_Attack_Weapon = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.Weapon"),
+		FString("Attack with a Weapon")
+	);
+	GameplayTags.Montage_Attack_RightHand = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.RightHand"),
+		FString("Attack with RightHand")
+	);
+	GameplayTags.Montage_Attack_LeftHand = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Montage.Attack.LeftHand"),
+		FString("Attack with LeftHand")
+	);
+
+
 	// Effects Tags
 	GameplayTags.Effect_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Effects.HitReact"),
@@ -157,4 +170,13 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FName("Effects.Die"),
 		FString("Tag Granted When Owner Dies")
 	);
+
+
+	// Map of damage types to resistances /////////////////////////////////////////////////////////////////////////////////////////////
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Fire, GameplayTags.Attributes_Resistance_Fire);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Ice, GameplayTags.Attributes_Resistance_Ice);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Lightning, GameplayTags.Attributes_Resistance_Lightning);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Physical, GameplayTags.Attributes_Resistance_Physical);
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	 
 }
