@@ -155,3 +155,17 @@ void UKDAbilitySystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldCon
 		}
 	}
 }
+
+bool UKDAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondActor)
+{
+	const bool bFirstIsPlayer = FirstActor->ActorHasTag(FName("Player"));
+	const bool bSecondIsPlayer = SecondActor->ActorHasTag(FName("Player"));
+	const bool bFirstIsEnemy = FirstActor->ActorHasTag(FName("Enemy"));
+	const bool bSecondIsEnemy = SecondActor->ActorHasTag(FName("Enemy"));
+
+	const bool bBothArePlayers = bFirstIsPlayer && bSecondIsPlayer;
+	const bool bBothareEneies = bFirstIsEnemy && bSecondIsEnemy;
+	const bool bFriends = bBothArePlayers || bBothareEneies;
+
+	return !bFriends;
+}
