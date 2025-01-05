@@ -146,6 +146,9 @@ void AEnemyCharacter::Die()
 	SetLifeSpan(LifeSpan);
 	PlayAnimMontage(GetDieMontage(), 1.0f);
 	Super::Die();
+	AController* NewController = GetController();
+	KDAIController = Cast<AKDAIController>(NewController);
+	KDAIController->Destroy();
 }
 
 void AEnemyCharacter::SetCombatTarget_Implementation(AActor* InCombatTarget)
