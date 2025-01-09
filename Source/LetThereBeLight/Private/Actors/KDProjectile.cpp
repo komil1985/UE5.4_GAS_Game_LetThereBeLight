@@ -11,6 +11,7 @@
 #include <LetThereBeLight/LetThereBeLight.h>
 #include "AbilitySystemComponent.h"
 #include <AbilitySystemBlueprintLibrary.h>
+#include <AbilitySystem/KDAbilitySystemLibrary.h>
 
 AKDProjectile::AKDProjectile()
 {
@@ -65,6 +66,11 @@ void AKDProjectile::Destroyed()
 void AKDProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (DamageEffectSpecHandle.Data.IsValid() && DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor)
+	{
+		return;
+	}
+
+	if (!UKDAbilitySystemLibrary::IsNotFriend(DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser(), OtherActor))
 	{
 		return;
 	}
