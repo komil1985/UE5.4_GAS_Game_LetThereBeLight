@@ -24,7 +24,7 @@ void UKDProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation
 	FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
 	//Rotation.Pitch = 0.0f;
 
-	// Set Projectile Location
+	// Set Projectile Location & Rotation
 	FTransform SpawnTransform;
 	SpawnTransform.SetLocation(SocketLocation);
 	SpawnTransform.SetRotation(Rotation.Quaternion());
