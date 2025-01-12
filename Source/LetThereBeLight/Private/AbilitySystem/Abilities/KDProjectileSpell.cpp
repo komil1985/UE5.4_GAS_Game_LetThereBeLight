@@ -53,11 +53,11 @@ void UKDProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation
 	HitResult.Location = ProjectileTargetLocation;
 	EffectContextHandle.AddHitResult(HitResult);
 	
-	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
+	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle); //SourceASC->MakeEffectContext()  or EffectContextHandle
 
 	const FKDGameplayTags GameplayTags = FKDGameplayTags::Get();
 
-	for (TTuple<FGameplayTag, FScalableFloat>& Pair : DamageTypes)
+	for (auto& Pair : DamageTypes)
 	{
 		const float ScaledDamage = Pair.Value.GetValueAtLevel(GetAbilityLevel());
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, Pair.Key, ScaledDamage);
