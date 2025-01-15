@@ -21,8 +21,8 @@ ABaseCharacter::ABaseCharacter()
 
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	Weapon->SetupAttachment(GetMesh(), FName("WeaponHandSocket"));
+	Weapon->SetupAttachment(GetMesh(), FName("RightHandSocket"));
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
 }
 
 UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
