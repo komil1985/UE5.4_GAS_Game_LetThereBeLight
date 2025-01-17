@@ -126,14 +126,14 @@ void AEnemyCharacter::HighlightActor()
 {
 	GetMesh()->SetRenderCustomDepth(true);
 	//GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
-	Weapon->SetRenderCustomDepth(true);
+	LeftHandWeapon->SetRenderCustomDepth(true);
 	//Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 }
 
 void AEnemyCharacter::UnHighlightActor()
 {
 	GetMesh()->SetRenderCustomDepth(false);
-	Weapon->SetRenderCustomDepth(false);
+	LeftHandWeapon->SetRenderCustomDepth(false);
 }
 
 int32 AEnemyCharacter::GetPlayerLevel()

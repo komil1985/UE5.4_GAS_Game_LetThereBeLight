@@ -19,10 +19,13 @@ ABaseCharacter::ABaseCharacter()
 	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
 	GetMesh()->SetGenerateOverlapEvents(true);
 
-	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
-	Weapon->SetupAttachment(GetMesh(), FName("WeaponHandSocket"));
-	Weapon->SetupAttachment(GetMesh(), FName("RightHandSocket"));
-	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	LeftHandWeapon = CreateDefaultSubobject<USkeletalMeshComponent>("LeftHandWeapon");
+	LeftHandWeapon->SetupAttachment(GetMesh(), FName("LeftHandSocket"));
+	LeftHandWeapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	RightHandWeapon = CreateDefaultSubobject<USkeletalMeshComponent>("RightHandWeapon");
+	RightHandWeapon->SetupAttachment(GetMesh(), FName("RightHandSocket"));
+	RightHandWeapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
@@ -37,15 +40,15 @@ UAnimMontage* ABaseCharacter::GetHitReactMontage_Implementation()
 
 void ABaseCharacter::Die()
 {
-	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
+	LeftHandWeapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
 	MulticastHandleDeath();	
 }
 
 void ABaseCharacter::MulticastHandleDeath_Implementation()
 {
-	Weapon->SetSimulatePhysics(true);
-	Weapon->SetEnableGravity(true);
-	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	LeftHandWeapon->SetSimulatePhysics(true);
+	LeftHandWeapon->SetEnableGravity(true);
+	LeftHandWeapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 
 	GetMesh()->SetSimulatePhysics(false);
 	GetMesh()->SetEnableGravity(true);
@@ -68,9 +71,13 @@ void ABaseCharacter::BeginPlay()
 FVector ABaseCharacter::GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag)
 {
 	const FKDGameplayTags& GameplayTags = FKDGameplayTags::Get();
-	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_Weapon) && IsValid(Weapon))
+	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_Weapon) && IsValid(LeftHandWeapon))
 	{	
-		return Weapon->GetSocketLocation(WeaponTipSocketName);
+		return LeftHandWeapon->GetSocketLocation(WeaponTipSocketName);
+	}
+	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_Weapon) && IsValid(RightHandWeapon))
+	{
+		return RightHandWeapon->GetSocketLocation(WeaponTipSocketName);
 	}
 	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_RightHand))
 	{
@@ -137,7 +144,7 @@ void ABaseCharacter::Dissolve()
 	if (IsValid(WeaponDissolveMaterialInstance))
 	{
 		UMaterialInstanceDynamic* DynamicMatInst = UMaterialInstanceDynamic::Create(WeaponDissolveMaterialInstance, this);
-		Weapon->SetMaterial(0, DynamicMatInst);
+		LeftHandWeapon->SetMaterial(0, DynamicMatInst);
 		StartWeaponDissolveTimeline(DynamicMatInst);
 	}
 }

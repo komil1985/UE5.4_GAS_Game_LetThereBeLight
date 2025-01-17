@@ -44,7 +44,10 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
-	TObjectPtr<USkeletalMeshComponent> Weapon;
+	TObjectPtr<USkeletalMeshComponent> LeftHandWeapon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+	TObjectPtr<USkeletalMeshComponent> RightHandWeapon;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName LeftHandSocketName;
