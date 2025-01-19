@@ -149,7 +149,7 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 	// Montage & Socket Tags
 	GameplayTags.Montage_Attack_Weapon = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Montage.Attack.Weapon"),
-		FString("Attack with a  Weapon")
+		FString("Attack with a Weapon")
 	);
 	GameplayTags.Montage_Attack_RightHand = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Montage.Attack.RightHand"),
