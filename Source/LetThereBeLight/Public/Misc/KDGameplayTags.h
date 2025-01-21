@@ -59,10 +59,16 @@ public:
 	// Attack Types Abilities Tags
 	FGameplayTag Abilities_Attack;
 
-	// Montage & Socket Tags
-	FGameplayTag Montage_Attack_Weapon;
-	FGameplayTag Montage_Attack_RightHand;
-	FGameplayTag Montage_Attack_LeftHand;
+	// Combat Socket Tags
+	FGameplayTag CombatSocket_Weapon;
+	FGameplayTag CombatSocket_RightHand;
+	FGameplayTag CombatSocket_LeftHand;
+
+	// Montage Tags
+	FGameplayTag Montage_Attack_01;
+	FGameplayTag Montage_Attack_02;
+	FGameplayTag Montage_Attack_03;
+	FGameplayTag Montage_Attack_04;
 
 	// Effect Tags
 	FGameplayTag Effect_HitReact;
