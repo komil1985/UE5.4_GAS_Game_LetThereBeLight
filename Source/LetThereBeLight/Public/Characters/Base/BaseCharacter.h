@@ -14,6 +14,7 @@ class UGameplayEffect;
 class UGameplayAbility;
 class UAnimMontage;
 class UNiagaraSystem;
+class USoundBase;
 
 UCLASS(Abstract)
 class LETTHEREBELIGHT_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
@@ -100,6 +101,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	UNiagaraSystem* BloodEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+	USoundBase* DeathSound;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Abilities")

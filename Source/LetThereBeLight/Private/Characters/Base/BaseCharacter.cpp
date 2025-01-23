@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include <LetThereBeLight/LetThereBeLight.h>
 #include <Misc/KDGameplayTags.h>
+#include <Kismet/GameplayStatics.h>
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -42,6 +43,8 @@ void ABaseCharacter::Die()
 
 void ABaseCharacter::MulticastHandleDeath_Implementation()
 {
+	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation(), GetActorRotation());
+
 	Weapon->SetSimulatePhysics(true);
 	Weapon->SetEnableGravity(true);
 	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
