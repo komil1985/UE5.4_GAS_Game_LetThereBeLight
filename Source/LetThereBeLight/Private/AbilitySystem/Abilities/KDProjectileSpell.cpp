@@ -14,7 +14,7 @@ void UKDProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
-void UKDProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation)
+void UKDProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag)
 {
 	//To check if it is on server
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
@@ -23,7 +23,7 @@ void UKDProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation
 	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation
 	(
 		GetAvatarActorFromActorInfo(),
-		FKDGameplayTags::Get().CombatSocket_Weapon
+		SocketTag
 	);
 	FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
 
