@@ -118,6 +118,11 @@ UNiagaraSystem* ABaseCharacter::GetBloodEffect_Implementation()
 	return BloodEffect;
 }
 
+int32 ABaseCharacter::GetMinionCount_Implementation()
+{
+	return MinionCount;
+}
+
 void ABaseCharacter::InitAbilityActorInfo(){}
 
 void ABaseCharacter::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const
