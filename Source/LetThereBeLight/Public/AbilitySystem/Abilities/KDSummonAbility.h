@@ -13,6 +13,7 @@ UCLASS()
 class LETTHEREBELIGHT_API UKDSummonAbility : public UKDGameplayAbility
 {
 	GENERATED_BODY()
+
 public:
 	UFUNCTION(BlueprintCallable)
 	TArray<FVector> GetSpawnLocation();
