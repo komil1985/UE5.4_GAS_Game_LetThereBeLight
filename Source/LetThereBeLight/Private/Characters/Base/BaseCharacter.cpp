@@ -123,6 +123,16 @@ int32 ABaseCharacter::GetMinionCount_Implementation()
 	return MinionCount;
 }
 
+void ABaseCharacter::IncreaseMinionCount_Implementation(int32 Amount)
+{
+	MinionCount += Amount;
+}
+
+void ABaseCharacter::DecreaseMinionCount_Implementation(int32 Amount)
+{
+	MinionCount -= Amount;
+}
+
 void ABaseCharacter::InitAbilityActorInfo(){}
 
 void ABaseCharacter::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const

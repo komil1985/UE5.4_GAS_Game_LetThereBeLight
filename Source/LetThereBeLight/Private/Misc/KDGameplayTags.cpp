@@ -118,6 +118,10 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FName("Damage.Physical"),
 		FString("Damage Type Is Physical")
 	);
+	GameplayTags.Damage_Magic = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage.Magic"),
+		FString("Damage Type Is Magic")
+	);
 
 
 	// Resistance Types Tags

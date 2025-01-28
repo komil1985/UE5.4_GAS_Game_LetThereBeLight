@@ -55,6 +55,7 @@ public:
 	FGameplayTag Damage_Ice;
 	FGameplayTag Damage_Lightning;
 	FGameplayTag Damage_Physical;
+	FGameplayTag Damage_Magic;
 
 	// Attack Types Abilities Tags
 	FGameplayTag Abilities_Attack;
