@@ -2,6 +2,7 @@
 
 
 #include "AbilitySystem/Data/AttributeInfo.h"
+#include "LetThereBeLight/KDLogChannles.h"
 
 FKDAttributeInfo UAttributeInfo::FindAttributeInfoForTag(const FGameplayTag& AttributeTag, bool bLogNotFound) const
 {
@@ -15,7 +16,7 @@ FKDAttributeInfo UAttributeInfo::FindAttributeInfoForTag(const FGameplayTag& Att
 
 	if (bLogNotFound)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Can't find into for AttributeTag [%s] on AttributeInfo [%s]."),
+		UE_LOG(LogKD, Error, TEXT("Can't find into for AttributeTag [%s] on AttributeInfo [%s]."),
 			*AttributeTag.ToString(), *GetNameSafe(this));
 	}
 
