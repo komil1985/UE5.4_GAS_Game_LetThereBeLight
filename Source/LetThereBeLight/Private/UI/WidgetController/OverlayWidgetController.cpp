@@ -48,21 +48,37 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 			OnMaxManaChanged.Broadcast(Data.NewValue);
 		}
 	);
-
-	Cast<UKDAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
-		[this] (const FGameplayTagContainer& AssetTagsContainer)
+	
+	if (UKDAbilitySystemComponent* KDASC = Cast<UKDAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		if (KDASC->bStartupAbilitiesGiven)
 		{
-			for (const FGameplayTag& Tag : AssetTagsContainer)
+			OnInitilizeStartupAbilities(KDASC);
+		}
+		else
+		{
+			KDASC->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::OnInitilizeStartupAbilities);
+		}
+			KDASC->EffectAssetTags.AddLambda(
+			[this] (const FGameplayTagContainer& AssetTagsContainer)
 			{
-				// Message.HealthPotion.MatchesTag("Message") will return true, "Message".MatchesTag("Message.HealthPotion") will return false
-				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
-				
-				if (Tag.MatchesTag(MessageTag))
+				for (const FGameplayTag& Tag : AssetTagsContainer)
 				{
-					const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
-					MessageWidgetRowDelegate.Broadcast(*Row);
+					// Message.HealthPotion.MatchesTag("Message") will return true, "Message".MatchesTag("Message.HealthPotion") will return false
+					FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+				
+					if (Tag.MatchesTag(MessageTag))
+					{
+						const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+						MessageWidgetRowDelegate.Broadcast(*Row);
+					}
 				}
 			}
-		}
-	);
+		);
+	}
+}
+
+void UOverlayWidgetController::OnInitilizeStartupAbilities(UKDAbilitySystemComponent* KDAbilitySystemComponent)
+{
+	if (!KDAbilitySystemComponent->bStartupAbilitiesGiven) return;
 }

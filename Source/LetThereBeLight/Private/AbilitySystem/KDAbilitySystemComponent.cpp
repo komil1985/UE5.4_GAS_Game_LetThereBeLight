@@ -19,10 +19,10 @@ void UKDAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<U
 		{
 			AbilitySpec.DynamicAbilityTags.AddTag(KDAbility->StartupInputTag);
 			GiveAbility(AbilitySpec);
-
-
 		}
 	}
+	bStartupAbilitiesGiven = true;
+	AbilitiesGivenDelegate.Broadcast(this);
 }
 
 void UKDAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)

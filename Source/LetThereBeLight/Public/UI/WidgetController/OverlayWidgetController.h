@@ -7,6 +7,9 @@
 #include "UI/WidgetController/KDWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
+class UKDUserWidget;
+class UAbilityInfo;
+class UKDAbilitySystemComponent;
 
 USTRUCT(BlueprintType, Blueprintable)
 struct FUIWidgetRow : public FTableRowBase
@@ -29,7 +32,7 @@ struct FUIWidgetRow : public FTableRowBase
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, Row);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
 
-class UAbilityInfo;
+
 /**
  * 
  */
@@ -66,6 +69,8 @@ protected:
 
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
+
+	void OnInitilizeStartupAbilities(UKDAbilitySystemComponent* KDAbilitySystemComponent);
 };
 
 
