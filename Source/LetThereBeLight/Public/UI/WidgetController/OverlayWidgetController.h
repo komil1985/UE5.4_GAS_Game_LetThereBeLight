@@ -7,9 +7,7 @@
 #include "UI/WidgetController/KDWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
-class UKDUserWidget;
-class UAbilityInfo;
-class UKDAbilitySystemComponent;
+
 
 USTRUCT(BlueprintType, Blueprintable)
 struct FUIWidgetRow : public FTableRowBase
@@ -29,9 +27,13 @@ struct FUIWidgetRow : public FTableRowBase
 	UTexture2D* Image = nullptr;
 };
 
+class UKDUserWidget;
+class UAbilityInfo;
+class UKDAbilitySystemComponent;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, Row);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature, const FKDAbilityInfo&, Info);
 
 /**
  * 
@@ -59,6 +61,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Messages")
 	FMessageWidgetRowSignature MessageWidgetRowDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Messages")
+	FAbilityInfoSignature AbilityInfoDelegate;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widget Data")
