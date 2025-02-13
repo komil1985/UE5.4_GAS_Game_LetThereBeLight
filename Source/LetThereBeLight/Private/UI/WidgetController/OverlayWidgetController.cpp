@@ -88,7 +88,7 @@ void UOverlayWidgetController::OnInitilizeStartupAbilities(UKDAbilitySystemCompo
 		[this, KDAbilitySystemComponent] (const FGameplayAbilitySpec& AbilitySpec)
 		{
 			FKDAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(KDAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
-			Info.InputTag = KDAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec);
+			Info.InputTag = KDAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
 			AbilityInfoDelegate.Broadcast(Info);
 		}
 	);
