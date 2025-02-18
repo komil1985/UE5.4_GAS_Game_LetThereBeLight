@@ -7,6 +7,10 @@
 #include "GameFramework/PlayerState.h"
 #include "MyPlayerState.generated.h"
 
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatsChanged, int32 /*StatValue*/)
+
+
 /**
  * 
  */
@@ -23,7 +27,17 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
-	FORCEINLINE int32 GetPlayerLevel() const { return Level; }
+	FOnPlayerStatsChanged OnXPChangedDelegate;
+	FOnPlayerStatsChanged OnLevelChangedDelegate;
+
+	FORCEINLINE int32 GetPlayerXP() const { return PlayerXP; }
+	FORCEINLINE int32 GetPlayerLevel() const { return PlayerLevel; }
+
+	void AddToXP(int32 InXP);
+	void AddToLevel(int32 InLevel);
+
+	void SetXP(int32 InXP);
+	void SetLevel(int32 InLevel);
 
 protected:
 	UPROPERTY(VisibleAnywhere)
@@ -33,9 +47,15 @@ protected:
 	TObjectPtr<UAttributeSet> AttributeSet;
 
 private:
-	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_Level)
-	int32 Level = 1;
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_PlayerXP)
+	int32 PlayerXP = 1;
+
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_PlayerLevel)
+	int32 PlayerLevel = 1;
 
 	UFUNCTION()
-	void OnRep_Level(int32 OldLevel);
+	void OnRep_PlayerXP(int32 OldPlayerXP);
+
+	UFUNCTION()
+	void OnRep_PlayerLevel(int32 OldPlayerLevel);
 };
