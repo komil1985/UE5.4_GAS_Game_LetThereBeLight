@@ -35,5 +35,5 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TArray<FKDLevelUpInfo> LevelUpInformation;
 
-	int32 FindLevelForXP(int32 XP);
+	int32 FindLevelForXP(int32 XP) const;
 };

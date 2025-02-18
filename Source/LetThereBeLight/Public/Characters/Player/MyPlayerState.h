@@ -16,6 +16,7 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatsChanged, int32 /*StatValue*/)
  */
 class UAbilitySystemComponent;
 class UAttributeSet;
+class ULevelUpInfo;
 UCLASS()
 class LETTHEREBELIGHT_API AMyPlayerState : public APlayerState, public IAbilitySystemInterface
 {
@@ -23,9 +24,11 @@ class LETTHEREBELIGHT_API AMyPlayerState : public APlayerState, public IAbilityS
 public:
 	AMyPlayerState();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<ULevelUpInfo> LevelUpInfo;
 
 	FOnPlayerStatsChanged OnXPChangedDelegate;
 	FOnPlayerStatsChanged OnLevelChangedDelegate;

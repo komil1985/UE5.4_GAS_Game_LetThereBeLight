@@ -5,7 +5,8 @@
 #include "AbilitySystem/KDAttributeSet.h"
 #include "AbilitySystem/KDAbilitySystemComponent.h"
 #include <AbilitySystem/Data/AbilityInfo.h>
-
+#include <Characters/Player/MyPlayerState.h>
+#include "AbilitySystem/Data/LevelUpInfo.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -19,8 +20,10 @@ void UOverlayWidgetController::BroadcastInitialValues()
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
-	const UKDAttributeSet* KDAttributeSet = CastChecked<UKDAttributeSet>(AttributeSet);
+	AMyPlayerState* KDPlayerState = CastChecked<AMyPlayerState>(PlayerState);
+	KDPlayerState->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
 
+	const UKDAttributeSet* KDAttributeSet = CastChecked<UKDAttributeSet>(AttributeSet);
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(KDAttributeSet->GetHealthAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
@@ -54,11 +57,11 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	{
 		if (KDASC->bStartupAbilitiesGiven)
 		{
-			OnInitilizeStartupAbilities(KDASC);
+			OnInitializeStartupAbilities(KDASC);
 		}
 		else
 		{
-			KDASC->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::OnInitilizeStartupAbilities);
+			KDASC->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::OnInitializeStartupAbilities);
 		}
 			KDASC->EffectAssetTags.AddLambda(
 			[this] (const FGameplayTagContainer& AssetTagsContainer)
@@ -79,7 +82,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	}
 }
 
-void UOverlayWidgetController::OnInitilizeStartupAbilities(UKDAbilitySystemComponent* KDAbilitySystemComponent)
+void UOverlayWidgetController::OnInitializeStartupAbilities(UKDAbilitySystemComponent* KDAbilitySystemComponent)
 {
 	if (!KDAbilitySystemComponent->bStartupAbilitiesGiven) return;
 
@@ -93,4 +96,26 @@ void UOverlayWidgetController::OnInitilizeStartupAbilities(UKDAbilitySystemCompo
 		}
 	);
 	KDAbilitySystemComponent->ForEachAbility(BroadcastDelegate);
+}
+
+void UOverlayWidgetController::OnXPChanged(int32 NewXP) const
+{
+	const AMyPlayerState* KDPlayerState = CastChecked<AMyPlayerState>(PlayerState);
+	const ULevelUpInfo* LevelUpInfo = KDPlayerState->LevelUpInfo;
+	checkf(LevelUpInfo, TEXT("Unable to find LevelUpInfo. Please fill out MyPlayerState Blueprint"));
+
+	const int32 Level = LevelUpInfo->FindLevelForXP(NewXP);
+	const int32 MaxLevel = LevelUpInfo->LevelUpInformation.Num();
+
+	if (Level <= MaxLevel && Level > 0)
+	{
+		const int32 LevelUpRequirement = LevelUpInfo->LevelUpInformation[Level].LevelUpRequirement;
+		const int32 PreviousLevelUpRequirement = LevelUpInfo->LevelUpInformation[Level - 1].LevelUpRequirement;
+		const int32 DeltaLevelRequirement = LevelUpRequirement - PreviousLevelUpRequirement;
+		const int32 XpForThisLevel = NewXP - PreviousLevelUpRequirement;
+		const int32 XpBarPercent = static_cast<float>(XpForThisLevel) / static_cast<float>(DeltaLevelRequirement);
+
+		OnXpPercentChangedDelegate.Broadcast(XpBarPercent);
+	}
+
 }
