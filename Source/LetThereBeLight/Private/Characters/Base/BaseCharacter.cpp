@@ -133,6 +133,11 @@ void ABaseCharacter::DecreaseMinionCount_Implementation(int32 Amount)
 	MinionCount -= Amount;
 }
 
+ECharacterClass ABaseCharacter::GetCharacterClass_Implementation()
+{
+	return CharacterClass;
+}
+
 void ABaseCharacter::InitAbilityActorInfo(){}
 
 void ABaseCharacter::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const
