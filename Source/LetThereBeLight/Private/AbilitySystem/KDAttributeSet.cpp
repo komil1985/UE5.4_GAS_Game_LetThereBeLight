@@ -11,6 +11,7 @@
 #include <Interactions/CombatInterface.h>
 #include <Kismet/GameplayStatics.h>
 #include <Characters/Player/MyPlayerController.h>
+#include "LetThereBeLight/KDLogChannles.h"
 
 
 UKDAttributeSet::UKDAttributeSet()
@@ -161,7 +162,6 @@ void UKDAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.0f, GetMaxHealth()));
-		//UE_LOG(LogTemp, Warning, TEXT("Changed Health on %s, Health %f"), *Props.TargetAvatarActor->GetName(), GetHealth());
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
@@ -180,7 +180,10 @@ void UKDAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 			if (bFatal)
 			{
 				ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
-				CombatInterface->Die();
+				if (CombatInterface)
+				{
+					CombatInterface->Die();
+				}
 			}
 			else
 			{
@@ -193,6 +196,12 @@ void UKDAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 
 			ShowFloatingTextDamage(Props, LocalIncomingDamage, bBlock, bCritHit);
 		}
+	}
+	if (Data.EvaluatedData.Attribute == GetIncomingXPAttribute())
+	{
+		const float LocalIncomingXP = GetIncomingXP();
+		SetIncomingXP(0.0f);
+		UE_LOG(LogKD, Log, TEXT("Incoming XP: %f"), LocalIncomingXP);
 	}
 }
 
