@@ -164,7 +164,7 @@ void ABaseCharacter::AddCharacterAbilities()
 	if (!HasAuthority()) return;
 
 	KDASC->AddCharacterAbilities(StartupAbilities);
-	
+	KDASC->AddCharacterPassiveAbilities(StartupPassiveAbilities);
 }
 void ABaseCharacter::Dissolve()
 {

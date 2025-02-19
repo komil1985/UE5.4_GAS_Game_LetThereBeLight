@@ -143,6 +143,13 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 	);
 
 
+	// Meta Attributes Tags
+	GameplayTags.Attributes_Meta_IncomingXP = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Meta.IncomingXP"),
+		FString("Meta Attributes Tag For IncomingXP")
+	);
+
+
 	// Abilities Tags
 	GameplayTags.Abilities_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Attack"),

@@ -26,6 +26,8 @@ public:
 	FAbilitiesGiven AbilitiesGivenDelegate;
 
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
+	void AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilities);
+
 	float AbilityLevel = 1;
 	bool bStartupAbilitiesGiven = false;
 
