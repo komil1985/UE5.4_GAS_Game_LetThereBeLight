@@ -219,6 +219,7 @@ void UKDAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 	{
 		const float LocalIncomingXP = GetIncomingXP();
 		SetIncomingXP(0.0f);
+		UE_LOG(LogKD, Log, TEXT("Incoming XP: %f"), LocalIncomingXP);
 	}
 }
 
