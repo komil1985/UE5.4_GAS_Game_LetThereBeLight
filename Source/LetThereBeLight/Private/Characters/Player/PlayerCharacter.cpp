@@ -64,6 +64,13 @@ int32 APlayerCharacter::GetPlayerLevel()
 	return MyPlayerState->GetPlayerLevel();
 }
 
+void APlayerCharacter::AddToXP_Implementation(int32 InXP)
+{
+	AMyPlayerState* KDPlayerState = GetPlayerState<AMyPlayerState>();
+	check(KDPlayerState);
+	KDPlayerState->AddToXP(InXP);
+}
+
 void APlayerCharacter::InitAbilityActorInfo()
 {
 	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();

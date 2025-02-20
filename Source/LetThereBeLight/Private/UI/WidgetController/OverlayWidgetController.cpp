@@ -113,7 +113,7 @@ void UOverlayWidgetController::OnXPChanged(int32 NewXP) const
 		const int32 PreviousLevelUpRequirement = LevelUpInfo->LevelUpInformation[Level - 1].LevelUpRequirement;
 		const int32 DeltaLevelRequirement = LevelUpRequirement - PreviousLevelUpRequirement;
 		const int32 XpForThisLevel = NewXP - PreviousLevelUpRequirement;
-		const int32 XpBarPercent = static_cast<float>(XpForThisLevel) / static_cast<float>(DeltaLevelRequirement);
+		const float XpBarPercent = static_cast<float>(XpForThisLevel) / static_cast<float>(DeltaLevelRequirement);
 
 		OnXpPercentChangedDelegate.Broadcast(XpBarPercent);
 	}

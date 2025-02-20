@@ -11,6 +11,7 @@
 #include <Interactions/CombatInterface.h>
 #include <Kismet/GameplayStatics.h>
 #include <Characters/Player/MyPlayerController.h>
+#include "Interactions/PlayerInterface.h"
 #include "LetThereBeLight/KDLogChannles.h"
 
 
@@ -219,6 +220,11 @@ void UKDAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 	{
 		const float LocalIncomingXP = GetIncomingXP();
 		SetIncomingXP(0.0f);
+		
+		if (Props.SourceCharacter->Implements<UPlayerInterface>())
+		{
+			IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
+		}
 	}
 }
 
