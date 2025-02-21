@@ -22,6 +22,12 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	AMyPlayerState* KDPlayerState = CastChecked<AMyPlayerState>(PlayerState);
 	KDPlayerState->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
+	KDPlayerState->OnLevelChangedDelegate.AddLambda(
+		[this](int32 NewLevel)
+		{
+			OnPlayerLevelChangedDelegate.Broadcast(NewLevel);
+		}
+	);
 
 	const UKDAttributeSet* KDAttributeSet = CastChecked<UKDAttributeSet>(AttributeSet);
 
