@@ -57,7 +57,7 @@ void APlayerCharacter::Die()
 	Super::Die();
 }
 
-int32 APlayerCharacter::GetPlayerLevel()
+int32 APlayerCharacter::GetPlayerLevel_Implementation()
 {
 	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
 	check(MyPlayerState);
@@ -69,6 +69,10 @@ void APlayerCharacter::AddToXP_Implementation(int32 InXP)
 	AMyPlayerState* KDPlayerState = GetPlayerState<AMyPlayerState>();
 	check(KDPlayerState);
 	KDPlayerState->AddToXP(InXP);
+}
+
+void APlayerCharacter::LevelUp_Implementation()
+{
 }
 
 void APlayerCharacter::InitAbilityActorInfo()
