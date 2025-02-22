@@ -9,11 +9,31 @@
 #include "UI/HUD/KDHUD.h"
 #include "Components/CapsuleComponent.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
+#include "NiagaraComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 
 APlayerCharacter::APlayerCharacter()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	//PrimaryActorTick.bCanEverTick = false;
+
+	PlayerSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("PlayerSpringArm"));
+	PlayerSpringArm->SetupAttachment(GetRootComponent());
+	PlayerSpringArm->TargetArmLength = 2000.0f;
+	PlayerSpringArm->bDoCollisionTest = false;
+	PlayerSpringArm->bUsePawnControlRotation = true;
+	PlayerSpringArm->bInheritPitch = false;
+	PlayerSpringArm->bInheritYaw = false;
+	PlayerSpringArm->bInheritRoll = false;
+	
+	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
+	PlayerCamera->SetupAttachment(PlayerSpringArm, USpringArmComponent::SocketName);
+	PlayerCamera->bUsePawnControlRotation = false;
+
+	LevelUpNiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("LevelUpNiagaraComponent"));
+	LevelUpNiagaraComponent->SetupAttachment(GetRootComponent());
+	LevelUpNiagaraComponent->bAutoActivate = false;
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
@@ -51,11 +71,11 @@ void APlayerCharacter::OnRep_PlayerState()
 
 void APlayerCharacter::Die()
 {
+	Super::Die();
 	SetLifeSpan(LifeSpan);
 	PlayAnimMontage(GetDieMontage(), 1.0f);
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
-	PlayerController->DisableInput(PlayerController);
-	Super::Die();
+	PlayerController->DisableInput(PlayerController);	
 }
 
 int32 APlayerCharacter::GetPlayerLevel_Implementation()
@@ -74,8 +94,19 @@ void APlayerCharacter::AddToXP_Implementation(int32 InXP)
 
 void APlayerCharacter::LevelUp_Implementation()
 {
-	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
-	check(MyPlayerState);
+	MulticastLevelUpParticles();
+}
+
+void APlayerCharacter::MulticastLevelUpParticles_Implementation() const
+{
+	if (IsValid(LevelUpNiagaraComponent))
+	{
+		const FVector CameraLocation = PlayerCamera->GetComponentLocation();
+		const FVector LevelUpNSLocation = LevelUpNiagaraComponent->GetComponentLocation();
+		const FRotator ToCameraRotation = (CameraLocation - LevelUpNSLocation).Rotation();
+		LevelUpNiagaraComponent->SetWorldRotation(ToCameraRotation);
+		LevelUpNiagaraComponent->Activate(true);
+	}
 }
 
 int32 APlayerCharacter::GetXP_Implementation() const
@@ -143,4 +174,3 @@ void APlayerCharacter::InitAbilityActorInfo()
 	}
 	InitializeDefaultAttributes();
 }
-

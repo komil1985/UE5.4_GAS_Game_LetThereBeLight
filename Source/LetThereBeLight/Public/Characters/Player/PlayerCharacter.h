@@ -7,6 +7,9 @@
 #include "Interactions/PlayerInterface.h"
 #include "PlayerCharacter.generated.h"
 
+class UNiagaraComponent;
+class UCameraComponent;
+class USpringArmComponent;
 /**
  * 
  */
@@ -36,6 +39,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	float LifeSpan = 5.0f;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
+
 private:
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UCameraComponent> PlayerCamera;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USpringArmComponent> PlayerSpringArm;
+
 	virtual void InitAbilityActorInfo() override;
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastLevelUpParticles() const;
 };
