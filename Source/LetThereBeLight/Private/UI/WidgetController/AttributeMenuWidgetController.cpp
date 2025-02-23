@@ -5,6 +5,7 @@
 #include "AbilitySystem/KDAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
 #include <Characters/Player/MyPlayerState.h>
+#include <AbilitySystem/KDAbilitySystemComponent.h>
 
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
@@ -43,6 +44,12 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 
 	AMyPlayerState* KDPlayerState = Cast<AMyPlayerState>(PlayerState);
 	AttributePointsChangedDelegate.Broadcast(KDPlayerState->GetAttributePoints());
+}
+
+void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)
+{
+	UKDAbilitySystemComponent* KDASC = CastChecked<UKDAbilitySystemComponent>(AbilitySystemComponent);
+	KDASC->UpgradeAttribute(AttributeTag);
 }
 
 void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute) const

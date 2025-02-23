@@ -5,6 +5,8 @@
 #include "Misc/KDGameplayTags.h"
 #include <AbilitySystem/Abilities/KDGameplayAbility.h>
 #include "LetThereBeLight/KDLogChannles.h"
+#include <Interactions/PlayerInterface.h>
+#include <AbilitySystemBlueprintLibrary.h>
 
 void UKDAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -103,6 +105,31 @@ FGameplayTag UKDAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbili
 		}
 	}
 	return FGameplayTag();
+}
+
+void UKDAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& AttributeTag)
+{
+	if (GetAvatarActor()->Implements<UPlayerInterface>())
+	{
+		if (IPlayerInterface::Execute_GetAttributePoints(GetAvatarActor()) > 0)
+		{
+			ServerUpgradeAttribute(AttributeTag);
+		}
+	}
+}
+
+void UKDAbilitySystemComponent::ServerUpgradeAttribute_Implementation(const FGameplayTag& AttributeTag)
+{
+	FGameplayEventData Payload;
+	Payload.EventTag = AttributeTag;
+	Payload.EventMagnitude = 1.0f;
+
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetAvatarActor(), AttributeTag, Payload);
+
+	if (GetAvatarActor()->Implements<UPlayerInterface>())
+	{
+		IPlayerInterface::Execute_AddToAttributePoints(GetAvatarActor(), -1);
+	}
 }
 
 void UKDAbilitySystemComponent::OnRep_ActivateAbilities()
