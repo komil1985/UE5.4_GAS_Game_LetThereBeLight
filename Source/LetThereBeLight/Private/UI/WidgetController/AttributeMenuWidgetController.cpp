@@ -4,6 +4,7 @@
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "AbilitySystem/KDAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
+#include <Characters/Player/MyPlayerState.h>
 
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
@@ -20,6 +21,14 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 			}
 		);
 	}
+
+	AMyPlayerState* KDPlayerState = Cast<AMyPlayerState>(PlayerState);
+	KDPlayerState->OnAttributePointsChangedDelegate.AddLambda(
+		[this](int32 Points)
+		{
+			AttributePointsChangedDelegate.Broadcast(Points);
+		}
+	);
 }
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
