@@ -263,7 +263,6 @@ void UKDAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, f
 }
 
 
-
 // Primary Attributes
 void UKDAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength) const
 {
