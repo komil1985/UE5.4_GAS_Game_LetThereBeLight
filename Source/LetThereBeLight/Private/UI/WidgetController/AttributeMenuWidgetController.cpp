@@ -40,6 +40,9 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 	{
 		BroadcastAttributeInfo(Pair.Key, Pair.Value());
 	}
+
+	AMyPlayerState* KDPlayerState = Cast<AMyPlayerState>(PlayerState);
+	AttributePointsChangedDelegate.Broadcast(KDPlayerState->GetAttributePoints());
 }
 
 void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute) const

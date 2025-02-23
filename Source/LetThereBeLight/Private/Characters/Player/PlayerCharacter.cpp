@@ -149,12 +149,16 @@ void APlayerCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
 
 void APlayerCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
 {
-
+	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
+	check(MyPlayerState);
+	MyPlayerState->AddAttributePoints(InAttributePoints);
 }
 
 void APlayerCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)
 {
-
+	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
+	check(MyPlayerState);
+	MyPlayerState->AddSpellPoints(InSpellPoints);
 }
 
 void APlayerCharacter::InitAbilityActorInfo()
