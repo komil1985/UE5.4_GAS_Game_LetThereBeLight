@@ -17,6 +17,8 @@
 
 APlayerCharacter::APlayerCharacter()
 {
+	//PrimaryActorTick.bCanEverTick = false;
+
 	PlayerSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("PlayerSpringArm"));
 	PlayerSpringArm->SetupAttachment(GetRootComponent());
 	PlayerSpringArm->TargetArmLength = 2000.0f;
@@ -149,12 +151,14 @@ void APlayerCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
 
 void APlayerCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
 {
-
+	//AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
+	//check(MyPlayerState);
 }
 
 void APlayerCharacter::AddToSpellPoints_Implementation(int32 InSpellPoints)
 {
-
+	//AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
+	//check(MyPlayerState);
 }
 
 void APlayerCharacter::InitAbilityActorInfo()

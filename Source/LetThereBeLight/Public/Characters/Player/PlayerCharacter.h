@@ -10,6 +10,7 @@
 class UNiagaraComponent;
 class UCameraComponent;
 class USpringArmComponent;
+class UBoxComponent;
 /**
  * 
  */
@@ -48,6 +49,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USpringArmComponent> PlayerSpringArm;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UBoxComponent> CameraBoxComponent;
 
 	virtual void InitAbilityActorInfo() override;
 
