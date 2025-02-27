@@ -7,8 +7,14 @@
 
 class UAbilitySystemComponent;
 class UAttributeSet;
+class AMyPlayerController;
+class AMyPlayerState;
+class UKDAbilitySystemComponent;
+class UKDAttributeSet;
+class UAbilityInfo;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChangedSignature, int32, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature, const FKDAbilityInfo&, Info);
 
 
 USTRUCT(BlueprintType)
@@ -44,6 +50,9 @@ class LETTHEREBELIGHT_API UKDWidgetController : public UObject
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Messages")
+	FAbilityInfoSignature AbilityInfoDelegate;
+
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(const FWidgetControllerParams WCParams);
 
@@ -51,7 +60,12 @@ public:
 	virtual void BroadcastInitialValues();
 	virtual void BindCallbacksToDependencies();
 
+	void BroadcastAbilityInfo();
+
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widget Data")
+	TObjectPtr<UAbilityInfo> AbilityInfo;
+
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
 	TObjectPtr<APlayerController> PlayerController;
 
@@ -63,4 +77,21 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
 	TObjectPtr<UAttributeSet> AttributeSet;
+
+	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
+	TObjectPtr<AMyPlayerController> KDPlayerController;
+
+	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
+	TObjectPtr<AMyPlayerState> KDPlayerState;
+
+	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
+	TObjectPtr<UKDAbilitySystemComponent> KDAbilitySystemComponent;
+
+	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
+	TObjectPtr<UKDAttributeSet> KDAttributeSet;
+
+	AMyPlayerController* GetKDPlayerController();
+	AMyPlayerState* GetKDPlayerState();
+	UKDAbilitySystemComponent* GetKDAbilitySystemComponent();
+	UKDAttributeSet* GetKDAttributeSet();
 };

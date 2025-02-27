@@ -10,10 +10,9 @@
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 {
-	UKDAttributeSet* AS = CastChecked<UKDAttributeSet>(AttributeSet);
 	check(AttributeInfo);
 
-	for (auto& Pair : AS->TagsToAttribute)
+	for (auto& Pair : GetKDAttributeSet()->TagsToAttribute)
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda(
 			[this, Pair](const FOnAttributeChangeData& Data)
@@ -23,8 +22,7 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 		);
 	}
 
-	AMyPlayerState* KDPlayerState = Cast<AMyPlayerState>(PlayerState);
-	KDPlayerState->OnAttributePointsChangedDelegate.AddLambda(
+	GetKDPlayerState()->OnAttributePointsChangedDelegate.AddLambda(
 		[this](int32 Points)
 		{
 			AttributePointsChangedDelegate.Broadcast(Points);
@@ -34,16 +32,13 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
-	UKDAttributeSet* AS = CastChecked<UKDAttributeSet>(AttributeSet);
 	check(AttributeInfo);
 
-	for (auto& Pair : AS->TagsToAttribute)
+	for (auto& Pair : GetKDAttributeSet()->TagsToAttribute)
 	{
 		BroadcastAttributeInfo(Pair.Key, Pair.Value());
 	}
-
-	AMyPlayerState* KDPlayerState = Cast<AMyPlayerState>(PlayerState);
-	AttributePointsChangedDelegate.Broadcast(KDPlayerState->GetAttributePoints());
+	AttributePointsChangedDelegate.Broadcast(GetKDPlayerState()->GetAttributePoints());
 }
 
 void UAttributeMenuWidgetController::UpgradeAttribute(const FGameplayTag& AttributeTag)

@@ -10,66 +10,61 @@
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
-	const UKDAttributeSet* KDAttributeSet = CastChecked<UKDAttributeSet>(AttributeSet);
-
-	OnHealthChanged.Broadcast(KDAttributeSet->GetHealth());
-	OnMaxHealthChanged.Broadcast(KDAttributeSet->GetMaxHealth());
-	OnManaChanged.Broadcast((KDAttributeSet->GetMana()));
-	OnMaxManaChanged.Broadcast(KDAttributeSet->GetMaxMana());
+	OnHealthChanged.Broadcast(GetKDAttributeSet()->GetHealth());
+	OnMaxHealthChanged.Broadcast(GetKDAttributeSet()->GetMaxHealth());
+	OnManaChanged.Broadcast((GetKDAttributeSet()->GetMana()));
+	OnMaxManaChanged.Broadcast(GetKDAttributeSet()->GetMaxMana());
 }
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
-	AMyPlayerState* KDPlayerState = CastChecked<AMyPlayerState>(PlayerState);
-	KDPlayerState->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
-	KDPlayerState->OnLevelChangedDelegate.AddLambda(
+	GetKDPlayerState()->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
+	GetKDPlayerState()->OnLevelChangedDelegate.AddLambda(
 		[this](int32 NewLevel)
 		{
 			OnPlayerLevelChangedDelegate.Broadcast(NewLevel);
 		}
 	);
 
-	const UKDAttributeSet* KDAttributeSet = CastChecked<UKDAttributeSet>(AttributeSet);
-
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(KDAttributeSet->GetHealthAttribute()).AddLambda(
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetKDAttributeSet()->GetHealthAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
 			OnHealthChanged.Broadcast(Data.NewValue);
 		}
 	);
 
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(KDAttributeSet->GetMaxHealthAttribute()).AddLambda(
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetKDAttributeSet()->GetMaxHealthAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
 			OnMaxHealthChanged.Broadcast(Data.NewValue);
 		}
 	);
 
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(KDAttributeSet->GetManaAttribute()).AddLambda(
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetKDAttributeSet()->GetManaAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
 			OnManaChanged.Broadcast(Data.NewValue);
 		}
 	);
 
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(KDAttributeSet->GetMaxManaAttribute()).AddLambda(
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetKDAttributeSet()->GetMaxManaAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
 			OnMaxManaChanged.Broadcast(Data.NewValue);
 		}
 	);
 	
-	if (UKDAbilitySystemComponent* KDASC = Cast<UKDAbilitySystemComponent>(AbilitySystemComponent))
+	if (GetKDAbilitySystemComponent())
 	{
-		if (KDASC->bStartupAbilitiesGiven)
+		if (GetKDAbilitySystemComponent()->bStartupAbilitiesGiven)
 		{
-			OnInitializeStartupAbilities(KDASC);
+			BroadcastAbilityInfo();
 		}
 		else
 		{
-			KDASC->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::OnInitializeStartupAbilities);
+			GetKDAbilitySystemComponent()->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::BroadcastAbilityInfo);
 		}
-			KDASC->EffectAssetTags.AddLambda(
+		GetKDAbilitySystemComponent()->EffectAssetTags.AddLambda(
 			[this] (const FGameplayTagContainer& AssetTagsContainer)
 			{
 				for (const FGameplayTag& Tag : AssetTagsContainer)
@@ -88,26 +83,9 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	}
 }
 
-void UOverlayWidgetController::OnInitializeStartupAbilities(UKDAbilitySystemComponent* KDAbilitySystemComponent)
+void UOverlayWidgetController::OnXPChanged(int32 NewXP)
 {
-	if (!KDAbilitySystemComponent->bStartupAbilitiesGiven) return;
-
-	FForEachAbility BroadcastDelegate;
-	BroadcastDelegate.BindLambda( 
-		[this, KDAbilitySystemComponent] (const FGameplayAbilitySpec& AbilitySpec)
-		{
-			FKDAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(KDAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
-			Info.InputTag = KDAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
-			AbilityInfoDelegate.Broadcast(Info);
-		}
-	);
-	KDAbilitySystemComponent->ForEachAbility(BroadcastDelegate);
-}
-
-void UOverlayWidgetController::OnXPChanged(int32 NewXP) const
-{
-	const AMyPlayerState* KDPlayerState = CastChecked<AMyPlayerState>(PlayerState);
-	const ULevelUpInfo* LevelUpInfo = KDPlayerState->LevelUpInfo;
+	const ULevelUpInfo* LevelUpInfo = GetKDPlayerState()->LevelUpInfo;
 	checkf(LevelUpInfo, TEXT("Unable to find LevelUpInfo. Please fill out MyPlayerState Blueprint"));
 
 	const int32 Level = LevelUpInfo->FindLevelForXP(NewXP);
