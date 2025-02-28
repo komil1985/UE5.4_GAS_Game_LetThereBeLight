@@ -9,7 +9,10 @@
 
 class UOverlayWidgetController;
 class UAttributeMenuWidgetController;
+class USpellMenuWidgetController;
 class UAbilitySystemComponent;
+struct FWidgetControllerParams;
+
 /**
  * 
  */
@@ -18,12 +21,17 @@ class LETTHEREBELIGHT_API UKDAbilitySystemLibrary : public UBlueprintFunctionLib
 {
 	GENERATED_BODY()
 public:
+	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
+	static bool MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, AKDHUD*& OutKDHUD);
 
-	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | WidgetController")
+	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContextObject);
 
-	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | WidgetController")
+	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
+	static USpellMenuWidgetController* GetSpellMenuWidgetController(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | Character Class Defaults")
 	static void InitilizeDefaultAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* ASC);

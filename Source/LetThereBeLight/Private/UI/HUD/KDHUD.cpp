@@ -4,8 +4,8 @@
 #include "UI/HUD/KDHUD.h"
 #include "UI/Widget/KDUserWidget.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
-#include "UI/WidgetController/KDWidgetController.h"
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
+#include "UI/WidgetController/SpellMenuWidgetController.h"
 
 
 UOverlayWidgetController* AKDHUD::GetOverlayWidgetController(const FWidgetControllerParams& WCParams)
@@ -28,6 +28,17 @@ UAttributeMenuWidgetController* AKDHUD::GetAttributeMenuWidgetController(const F
 		AttributeMenuWidgetController->BindCallbacksToDependencies();
 	}
 	return AttributeMenuWidgetController;
+}
+
+USpellMenuWidgetController* AKDHUD::GetSpellMenuWidgetController(const FWidgetControllerParams& WCParams)
+{
+	if (SpellMenuWidgetController == nullptr)
+	{
+		SpellMenuWidgetController = NewObject<USpellMenuWidgetController>(this, SpellMenuWidgetControllerClass);
+		SpellMenuWidgetController->SetWidgetControllerParams(WCParams);
+		SpellMenuWidgetController->BindCallbacksToDependencies();
+	}
+	return SpellMenuWidgetController;
 }
 
 void AKDHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)

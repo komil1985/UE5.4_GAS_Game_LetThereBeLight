@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class LETTHEREBELIGHT_API USpellMenuWidgetController : public UKDWidgetController
 {
 	GENERATED_BODY()

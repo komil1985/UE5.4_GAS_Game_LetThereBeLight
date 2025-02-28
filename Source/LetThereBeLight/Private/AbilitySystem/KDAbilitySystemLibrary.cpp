@@ -4,8 +4,8 @@
 #include "AbilitySystem/KDAbilitySystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Characters/Player/MyPlayerState.h"
-#include "UI/WidgetController/KDWidgetController.h"
 #include <UI/HUD/KDHUD.h>
+#include "UI/WidgetController/KDWidgetController.h"
 #include <GameMode/MyGameModeBase.h>
 #include <AbilitySystemComponent.h>
 #include "Abilities/GameplayAbility.h"
@@ -13,19 +13,36 @@
 #include <Interactions/CombatInterface.h>
 #include "Engine/OverlapResult.h"
 
-UOverlayWidgetController* UKDAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
+bool UKDAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, AKDHUD*& OutKDHUD)
 {
 	if (APlayerController* PC = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
 	{
-		if (AKDHUD* KDHud = Cast<AKDHUD>(PC->GetHUD()))
+		OutKDHUD = Cast<AKDHUD>(PC->GetHUD());
+		if (OutKDHUD)
 		{
 			AMyPlayerState* PS = PC->GetPlayerState<AMyPlayerState>();
 			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
 			UAttributeSet* AS = PS->GetAttributeSet();
-			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
 
-			return KDHud->GetOverlayWidgetController(WidgetControllerParams);
+			OutWCParams.PlayerController = PC;
+			OutWCParams.PlayerState = PS;
+			OutWCParams.AbilitySystemComponent = ASC;
+			OutWCParams.AttributeSet = AS;
+
+			return true;
 		}
+	}
+	return false;
+}
+
+UOverlayWidgetController* UKDAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
+{
+	FWidgetControllerParams WCParams;
+	AKDHUD* KDHUD = nullptr;
+
+	if (MakeWidgetControllerParams(WorldContextObject, WCParams, KDHUD))
+	{
+		return KDHUD->GetOverlayWidgetController(WCParams);
 	}
 
 	return nullptr;
@@ -33,17 +50,24 @@ UOverlayWidgetController* UKDAbilitySystemLibrary::GetOverlayWidgetController(co
 
 UAttributeMenuWidgetController* UKDAbilitySystemLibrary::GetAttributeMenuWidgetController(const UObject* WorldContextObject)
 {
-	if (APlayerController* PC = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
-	{
-		if (AKDHUD* KDHud = Cast<AKDHUD>(PC->GetHUD()))
-		{
-			AMyPlayerState* PS = PC->GetPlayerState<AMyPlayerState>();
-			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
-			UAttributeSet* AS = PS->GetAttributeSet();
-			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
+	FWidgetControllerParams WCParams;
+	AKDHUD* KDHUD = nullptr;
 
-			return KDHud->GetAttributeMenuWidgetController(WidgetControllerParams);
-		}
+	if (MakeWidgetControllerParams(WorldContextObject, WCParams, KDHUD))
+	{
+		return KDHUD->GetAttributeMenuWidgetController(WCParams);
+	}
+	return nullptr;
+}
+
+USpellMenuWidgetController* UKDAbilitySystemLibrary::GetSpellMenuWidgetController(const UObject* WorldContextObject)
+{
+	FWidgetControllerParams WCParams;
+	AKDHUD* KDHUD = nullptr;
+
+	if (MakeWidgetControllerParams(WorldContextObject, WCParams, KDHUD))
+	{
+		return KDHUD->GetSpellMenuWidgetController(WCParams);
 	}
 	return nullptr;
 }
