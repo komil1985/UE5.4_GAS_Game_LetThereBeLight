@@ -177,6 +177,7 @@ void UKDAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 			AbilitySpec.DynamicAbilityTags.AddTag(FKDGameplayTags::Get().Abilities_Status_Eligible);
 			GiveAbility(AbilitySpec);
 			MarkAbilitySpecDirty(AbilitySpec);
+			ClientUpdateAbilityStatus(Info.AbilityTag, FKDGameplayTags::Get().Abilities_Status_Eligible);
 		}
 	}
 }
@@ -190,6 +191,11 @@ void UKDAbilitySystemComponent::OnRep_ActivateAbilities()
 		bStartupAbilitiesGiven = true;
 		AbilitiesGivenDelegate.Broadcast();
 	}
+}
+
+void UKDAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+{
+	AbilityStatusChanged.Broadcast(AbilityTag, StatusTag);
 }
 
 void UKDAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle) const

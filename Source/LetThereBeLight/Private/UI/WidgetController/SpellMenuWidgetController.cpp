@@ -2,7 +2,8 @@
 
 
 #include "UI/WidgetController/SpellMenuWidgetController.h"
-
+#include "AbilitySystem/KDAbilitySystemComponent.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 
 void USpellMenuWidgetController::BroadcastInitialValues()
 {
@@ -11,5 +12,15 @@ void USpellMenuWidgetController::BroadcastInitialValues()
 
 void USpellMenuWidgetController::BindCallbacksToDependencies()
 {
-
+	GetKDAbilitySystemComponent()->AbilityStatusChanged.AddLambda(
+		[this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+		{
+			if (AbilityInfo)
+			{
+				FKDAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+				Info.StatusTag = StatusTag;
+				AbilityInfoDelegate.Broadcast(Info);
+			}
+		}
+	);
 }

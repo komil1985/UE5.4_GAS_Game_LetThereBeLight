@@ -145,6 +145,11 @@ void APlayerCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
 	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
 	check(MyPlayerState);
 	MyPlayerState->AddToLevel(InPlayerLevel);
+
+	if (UKDAbilitySystemComponent* KDASC = Cast<UKDAbilitySystemComponent>(GetAbilitySystemComponent()))
+	{
+		KDASC->UpdateAbilityStatuses(MyPlayerState->GetPlayerLevel());
+	}
 }
 
 void APlayerCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
