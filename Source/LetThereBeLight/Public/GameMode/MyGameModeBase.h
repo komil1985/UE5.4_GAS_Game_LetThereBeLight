@@ -7,7 +7,7 @@
 #include "MyGameModeBase.generated.h"
 
 
-
+class UAbilityInfo;
 class UCharacterClassInfo;
 /**
  * 
@@ -20,4 +20,7 @@ class LETTHEREBELIGHT_API AMyGameModeBase : public AGameModeBase
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")
 	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Ability Info")
+	TObjectPtr<UAbilityInfo> AbilityInfo;
 };

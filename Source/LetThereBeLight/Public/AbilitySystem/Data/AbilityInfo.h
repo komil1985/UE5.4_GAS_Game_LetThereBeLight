@@ -7,6 +7,9 @@
 #include <GameplayTagContainer.h>
 #include "AbilityInfo.generated.h"
 
+
+class UGameplayAbility;
+
 USTRUCT(BlueprintType)
 struct FKDAbilityInfo
 {
@@ -29,6 +32,12 @@ struct FKDAbilityInfo
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<const UMaterialInstance> BackgroundMaterial = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	int32 LevelRequirement;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UGameplayAbility> Ability;
 };
 
 /**

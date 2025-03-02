@@ -167,14 +167,27 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FName("Abilities.Summon"),
 		FString("Summon Ability Tag")
 	);
-	GameplayTags.Abilities_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Abilities.Fire.FireBolt"),
+
+	////   Fire Abilities and Cooldown
+	GameplayTags.Abilities_Fire_FireBall = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Fire.FireBall"),
 		FString("FireBolt Ability Tag")
 	);
-	GameplayTags.CoolDown_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("CoolDown.Fire.FireBolt"),
-		FString("FireBolt Cooldown Tag")
+	GameplayTags.CoolDown_Fire_FireBall = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("CoolDown.Fire.FireBall"),
+		FString("FireBall Cooldown Tag")
 	);
+
+	////   Lightning Abilities and Cooldown
+	GameplayTags.Abilities_Lightning_LightningBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Lightning.LightningBolt"),
+		FString("LightningBolt Ability Tag")
+	);
+	GameplayTags.CoolDown_Lightning_LightningBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("CoolDown.Lightning.LightningBolt"),
+		FString("LightningBolt Cooldown Tag")
+	);
+
 	GameplayTags.Abilities_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.HitReact"),
 		FString("Hit React Ability Tag")

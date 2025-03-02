@@ -78,9 +78,13 @@ public:
 	FGameplayTag Abilities_Type_Passive;
 	FGameplayTag Abilities_Type_None;
 
-	//
-	FGameplayTag Abilities_Fire_FireBolt;
-	FGameplayTag CoolDown_Fire_FireBolt;
+	// Type Of Ability Tags
+	FGameplayTag Abilities_Fire_FireBall;
+	FGameplayTag Abilities_Lightning_LightningBolt;
+
+	// Cooldown Ability Tags
+	FGameplayTag CoolDown_Fire_FireBall;
+	FGameplayTag CoolDown_Lightning_LightningBolt;
 
 	// Combat Socket Tags
 	FGameplayTag CombatSocket_Weapon;

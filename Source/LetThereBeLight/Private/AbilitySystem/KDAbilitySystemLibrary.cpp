@@ -130,10 +130,18 @@ int32 UKDAbilitySystemLibrary::GetXPRewardForClassAndLevel(const UObject* WorldC
 
 UCharacterClassInfo* UKDAbilitySystemLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
 {
-	AMyGameModeBase* MyGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	const AMyGameModeBase* MyGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
 	if (MyGameMode == nullptr) return nullptr;
 
 	return MyGameMode->CharacterClassInfo;
+}
+
+UAbilityInfo* UKDAbilitySystemLibrary::GetAbilityInfo(const UObject* WorldContextObject)
+{
+	const AMyGameModeBase* MyGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (MyGameMode == nullptr) return nullptr;
+	
+	return MyGameMode->AbilityInfo;
 }
 
 bool UKDAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)
