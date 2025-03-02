@@ -35,6 +35,7 @@ void UKDWidgetController::BroadcastAbilityInfo()
 		{
 			FKDAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(KDAbilitySystemComponent->GetAbilityTagFromSpec(AbilitySpec));
 			Info.InputTag = KDAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
+			Info.StatusTag = KDAbilitySystemComponent->GetStatusFromSpec(AbilitySpec);
 			AbilityInfoDelegate.Broadcast(Info);
 		}
 	);
