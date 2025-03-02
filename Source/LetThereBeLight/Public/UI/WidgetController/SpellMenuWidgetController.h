@@ -17,4 +17,7 @@ class LETTHEREBELIGHT_API USpellMenuWidgetController : public UKDWidgetControlle
 public:
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerStatChangedSignature SpellPointChanged;
 };
