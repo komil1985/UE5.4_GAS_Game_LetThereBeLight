@@ -2,11 +2,13 @@
 
 
 #include "AbilitySystem/KDAbilitySystemComponent.h"
+#include "AbilitySystem/KDAbilitySystemLibrary.h"
 #include "Misc/KDGameplayTags.h"
 #include <AbilitySystem/Abilities/KDGameplayAbility.h>
 #include "LetThereBeLight/KDLogChannles.h"
 #include <Interactions/PlayerInterface.h>
 #include <AbilitySystemBlueprintLibrary.h>
+#include <AbilitySystem/Data/AbilityInfo.h>
 
 void UKDAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -120,6 +122,22 @@ FGameplayTag UKDAbilitySystemComponent::GetStatusFromSpec(const FGameplayAbility
 	return FGameplayTag();
 }
 
+FGameplayAbilitySpec* UKDAbilitySystemComponent::GetSpecFromAbilityTag(const FGameplayTag& AbilityTag)
+{
+	FScopedAbilityListLock ActiveScopeLock(*this);
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		for (FGameplayTag Tag : AbilitySpec.Ability.Get()->AbilityTags)
+		{
+			if (Tag.MatchesTag(AbilityTag))
+			{
+				return &AbilitySpec;
+			}
+		}
+	}
+	return nullptr;
+}
+
 void UKDAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& AttributeTag)
 {
 	if (GetAvatarActor()->Implements<UPlayerInterface>())
@@ -142,6 +160,24 @@ void UKDAbilitySystemComponent::ServerUpgradeAttribute_Implementation(const FGam
 	if (GetAvatarActor()->Implements<UPlayerInterface>())
 	{
 		IPlayerInterface::Execute_AddToAttributePoints(GetAvatarActor(), -1);
+	}
+}
+
+void UKDAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
+{
+	UAbilityInfo* AbilityInfo = UKDAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
+	for (const FKDAbilityInfo& Info : AbilityInfo->AbilityInformation)
+	{
+		if (!Info.AbilityTag.IsValid()) continue;
+		if (Level < Info.LevelRequirement) continue;
+
+		if (GetSpecFromAbilityTag(Info.AbilityTag) == nullptr)			
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Info.Ability, 1);
+			AbilitySpec.DynamicAbilityTags.AddTag(FKDGameplayTags::Get().Abilities_Status_Eligible);
+			GiveAbility(AbilitySpec);
+			MarkAbilitySpecDirty(AbilitySpec);
+		}
 	}
 }
 
