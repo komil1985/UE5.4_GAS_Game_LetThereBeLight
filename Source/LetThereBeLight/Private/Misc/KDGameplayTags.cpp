@@ -159,6 +159,10 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 
 
 	// Abilities Tags
+	GameplayTags.Abilities_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.None"),
+		FString("None Abilities Tag is like nullptr for ability tag")
+	);
 	GameplayTags.Abilities_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Attack"),
 		FString("Attack Ability Tag")
