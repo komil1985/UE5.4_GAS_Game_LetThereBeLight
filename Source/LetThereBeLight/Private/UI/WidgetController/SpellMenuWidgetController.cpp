@@ -18,6 +18,15 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 	GetKDAbilitySystemComponent()->AbilityStatusChanged.AddLambda(
 		[this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
 		{
+			if (SelectedAbility.Ability.MatchesTagExact(AbilityTag))
+			{
+				SelectedAbility.Status = StatusTag;
+				bool bEnableSpendpoints = false;
+				bool bEnableEquip = false;
+				ShouldEnableButton(StatusTag, CurrentSpellPoints, bEnableSpendpoints, bEnableEquip);
+				SpellGlobeSelectedDelegate.Broadcast(bEnableSpendpoints, bEnableEquip);
+			}
+
 			if (AbilityInfo)
 			{
 				FKDAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
@@ -31,6 +40,12 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 		[this](int32 SpellPoints)
 		{
 			SpellPointChanged.Broadcast(SpellPoints);
+			CurrentSpellPoints = SpellPoints;
+			
+			bool bEnableSpendpoints = false;
+			bool bEnableEquip = false;
+			ShouldEnableButton(SelectedAbility.Status, CurrentSpellPoints, bEnableSpendpoints, bEnableEquip);
+			SpellGlobeSelectedDelegate.Broadcast(bEnableSpendpoints, bEnableEquip);
 		}
 	);
 }
@@ -53,6 +68,9 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 	{
 		AbilityStatus = GetKDAbilitySystemComponent()->GetStatusFromSpec(*AbilitySpec);
 	}
+
+	SelectedAbility.Ability = AbilityTag;
+	SelectedAbility.Status = AbilityStatus;
 
 	bool bEnableSpendpoints = false;
 	bool bEnableEquip = false;
