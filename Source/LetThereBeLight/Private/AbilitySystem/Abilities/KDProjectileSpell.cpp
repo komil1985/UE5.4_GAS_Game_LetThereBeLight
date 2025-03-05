@@ -9,25 +9,6 @@
 #include "Misc/KDGameplayTags.h"
 
 
-
-FString UKDProjectileSpell::GetDescription(int32 Level)
-{
-	const int32 Damage = DamageTypes[FKDGameplayTags::Get().Damage_Fire].GetValueAtLevel(Level);
-	if (Level == 1)
-	{
-		return FString::Printf(TEXT("<Title>FIRE BALL</>\n\n<Default>Launches a fire ball exploding on impact dealing : </><Damage>%d</><Default> fire damage with a chance to burn</>\n\n<Small>Level: </><Level>%d</>"), Damage, Level);
-	}
-	else
-	{
-		return FString::Printf(TEXT("<Title>FIRE BALL</>\n\n<Default>Launches %d fire ball exploding on impact dealing : </><Damage>%d</><Default> fire damage with a chance to burn</>\n\n<Small>Level: </><Level>%d</>"),FMath::Min(Level, NumProjectiles), Damage, Level);
-	}
-}
-FString UKDProjectileSpell::GetNextLevelDescription(int32 Level)
-{
-	const int32 Damage = DamageTypes[FKDGameplayTags::Get().Damage_Fire].GetValueAtLevel(Level);
-	return FString::Printf(TEXT("<Title>NEXT LEVEL: </>\n\n<Default>Launches %d fire ball exploding on impact dealing : </><Damage>%d</><Default> fire damage with a chance to burn</>\n\n<Small>Level: </><Level>%d</>"), FMath::Min(Level, NumProjectiles), Damage, Level);
-}
-
 void UKDProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
