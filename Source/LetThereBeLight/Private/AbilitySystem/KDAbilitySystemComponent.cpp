@@ -208,6 +208,23 @@ void UKDAbilitySystemComponent::ServerSpendSpellPoint_Implementation(const FGame
 	}
 }
 
+bool UKDAbilitySystemComponent::GetDescriptionByAbilityTag(const FGameplayTag& AbilityTag, FString& OutDescription, FString& OutNextLevelDescription)
+{
+	if (const FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag(AbilityTag))
+	{
+		if (UKDGameplayAbility* KDAbility = Cast<UKDGameplayAbility>(AbilitySpec->Ability))
+		{
+			OutDescription = KDAbility->GetDescription(AbilitySpec->Level);
+			OutNextLevelDescription = KDAbility->GetNextLevelDescription(AbilitySpec->Level + 1);
+			return true;
+		}
+	}
+	const UAbilityInfo* AbilityInfo = UKDAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
+	OutDescription = UKDGameplayAbility::GetLockedDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+	OutNextLevelDescription = FString();
+	return false;
+}
+
 void UKDAbilitySystemComponent::OnRep_ActivateAbilities()
 {
 	Super::OnRep_ActivateAbilities();
