@@ -124,6 +124,21 @@ void USpellMenuWidgetController::EquipButtonPressed()
 
 	WaitForEquipDelegate.Broadcast(AbilityTypeTag);
 	bWaitingForEquipSelection = true;
+
+	const FGameplayTag SelectedStatus = GetKDAbilitySystemComponent()->GetStatusFromAbilityTag(SelectedAbility.Ability);
+	if (SelectedStatus.MatchesTagExact(FKDGameplayTags::Get().Abilities_Status_Equipped))
+	{
+		SelectedSlot = GetKDAbilitySystemComponent()->GetInputTagFromAbilityTag(SelectedAbility.Ability);
+	}
+}
+
+void USpellMenuWidgetController::SpellRowGlobePressed(const FGameplayTag& SlotTag, const FGameplayTag& AbilityTypeTag)
+{
+	if (!bWaitingForEquipSelection) return;
+	const FGameplayTag& SelectedAbilityTypeTag = AbilityInfo->FindAbilityInfoForTag(SelectedAbility.Ability).AbilityTypeTag;
+	if (!SelectedAbilityTypeTag.MatchesTagExact(AbilityTypeTag)) return;
+	
+
 }
 
 void USpellMenuWidgetController::ShouldEnableButton(const FGameplayTag& AbilityStatus, int32 SpellPoints, bool& bShouldEnableSpellPointsButton, bool& bShouldEnableEquipButton)
