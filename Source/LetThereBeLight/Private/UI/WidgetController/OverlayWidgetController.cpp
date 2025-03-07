@@ -7,6 +7,7 @@
 #include <AbilitySystem/Data/AbilityInfo.h>
 #include <Characters/Player/MyPlayerState.h>
 #include "AbilitySystem/Data/LevelUpInfo.h"
+#include "Misc/KDGameplayTags.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -56,6 +57,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	
 	if (GetKDAbilitySystemComponent())
 	{
+		GetKDAbilitySystemComponent()->AbilityEquipped.AddUObject(this, &UOverlayWidgetController::OnAbilityEquipped);
 		if (GetKDAbilitySystemComponent()->bStartupAbilitiesGiven)
 		{
 			BroadcastAbilityInfo();
@@ -102,4 +104,20 @@ void UOverlayWidgetController::OnXPChanged(int32 NewXP)
 		OnXpPercentChangedDelegate.Broadcast(XpBarPercent);
 	}
 
+}
+
+void UOverlayWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PreviousSlot) const
+{
+	const FKDGameplayTags GameplayTags = FKDGameplayTags::Get();
+
+	FKDAbilityInfo LastSlotInfo;
+	LastSlotInfo.StatusTag = GameplayTags.Abilities_Status_Unlocked;
+	LastSlotInfo.InputTag = PreviousSlot;
+	LastSlotInfo.AbilityTag = GameplayTags.Abilities_None;
+	AbilityInfoDelegate.Broadcast(LastSlotInfo);
+
+	FKDAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+	Info.StatusTag = Status;
+	Info.InputTag = Slot;
+	AbilityInfoDelegate.Broadcast(Info);
 }
