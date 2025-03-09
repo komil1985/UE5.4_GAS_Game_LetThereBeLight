@@ -5,6 +5,42 @@
 #include "GameplayEffectTypes.h"
 #include "KDAbilityTypes.generated.h"
 
+USTRUCT(BlueprintType)
+struct FDamageEffectParams
+{
+	GENERATED_BODY();
+
+	FDamageEffectParams() {}
+
+	UPROPERTY()
+	TObjectPtr<UObject> WorldContextObject = nullptr;
+
+	UPROPERTY()
+	TSubclassOf<UGameplayEffect> DamageGameplayEffectClass = nullptr;
+
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> SourceAbilitySystemComponent;
+
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> TargetAbilitySystemComponent;
+
+	UPROPERTY()
+	float BaseDamage = 0.0f;
+	UPROPERTY()
+	float AbilityLevel = 1.0f;
+	UPROPERTY()
+	FGameplayTag DamageType = FGameplayTag();
+
+	UPROPERTY()
+	float DebuffChance = 0.0f;
+	UPROPERTY()
+	float DebuffDamage = 0.0f;
+	UPROPERTY()
+	float DebuffDuration = 0.0f;
+	UPROPERTY()
+	float DebuffFrequency = 0.0f;
+};
+
 
 USTRUCT(BlueprintType)
 struct FKDGameplayEffectContext : public FGameplayEffectContext
@@ -18,8 +54,8 @@ public:
 	void SetIsBlockedHit(bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit; }
 	void SetIsCriticalHit(bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
 
-	// Returns the actual struct used for serialization, subclassed must override this
-	virtual UScriptStruct* GetScriptStruct() const { return StaticStruct(); }
+	// Returns the actual struct used for serialization, subclasses must override this
+	virtual UScriptStruct* GetScriptStruct() const { return FGameplayEffectContext::StaticStruct(); }
 
 	// Creates a copy of this context, used to duplicate for later modifications
 	virtual FKDGameplayEffectContext* Duplicate() const

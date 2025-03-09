@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystem/Abilities/KDGameplayAbility.h"
 #include "Interactions/CombatInterface.h"
+#include "KDAbilityTypes.h"
 #include "KDDamageGameplayAbility.generated.h"
 
 /**
@@ -18,6 +19,8 @@ class LETTHEREBELIGHT_API UKDDamageGameplayAbility : public UKDGameplayAbility
 public:
 	UFUNCTION(BlueprintCallable)
 	void CauseDamage(AActor* TargetActor);
+
+	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr) const;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
