@@ -44,9 +44,29 @@ bool FKDGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bool
 		{
 			RepBits |= 1 << 8;
 		}
+		if (bIsSuccessfulDebuff)
+		{
+			RepBits |= 1 << 9;
+		}
+		if (DebuffDamage)
+		{
+			RepBits |= 1 << 10;
+		}
+		if (DebuffDuration)
+		{
+			RepBits |= 1 << 11;
+		}
+		if (DebuffFrequency)
+		{
+			RepBits |= 1 << 12;
+		}
+		if (DamageType.IsValid())
+		{
+			RepBits |= 1 << 13;
+		}
 	}
 
-	Ar.SerializeBits(&RepBits, 9);
+	Ar.SerializeBits(&RepBits, 13);
 
 	if (RepBits & (1 << 0))
 	{
@@ -96,7 +116,33 @@ bool FKDGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bool
 	{
 		Ar << bIsCriticalHit;
 	}
-
+	if (RepBits & (1 << 9))
+	{
+		Ar << bIsSuccessfulDebuff;
+	}
+	if (RepBits & (1 << 10))
+	{
+		Ar << DebuffDamage;
+	}
+	if (RepBits & (1 << 11))
+	{
+		Ar << DebuffDuration;
+	}
+	if (RepBits & (1 << 12))
+	{
+		Ar << DebuffFrequency;
+	}
+	if (RepBits & (1 << 13))
+	{
+		if (Ar.IsLoading())
+		{
+			if (!DamageType.IsValid())
+			{
+				DamageType = TSharedPtr<FGameplayTag>(new FGameplayTag());
+			}
+		}
+		DamageType->NetSerialize(Ar, Map, bOutSuccess);
+	}
 
 	if (Ar.IsLoading())
 	{

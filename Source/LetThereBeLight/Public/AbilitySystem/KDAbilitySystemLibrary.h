@@ -47,6 +47,21 @@ public:
 	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | Gameplay Effects")
+	static bool IsSuccessfulDebuff(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | Gameplay Effects")
+	static float GetDebuffDamage(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | Gameplay Effects")
+	static float GetDebuffDuration(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | Gameplay Effects")
+	static float GetDebuffFrequency(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | Gameplay Effects")
+	static FGameplayTag GetDamageType(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | Gameplay Effects")
 	static bool IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle);
 
 	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | Gameplay Effects")

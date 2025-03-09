@@ -146,6 +146,54 @@ UAbilityInfo* UKDAbilitySystemLibrary::GetAbilityInfo(const UObject* WorldContex
 	return MyGameMode->AbilityInfo;
 }
 
+bool UKDAbilitySystemLibrary::IsSuccessfulDebuff(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FKDGameplayEffectContext* KDEffectContext = static_cast<const FKDGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return KDEffectContext->IsSuccessfulDebuff();
+	}
+	return false;
+}
+
+float UKDAbilitySystemLibrary::GetDebuffDamage(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FKDGameplayEffectContext* KDEffectContext = static_cast<const FKDGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return KDEffectContext->GetDebuffDamage();
+	}
+	return 0.0f;
+}
+
+float UKDAbilitySystemLibrary::GetDebuffDuration(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FKDGameplayEffectContext* KDEffectContext = static_cast<const FKDGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return KDEffectContext->GetDebuffDuration();
+	}
+	return 0.0f;
+}
+
+float UKDAbilitySystemLibrary::GetDebuffFrequency(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FKDGameplayEffectContext* KDEffectContext = static_cast<const FKDGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return KDEffectContext->GetDebuffFrequency();
+	}
+	return 0.0f;
+}
+
+FGameplayTag UKDAbilitySystemLibrary::GetDamageType(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FKDGameplayEffectContext* KDEffectContext = static_cast<const FKDGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		if (KDEffectContext->GetDamageType().IsValid())
+		{
+			return *KDEffectContext->GetDamageType();
+		}
+	}
+	return FGameplayTag();
+}
+
 bool UKDAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)
 {
 	if (const FKDGameplayEffectContext* KDEffectContext = static_cast<const FKDGameplayEffectContext*>(EffectContextHandle.Get()))

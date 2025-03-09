@@ -131,7 +131,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 			const bool bDebuff = FMath::RandRange(1, 100) < EffectiveDebuffChance;
 			if (bDebuff)
 			{
-
+				// TODO:
 			}
 		}
 	}
