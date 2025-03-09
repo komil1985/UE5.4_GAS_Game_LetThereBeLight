@@ -47,7 +47,6 @@ void UKDProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocation
 		);
 	
 	Projectile->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
-
 	Projectile->FinishSpawning(SpawnTransform);
 
 	//// Gameplay Effect to causing damage
