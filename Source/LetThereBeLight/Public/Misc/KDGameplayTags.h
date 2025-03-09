@@ -62,6 +62,12 @@ public:
 	FGameplayTag Debuff_Stun;
 	FGameplayTag Debuff_Physical;
 
+	// Debuff Paramater Tags
+	FGameplayTag Debuff_Chance;
+	FGameplayTag Debuff_Damage;
+	FGameplayTag Debuff_Duration;
+	FGameplayTag Debuff_Frequency;
+
 	// Resistance Tags
 	FGameplayTag Attributes_Resistance_Fire;
 	FGameplayTag Attributes_Resistance_Ice;
