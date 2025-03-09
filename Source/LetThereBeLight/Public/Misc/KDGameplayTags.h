@@ -35,12 +35,6 @@ public:
 	FGameplayTag Attributes_Secondary_MaxHealth;
 	FGameplayTag Attributes_Secondary_MaxMana;
 
-	// Resistance Tags
-	FGameplayTag Attributes_Resistance_Fire;
-	FGameplayTag Attributes_Resistance_Ice;
-	FGameplayTag Attributes_Resistance_Lightning;
-	FGameplayTag Attributes_Resistance_Physical;
-
 	// Meta Tags
 	FGameplayTag Attributes_Meta_IncomingXP;
 
@@ -61,6 +55,18 @@ public:
 	FGameplayTag Damage_Lightning;
 	FGameplayTag Damage_Physical;
 	FGameplayTag Damage_Magic;
+
+	// Debuff Tags
+	FGameplayTag Debuff_Burn;
+	FGameplayTag Debuff_Freeze;
+	FGameplayTag Debuff_Stun;
+	FGameplayTag Debuff_Physical;
+
+	// Resistance Tags
+	FGameplayTag Attributes_Resistance_Fire;
+	FGameplayTag Attributes_Resistance_Ice;
+	FGameplayTag Attributes_Resistance_Lightning;
+	FGameplayTag Attributes_Resistance_Physical;
 
 	// Attack Types Abilities Tags
 	FGameplayTag Abilities_None;
@@ -103,6 +109,7 @@ public:
 	FGameplayTag Effect_Die;
 
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToDebuffs;
 
 private:
 	static FKDGameplayTags GameplayTags;

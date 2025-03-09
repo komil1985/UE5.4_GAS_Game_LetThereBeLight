@@ -131,6 +131,23 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("Damage Type Is Magic")
 	);
 
+	// Debuff Types Tags
+	GameplayTags.Debuff_Burn = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Burn"),
+		FString("Debuff For Fire Damage")
+	);
+	GameplayTags.Debuff_Freeze = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Freeze"),
+		FString("Debuff For Ice Damage")
+	);
+	GameplayTags.Debuff_Stun = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Stun"),
+		FString("Debuff For Lightning Damage")
+	);
+	GameplayTags.Debuff_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Physical"),
+		FString("Debuff For Melee Damage")
+	);
 
 	// Resistance Types Tags
 	GameplayTags.Attributes_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -268,12 +285,17 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("Tag Granted When Owner Dies")
 	);
 
-
 	// Map of damage types to resistances /////////////////////////////////////////////////////////////////////////////////////////////
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Fire, GameplayTags.Attributes_Resistance_Fire);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Ice, GameplayTags.Attributes_Resistance_Ice);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Lightning, GameplayTags.Attributes_Resistance_Lightning);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Physical, GameplayTags.Attributes_Resistance_Physical);
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	 
+	
+	// Map of damage types to debuffs     /////////////////////////////////////////////////////////////////////////////////////////////
+	GameplayTags.DamageTypesToDebuffs.Add(GameplayTags.Damage_Fire, GameplayTags.Debuff_Burn);
+	GameplayTags.DamageTypesToDebuffs.Add(GameplayTags.Damage_Ice, GameplayTags.Debuff_Freeze);
+	GameplayTags.DamageTypesToDebuffs.Add(GameplayTags.Damage_Lightning, GameplayTags.Debuff_Stun);
+	GameplayTags.DamageTypesToDebuffs.Add(GameplayTags.Damage_Physical, GameplayTags.Debuff_Physical);
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

@@ -2,12 +2,11 @@
 
 
 #include "AbilitySystem/Abilities/KDFireBall.h"
-#include "Misc/KDGameplayTags.h"
 
 
 FString UKDFireBall::GetDescription(int32 Level)
 {
-	const int32 Damage = GetDamageByDamageType(Level, FKDGameplayTags::Get().Damage_Fire);
+	const int32 ScaledDamage = Damage.GetValueAtLevel(Level);
 	const float ManaCost = FMath::Abs(GetManaCost(Level));
 	const float Cooldown = GetCooldown(Level);
 
@@ -31,7 +30,7 @@ FString UKDFireBall::GetDescription(int32 Level)
 			Level, 
 			ManaCost,
 			Cooldown,
-			Damage);
+			ScaledDamage);
 	}
 	else
 	{
@@ -54,12 +53,12 @@ FString UKDFireBall::GetDescription(int32 Level)
 			ManaCost,
 			Cooldown,
 			FMath::Min(Level, NumProjectiles), 
-			Damage);
+			ScaledDamage);
 	}
 }
 FString UKDFireBall::GetNextLevelDescription(int32 Level)
 {
-	const int32 Damage = GetDamageByDamageType(Level, FKDGameplayTags::Get().Damage_Fire);
+	const int32 ScaledDamage = Damage.GetValueAtLevel(Level);
 	const float ManaCost = FMath::Abs(GetManaCost(Level));
 	const float Cooldown = GetCooldown(Level);
 
@@ -82,5 +81,5 @@ FString UKDFireBall::GetNextLevelDescription(int32 Level)
 		ManaCost,
 		Cooldown,
 		FMath::Min(Level, NumProjectiles), 
-		Damage);
+		ScaledDamage);
 }
