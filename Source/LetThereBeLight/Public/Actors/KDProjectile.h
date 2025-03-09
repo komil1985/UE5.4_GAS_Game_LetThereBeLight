@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "GameplayEffectTypes.h"
+#include "KDAbilityTypes.h"
 #include "KDProjectile.generated.h"
 
 class USphereComponent;
@@ -24,10 +24,12 @@ public:
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
 	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
-	FGameplayEffectSpecHandle DamageEffectSpecHandle;
+	FDamageEffectParams DamageEffectParams;
 
 	void SphereComp();
 	void ProjectileMoveComp();
+	void OnHit();
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
