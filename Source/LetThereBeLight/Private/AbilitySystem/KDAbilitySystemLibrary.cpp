@@ -12,6 +12,8 @@
 #include <KDAbilityTypes.h>
 #include <Interactions/CombatInterface.h>
 #include "Engine/OverlapResult.h"
+#include <Misc/KDGameplayTags.h>
+#include <AbilitySystemBlueprintLibrary.h>
 
 bool UKDAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, AKDHUD*& OutKDHUD)
 {
@@ -207,8 +209,27 @@ bool UKDAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondActo
 	const bool bSecondIsEnemy = SecondActor->ActorHasTag(FName("Enemy"));
 
 	const bool bBothArePlayers = bFirstIsPlayer && bSecondIsPlayer;
-	const bool bBothareEneies = bFirstIsEnemy && bSecondIsEnemy;
-	const bool bFriends = bBothArePlayers || bBothareEneies;
+	const bool bBothAreEnemies = bFirstIsEnemy && bSecondIsEnemy;
+	const bool bFriends = bBothArePlayers || bBothAreEnemies;
 
 	return !bFriends;
+}
+
+FGameplayEffectContextHandle UKDAbilitySystemLibrary::ApplyDamageEffect(const FDamageEffectParams& DamageEffectParams)
+{
+	const FKDGameplayTags& GameplayTags = FKDGameplayTags::Get();
+	const AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
+	FGameplayEffectContextHandle EffectContextHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeEffectContext();
+	EffectContextHandle.AddSourceObject(SourceAvatarActor);
+	const FGameplayEffectSpecHandle SpecHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeOutgoingSpec(DamageEffectParams.DamageGameplayEffectClass, DamageEffectParams.AbilityLevel, EffectContextHandle);
+
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, DamageEffectParams.DamageType, DamageEffectParams.BaseDamage);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Debuff_Chance, DamageEffectParams.DebuffChance);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Debuff_Damage, DamageEffectParams.DebuffDamage);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Debuff_Duration, DamageEffectParams.DebuffDuration);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Debuff_Frequency, DamageEffectParams.DebuffFrequency);
+
+	DamageEffectParams.TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
+
+	return EffectContextHandle;
 }

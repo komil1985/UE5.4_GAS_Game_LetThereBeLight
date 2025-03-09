@@ -5,6 +5,8 @@
 #include "GameplayEffectTypes.h"
 #include "KDAbilityTypes.generated.h"
 
+class UGameplayEffect;
+
 USTRUCT(BlueprintType)
 struct FDamageEffectParams
 {
