@@ -50,6 +50,7 @@ struct FKDGameplayEffectContext : public FGameplayEffectContext
 	GENERATED_BODY()
 
 public:
+	// Getters
 	bool IsBlockedHit() const { return bIsBlockedHit; }
 	bool IsCriticalHit() const { return bIsCriticalHit; }
 	bool IsSuccessfulDebuff() const { return bIsSuccessfulDebuff; }
@@ -58,12 +59,14 @@ public:
 	float GetDebuffFrequency() const { return DebuffFrequency; }
 	TSharedPtr<FGameplayTag> GetDamageType() const { return DamageType; }
 
+	// Setters
 	void SetIsBlockedHit(bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit; }
 	void SetIsCriticalHit(bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
 	void SetIsSuccessfulDebuff(bool bInIsDebuff) { bIsSuccessfulDebuff = bInIsDebuff; }
 	void SetDebuffDamage(float InDamage) { DebuffDamage = InDamage; }
 	void SetDebuffDuration(float InDuration) { DebuffDuration = InDuration; }
 	void SetDebuffFrequency(float InFrequency) { DebuffFrequency = InFrequency; }
+	void SetDamageType(TSharedPtr<FGameplayTag>InDamageType) { DamageType = InDamageType; }
 
 	// Returns the actual struct used for serialization, subclasses must override this
 	virtual UScriptStruct* GetScriptStruct() const { return FGameplayEffectContext::StaticStruct(); }
