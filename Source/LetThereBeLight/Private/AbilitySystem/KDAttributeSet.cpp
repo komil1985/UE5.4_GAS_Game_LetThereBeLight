@@ -11,6 +11,7 @@
 #include <Interactions/CombatInterface.h>
 #include <Characters/Player/MyPlayerController.h>
 #include "Interactions/PlayerInterface.h"
+#include <KDAbilityTypes.h>
 
 
 UKDAttributeSet::UKDAttributeSet()
@@ -173,6 +174,15 @@ void UKDAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 
 	FEffectProperties Props;
 	SetEffectProperties(Data, Props);
+
+	// Checks to see if target character is dead or not to apply effects
+	if (Props.TargetCharacter->Implements<UCombatInterface>())
+	{
+		if (ICombatInterface::Execute_IsDead(Props.TargetCharacter))
+		{
+			return;
+		}
+	}
 	
 	// Handle Health and Mana
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
@@ -237,6 +247,44 @@ void UKDAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 
 void UKDAttributeSet::HandleDebuff(const FEffectProperties& Props)
 {
+	const FKDGameplayTags& GameplayTags = FKDGameplayTags::Get();
+	FGameplayEffectContextHandle EffectContext = Props.SourceAbilitySystemComponent->MakeEffectContext();
+	EffectContext.AddSourceObject(Props.SourceAvatarActor);
+
+	const FGameplayTag DamageType = UKDAbilitySystemLibrary::GetDamageType(Props.EffectContextHandle);
+	const float DebuffDamage = UKDAbilitySystemLibrary::GetDebuffDamage(Props.EffectContextHandle);
+	const float DebuffDuration = UKDAbilitySystemLibrary::GetDebuffDuration(Props.EffectContextHandle);
+	const float DebuffFrequrncy = UKDAbilitySystemLibrary::GetDebuffFrequency(Props.EffectContextHandle);
+
+	FString DebuffName = FString::Printf(TEXT("DynamicDebuff_%s"), *DamageType.ToString());
+
+	UGameplayEffect* Effect = NewObject<UGameplayEffect>(GetTransientPackage(), FName(DebuffName));
+
+	Effect->DurationPolicy = EGameplayEffectDurationType::HasDuration;
+	Effect->Period = DebuffFrequrncy;
+	Effect->DurationMagnitude = FScalableFloat(DebuffDuration);
+
+	Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);
+
+	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;
+	Effect->StackLimitCount = 1;
+
+	const int32 Index = Effect->Modifiers.Num();
+	Effect->Modifiers.Add(FGameplayModifierInfo());
+	FGameplayModifierInfo& ModifierInfo = Effect->Modifiers[Index];
+
+	ModifierInfo.ModifierMagnitude = FScalableFloat(DebuffDamage);
+	ModifierInfo.ModifierOp = EGameplayModOp::Additive;
+	ModifierInfo.Attribute = UKDAttributeSet::GetIncomingDamageAttribute();
+
+	if (FGameplayEffectSpec* MutableSpec = new FGameplayEffectSpec(Effect, EffectContext, 1.0f))
+	{
+		FKDGameplayEffectContext* KDContext = static_cast<FKDGameplayEffectContext*>(MutableSpec->GetContext().Get());
+		TSharedPtr<FGameplayTag> DebuffDamageType = MakeShareable(new FGameplayTag(DamageType));
+		KDContext->SetDamageType(DebuffDamageType);
+
+		Props.TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*MutableSpec);
+	}
 
 }
 
