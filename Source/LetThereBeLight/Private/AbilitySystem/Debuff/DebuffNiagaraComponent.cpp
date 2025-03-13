@@ -15,7 +15,7 @@ void UDebuffNiagaraComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	/*AActor* OwnerActor = GetOwner();
+	AActor* OwnerActor = GetOwner();
 	if (!OwnerActor)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("DebuffNiagaraComponent has no owner."));
@@ -27,19 +27,19 @@ void UDebuffNiagaraComponent::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Owner does not implement ICombatInterface."));
 		return;
-	}*/
+	}
 
-	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetOwner());
-	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwner());
+	//ICombatInterface* CombatInterface = Cast<ICombatInterface>(OwnerActor);
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwnerActor);
 	if (ASC)
 	{
 		ASC->RegisterGameplayTagEvent(DebuffTag, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &UDebuffNiagaraComponent::DebuffTagChanged);
 	}
 	else if (CombatInterface)
 	{
-		CombatInterface->GetOnASCRegisteredDelegate().AddWeakLambda(this, [this](UAbilitySystemComponent* NewASC)
+		CombatInterface->GetOnASCRegisteredDelegate().AddWeakLambda(this, [this](UAbilitySystemComponent* InASC)
 			{
-				NewASC->RegisterGameplayTagEvent(DebuffTag, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &UDebuffNiagaraComponent::DebuffTagChanged);
+				InASC->RegisterGameplayTagEvent(DebuffTag, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &UDebuffNiagaraComponent::DebuffTagChanged);
 			}
 		);
 	}
@@ -51,7 +51,9 @@ void UDebuffNiagaraComponent::BeginPlay()
 
 void UDebuffNiagaraComponent::DebuffTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
-	if (NewCount > 0)
+	const bool bOwnerValid = IsValid(GetOwner());
+	const bool bOwnerAlive = GetOwner()->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsDead(GetOwner());
+	if (NewCount > 0 && bOwnerAlive && bOwnerValid)
 	{
 		Activate();
 	}

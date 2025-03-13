@@ -14,33 +14,41 @@ struct FDamageEffectParams
 
 	FDamageEffectParams() {}
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UObject> WorldContextObject = nullptr;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TSubclassOf<UGameplayEffect> DamageGameplayEffectClass = nullptr;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UAbilitySystemComponent> SourceAbilitySystemComponent;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UAbilitySystemComponent> TargetAbilitySystemComponent;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float BaseDamage = 0.0f;
-	UPROPERTY()
+
+	UPROPERTY(BlueprintReadWrite)
 	float AbilityLevel = 1.0f;
-	UPROPERTY()
+
+	UPROPERTY(BlueprintReadWrite)
 	FGameplayTag DamageType = FGameplayTag();
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DebuffChance = 0.0f;
-	UPROPERTY()
+
+	UPROPERTY(BlueprintReadWrite)
 	float DebuffDamage = 0.0f;
-	UPROPERTY()
+
+	UPROPERTY(BlueprintReadWrite)
 	float DebuffDuration = 0.0f;
-	UPROPERTY()
+
+	UPROPERTY(BlueprintReadWrite)
 	float DebuffFrequency = 0.0f;
+
+	UPROPERTY(BlueprintReadWrite)
+	float DeathImpulseMagnitude = 0.0f;
 };
 
 

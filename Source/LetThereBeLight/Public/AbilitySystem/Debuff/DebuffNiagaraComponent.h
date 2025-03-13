@@ -18,7 +18,7 @@ class LETTHEREBELIGHT_API UDebuffNiagaraComponent : public UNiagaraComponent
 public:
 	UDebuffNiagaraComponent();
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(VisibleAnywhere)
 	FGameplayTag DebuffTag;
 	
 protected:
