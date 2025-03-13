@@ -194,6 +194,15 @@ FGameplayTag UKDAbilitySystemLibrary::GetDamageType(const FGameplayEffectContext
 	return FGameplayTag();
 }
 
+FVector UKDAbilitySystemLibrary::GetDeathImpulse(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FKDGameplayEffectContext* KDEffectContext = static_cast<const FKDGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return KDEffectContext->GetDeathImpulse();
+	}
+	return FVector::ZeroVector;
+}
+
 bool UKDAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)
 {
 	if (const FKDGameplayEffectContext* KDEffectContext = static_cast<const FKDGameplayEffectContext*>(EffectContextHandle.Get()))
@@ -269,6 +278,14 @@ void UKDAbilitySystemLibrary::SetDamageType(UPARAM(ref)FGameplayEffectContextHan
 	}
 }
 
+void UKDAbilitySystemLibrary::SetDeathImpulse(UPARAM(ref)FGameplayEffectContextHandle& EffectContextHandle, const FVector& InImpulse)
+{
+	if (FKDGameplayEffectContext* KDEffectContext = static_cast<FKDGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		KDEffectContext->SetDeathImpulse(InImpulse);
+	}
+}
+
 void UKDAbilitySystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldContextObject, 
 	TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorsToIgnore, 
 	float Radius, const FVector& SphereOrigin)
@@ -276,16 +293,16 @@ void UKDAbilitySystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldCon
 	FCollisionQueryParams SphereParams;
 	SphereParams.AddIgnoredActors(ActorsToIgnore);
 
-	TArray<FOverlapResult> Overlaps;
-	if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+	if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
 	{
+		TArray<FOverlapResult> Overlaps;
 		World->OverlapMultiByObjectType(Overlaps, SphereOrigin, FQuat::Identity, FCollisionObjectQueryParams(FCollisionObjectQueryParams::InitType::AllDynamicObjects), FCollisionShape::MakeSphere(Radius), SphereParams);
-	}
-	for (FOverlapResult& Overlap : Overlaps)
-	{
-		if (Overlap.GetActor()->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsDead(Overlap.GetActor()))
+		for (FOverlapResult& Overlap : Overlaps)
 		{
-			OutOverlappingActors.AddUnique(ICombatInterface::Execute_GetAvatar(Overlap.GetActor()));
+			if (Overlap.GetActor()->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsDead(Overlap.GetActor()))
+			{
+				OutOverlappingActors.AddUnique(ICombatInterface::Execute_GetAvatar(Overlap.GetActor()));
+			}
 		}
 	}
 }
@@ -308,8 +325,11 @@ FGameplayEffectContextHandle UKDAbilitySystemLibrary::ApplyDamageEffect(const FD
 {
 	const FKDGameplayTags& GameplayTags = FKDGameplayTags::Get();
 	const AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
+
 	FGameplayEffectContextHandle EffectContextHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeEffectContext();
 	EffectContextHandle.AddSourceObject(SourceAvatarActor);
+	SetDeathImpulse(EffectContextHandle, DamageEffectParams.DeathImpulse);
+
 	const FGameplayEffectSpecHandle SpecHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeOutgoingSpec(DamageEffectParams.DamageGameplayEffectClass, DamageEffectParams.AbilityLevel, EffectContextHandle);
 
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, DamageEffectParams.DamageType, DamageEffectParams.BaseDamage);

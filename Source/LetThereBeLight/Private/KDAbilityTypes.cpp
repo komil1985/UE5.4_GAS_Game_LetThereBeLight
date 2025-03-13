@@ -48,15 +48,15 @@ bool FKDGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bool
 		{
 			RepBits |= 1 << 9;
 		}
-		if (DebuffDamage)
+		if (DebuffDamage > 0.0f)
 		{
 			RepBits |= 1 << 10;
 		}
-		if (DebuffDuration)
+		if (DebuffDuration > 0.0f)
 		{
 			RepBits |= 1 << 11;
 		}
-		if (DebuffFrequency)
+		if (DebuffFrequency > 0.0f)
 		{
 			RepBits |= 1 << 12;
 		}
@@ -64,9 +64,13 @@ bool FKDGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bool
 		{
 			RepBits |= 1 << 13;
 		}
+		if (!DeathImpulse.IsZero())
+		{
+			RepBits |= 1 << 14;
+		}
 	}
 
-	Ar.SerializeBits(&RepBits, 13);
+	Ar.SerializeBits(&RepBits, 14);
 
 	if (RepBits & (1 << 0))
 	{
@@ -143,6 +147,11 @@ bool FKDGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bool
 		}
 		DamageType->NetSerialize(Ar, Map, bOutSuccess);
 	}
+	if (RepBits & (1 << 14))
+	{
+		DeathImpulse.NetSerialize(Ar, Map, bOutSuccess);
+	}
+
 
 	if (Ar.IsLoading())
 	{
@@ -150,6 +159,5 @@ bool FKDGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bool
 	}
 
 	bOutSuccess = true;
-
 	return true;
 }
