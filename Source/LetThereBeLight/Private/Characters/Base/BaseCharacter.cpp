@@ -5,6 +5,7 @@
 #include "AbilitySystem/KDAbilitySystemComponent.h"
 #include "AbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include <LetThereBeLight/LetThereBeLight.h>
 #include <Misc/KDGameplayTags.h>
 #include <Kismet/GameplayStatics.h>
@@ -12,6 +13,12 @@
 ABaseCharacter::ABaseCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	const FKDGameplayTags& GameplayTags = FKDGameplayTags::Get();
+
+	BurnDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>(TEXT("BurnDebuffComponent"));
+	BurnDebuffComponent->SetupAttachment(GetRootComponent());
+	BurnDebuffComponent->DebuffTag = GameplayTags.Debuff_Burn;
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
@@ -58,8 +65,9 @@ void ABaseCharacter::MulticastHandleDeath_Implementation()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	Dissolve();
-
 	bDead = true;
+	BurnDebuffComponent->Deactivate();
+	OnDeath.Broadcast(this);
 }
 
 void ABaseCharacter::BeginPlay()
@@ -136,6 +144,16 @@ void ABaseCharacter::DecreaseMinionCount_Implementation(int32 Amount)
 ECharacterClass ABaseCharacter::GetCharacterClass_Implementation()
 {
 	return CharacterClass;
+}
+
+FOnASCRegistered ABaseCharacter::GetOnASCRegisteredDelegate()
+{
+	return OnAscRegistered;
+}
+
+FOnDeath ABaseCharacter::GetOnDeathDelegate()
+{
+	return OnDeath;
 }
 
 void ABaseCharacter::InitAbilityActorInfo(){}

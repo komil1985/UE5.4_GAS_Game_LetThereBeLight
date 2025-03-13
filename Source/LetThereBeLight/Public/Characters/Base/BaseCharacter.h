@@ -16,6 +16,7 @@ class UGameplayAbility;
 class UAnimMontage;
 class UNiagaraSystem;
 class USoundBase;
+class UDebuffNiagaraComponent;
 
 UCLASS(Abstract)
 class LETTHEREBELIGHT_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
@@ -41,7 +42,12 @@ public:
 	virtual void IncreaseMinionCount_Implementation(int32 Amount) override;
 	virtual void DecreaseMinionCount_Implementation(int32 Amount) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
-	/* End combat Interface */
+	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
+	virtual FOnDeath GetOnDeathDelegate() override;
+	/* End Combat Interface */
+
+	FOnASCRegistered OnAscRegistered;
+	FOnDeath OnDeath;
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
@@ -114,6 +120,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Abilities")

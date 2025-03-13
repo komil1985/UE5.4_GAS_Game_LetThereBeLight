@@ -188,6 +188,7 @@ void APlayerCharacter::InitAbilityActorInfo()
 	Cast<UKDAbilitySystemComponent>(MyPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 	AbilitySystemComponent = MyPlayerState->GetAbilitySystemComponent();
 	AttributeSet = MyPlayerState->GetAttributeSet();
+	OnAscRegistered.Broadcast(AbilitySystemComponent);
 
 	if(APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{

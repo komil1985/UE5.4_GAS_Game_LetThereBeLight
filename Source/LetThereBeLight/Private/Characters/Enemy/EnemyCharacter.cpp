@@ -115,6 +115,7 @@ void AEnemyCharacter::InitAbilityActorInfo()
 	{
 		InitializeDefaultAttributes();
 	}
+	OnAscRegistered.Broadcast(AbilitySystemComponent);
 }
 
 void AEnemyCharacter::InitializeDefaultAttributes() const
@@ -125,9 +126,9 @@ void AEnemyCharacter::InitializeDefaultAttributes() const
 void AEnemyCharacter::HighlightActor()
 {
 	GetMesh()->SetRenderCustomDepth(true);
-	//GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 	Weapon->SetRenderCustomDepth(true);
-	//Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 }
 
 void AEnemyCharacter::UnHighlightActor()
