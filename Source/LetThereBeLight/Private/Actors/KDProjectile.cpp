@@ -47,6 +47,7 @@ void AKDProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	SetLifeSpan(LifeSpan);
+	//SetReplicateMovement(true);
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AKDProjectile::OnSphereOverlap);
 
 	LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());
@@ -56,23 +57,22 @@ void AKDProjectile::OnHit()
 {
 	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-	if (LoopingSoundComponent) LoopingSoundComponent->Stop();
+	if (LoopingSoundComponent)
+	{
+		LoopingSoundComponent->Stop();
+	}
 	bHit = true;
 }
 
 void AKDProjectile::Destroyed()
 {
-	if (!bHit && !HasAuthority())
-	{
-		OnHit();
-	}
+	if (!bHit && !HasAuthority()) OnHit();
 	Super::Destroyed();
 }
 
 void AKDProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
-
+	AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();	
 	if (SourceAvatarActor == OtherActor) return;
 	if (!UKDAbilitySystemLibrary::IsNotFriend(SourceAvatarActor, OtherActor)) return;
 	if (!bHit) OnHit();

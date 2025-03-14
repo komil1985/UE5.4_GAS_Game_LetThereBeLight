@@ -27,7 +27,7 @@ public:
 	virtual void UnHighlightActor() override;										// <-- Enemy Interface
 
 	virtual int32 GetPlayerLevel_Implementation() override;							// <-- Combat Interface
-	virtual void Die() override;												    // <-- Combat Interface
+	virtual void Die(const FVector& DeathImpulse) override;							// <-- Combat Interface
 	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;	// <-- Combat Interface
 	virtual AActor* GetCombatTarget_Implementation() const override;
 

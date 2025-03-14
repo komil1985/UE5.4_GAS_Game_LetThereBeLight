@@ -24,7 +24,7 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
 
-	virtual void Die() override;														//  <-- Combat Interface
+	virtual void Die(const FVector& DeathImpulse) override;								//  <-- Combat Interface
 	virtual int32 GetPlayerLevel_Implementation() override;								//  <-- Combat Interface
 
 	virtual void AddToXP_Implementation(int32 InXP) override;							//  <-- Player Interface

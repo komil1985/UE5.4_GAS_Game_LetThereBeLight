@@ -16,10 +16,7 @@
 
 UKDAttributeSet::UKDAttributeSet()
 {
-	//InitialPrimaryAttributes();
-	//InitialSecondaryAttributes();
-	//InitialVitalAttributes();
-
+	
 	const FKDGameplayTags& GameplayTags = FKDGameplayTags::Get();
 
 	// Primary Attributes
@@ -135,10 +132,10 @@ void UKDAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& 
 
 void UKDAttributeSet::ShowFloatingTextDamage(const FEffectProperties Props, float LocalIncomingDamage, bool bBlockedHit, bool bCriticalHit) const
 {
+	if (!IsValid(Props.SourceCharacter) || !IsValid(Props.TargetCharacter)) return;
+
 	if (Props.SourceCharacter != Props.TargetCharacter)
 	{
-		if (Props.SourceCharacter == nullptr) return;
-
 		if (AMyPlayerController* PC = Cast<AMyPlayerController>(Props.SourceCharacter->Controller))
 		{
 			PC->ShowDamageNumber(LocalIncomingDamage, Props.TargetCharacter, bBlockedHit, bCriticalHit);
@@ -176,13 +173,7 @@ void UKDAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 	SetEffectProperties(Data, Props);
 
 	// Checks to see if target character is dead or not to apply effects
-	if (Props.TargetCharacter->Implements<UCombatInterface>())
-	{
-		if (ICombatInterface::Execute_IsDead(Props.TargetCharacter))
-		{
-			return;
-		}
-	}
+	if (Props.TargetCharacter->Implements<UCombatInterface>() && ICombatInterface::Execute_IsDead(Props.TargetCharacter)) return;	
 	
 	// Handle Health and Mana
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
@@ -219,11 +210,11 @@ void UKDAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 		const bool bFatal = NewHealth <= 0.0f;
 		if (bFatal)
 		{
-			// TODO: Use Death Impulse
-
-			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
+			ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
+			if (CombatInterface)
 			{
-				CombatInterface->Die();
+				FVector Impulse = UKDAbilitySystemLibrary::GetDeathImpulse(Props.EffectContextHandle);
+				CombatInterface->Die(Impulse);
 			}
 			SendXPEvent(Props);
 		}
@@ -434,33 +425,3 @@ void UKDAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
 }
 
 
-void UKDAttributeSet::InitialPrimaryAttributes()
-{
-	// Setting primary attributes
-	InitStrength(10.0f);
-	InitIntelligence(20.0f);
-	InitResilience(15.0f);
-	InitVigor(10.0f);
-}
-
-void UKDAttributeSet::InitialSecondaryAttributes()
-{
-	// Setting secondary attributes
-	InitArmor(10.0f);
-	InitArmorPenetration(7.0f);
-	InitCriticalHitChance(10.0f);
-	InitCriticalHitDamage(15.0f);
-	InitCriticalHitResistance(15.0f);
-	InitBlockChance(12.0f);
-	InitHealthRegeneration(15.0f);
-	InitManaRegeneration(20.0f);
-	InitMaxHealth(100.0f);
-	InitMaxMana(100.0f);
-}
-
-void UKDAttributeSet::InitialVitalAttributes()
-{
-	// Setting vital attributes
-	InitHealth(50.0f);
-	InitMana(50.0f);
-}

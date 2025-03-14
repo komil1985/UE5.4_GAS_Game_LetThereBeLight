@@ -57,7 +57,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	FVector GetCombatSocketLocation(const FGameplayTag& MontageTag);
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void UpdateFacingTarget(const FVector& Target);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -66,7 +66,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	TArray<FTaggedMontage> GetAttackMontages();
 
-	virtual void Die() = 0;
+	virtual void Die(const FVector& DeathImpulse) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool IsDead() const;
@@ -93,6 +93,5 @@ public:
 	ECharacterClass GetCharacterClass();
 
 	virtual FOnASCRegistered GetOnASCRegisteredDelegate() = 0;
-
 	virtual FOnDeath GetOnDeathDelegate() = 0;
 };

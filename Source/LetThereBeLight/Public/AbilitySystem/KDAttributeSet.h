@@ -245,9 +245,6 @@ public:
 	void OnRep_Mana(const FGameplayAttributeData& OldMana) const;
 
 protected:
-	void InitialPrimaryAttributes();
-	void InitialSecondaryAttributes();
-	void InitialVitalAttributes();
 
 private:
 	void HandleIncomingDamage(const FEffectProperties& Props);

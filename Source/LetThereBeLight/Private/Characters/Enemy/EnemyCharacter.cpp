@@ -142,12 +142,12 @@ int32 AEnemyCharacter::GetPlayerLevel_Implementation()
 	return Level;
 }
 
-void AEnemyCharacter::Die()
+void AEnemyCharacter::Die(const FVector& DeathImpulse)
 {
 	SetLifeSpan(LifeSpan);
 	PlayAnimMontage(GetDieMontage(), 1.0f);
 	if (KDAIController) KDAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
-	Super::Die();
+	Super::Die(DeathImpulse);
 
 	//AController* NewController = GetController();
 	//KDAIController = Cast<AKDAIController>(NewController);

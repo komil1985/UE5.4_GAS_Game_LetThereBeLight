@@ -44,9 +44,10 @@ void UWaitCooldownChange::CooldownTagChanged(const FGameplayTag InCooldownTag, i
 
 void UWaitCooldownChange::OnActiveEffectAdded(UAbilitySystemComponent* TargetASC, const FGameplayEffectSpec& SpecApplied, FActiveGameplayEffectHandle ActiveEffectHandle)
 {
-	FGameplayTagContainer AssetTags, GrantedTags;
-
+	FGameplayTagContainer AssetTags;
 	SpecApplied.GetAllAssetTags(AssetTags);
+
+	FGameplayTagContainer GrantedTags;
 	SpecApplied.GetAllGrantedTags(GrantedTags);
 
 	if (AssetTags.HasTagExact(CooldownTag) || GrantedTags.HasTagExact(CooldownTag))

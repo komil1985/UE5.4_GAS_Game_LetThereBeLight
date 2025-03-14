@@ -36,6 +36,7 @@ void UKDAbilitySystemComponent::AddCharacterPassiveAbilities(const TArray<TSubcl
 	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupPassiveAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		AbilitySpec.DynamicAbilityTags.AddTag(FKDGameplayTags::Get().Abilities_Status_Equipped);
 		GiveAbilityAndActivateOnce(AbilitySpec);
 	}
 }
@@ -43,7 +44,7 @@ void UKDAbilitySystemComponent::AddCharacterPassiveAbilities(const TArray<TSubcl
 void UKDAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
 {
 	if (!InputTag.IsValid()) return;
-
+	FScopedAbilityListLock ActiveScopeLocl(*this);
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
@@ -56,7 +57,7 @@ void UKDAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& Inpu
 void UKDAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
 {
 	if (!InputTag.IsValid()) return;
-
+	FScopedAbilityListLock ActiveScopeLocl(*this);
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
@@ -331,6 +332,5 @@ void UKDAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySyste
 {
 	FGameplayTagContainer TagContainer;
 	EffectSpec.GetAllAssetTags(TagContainer);
-
 	EffectAssetTags.Broadcast(TagContainer);
 }
