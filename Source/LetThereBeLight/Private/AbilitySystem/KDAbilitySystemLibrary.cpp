@@ -203,6 +203,15 @@ FVector UKDAbilitySystemLibrary::GetDeathImpulse(const FGameplayEffectContextHan
 	return FVector::ZeroVector;
 }
 
+FVector UKDAbilitySystemLibrary::GetKnockbackForce(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FKDGameplayEffectContext* KDEffectContext = static_cast<const FKDGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return KDEffectContext->GetKnockBackForce();
+	}
+	return FVector::ZeroVector;
+}
+
 bool UKDAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)
 {
 	if (const FKDGameplayEffectContext* KDEffectContext = static_cast<const FKDGameplayEffectContext*>(EffectContextHandle.Get()))
@@ -286,6 +295,14 @@ void UKDAbilitySystemLibrary::SetDeathImpulse(UPARAM(ref)FGameplayEffectContextH
 	}
 }
 
+void UKDAbilitySystemLibrary::SetKnockbackForce(UPARAM(ref)FGameplayEffectContextHandle& EffectContextHandle, const FVector& InForce)
+{
+	if (FKDGameplayEffectContext* KDEffectContext = static_cast<FKDGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		KDEffectContext->SetKnockbackForce(InForce);
+	}
+}
+
 void UKDAbilitySystemLibrary::GetLivePlayersWithinRadius(const UObject* WorldContextObject, 
 	TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorsToIgnore, 
 	float Radius, const FVector& SphereOrigin)
@@ -329,6 +346,7 @@ FGameplayEffectContextHandle UKDAbilitySystemLibrary::ApplyDamageEffect(const FD
 	FGameplayEffectContextHandle EffectContextHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeEffectContext();
 	EffectContextHandle.AddSourceObject(SourceAvatarActor);
 	SetDeathImpulse(EffectContextHandle, DamageEffectParams.DeathImpulse);
+	SetKnockbackForce(EffectContextHandle, DamageEffectParams.KnockbackForce);
 
 	const FGameplayEffectSpecHandle SpecHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeOutgoingSpec(DamageEffectParams.DamageGameplayEffectClass, DamageEffectParams.AbilityLevel, EffectContextHandle);
 

@@ -55,8 +55,7 @@ void ABaseCharacter::MulticastHandleDeath_Implementation(const FVector& DeathImp
 	Weapon->SetSimulatePhysics(true);
 	Weapon->SetEnableGravity(true);
 	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	//Weapon->AddImpulse(DeathImpulse);
-	Weapon->AddImpulse(DeathImpulse * 0.1f, NAME_None, true);
+	Weapon->AddImpulse(DeathImpulse);
 
 	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetEnableGravity(true);
@@ -159,7 +158,6 @@ FOnDeath ABaseCharacter::GetOnDeathDelegate()
 }
 
 void ABaseCharacter::InitAbilityActorInfo(){}
-
 
 void ABaseCharacter::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const
 {
