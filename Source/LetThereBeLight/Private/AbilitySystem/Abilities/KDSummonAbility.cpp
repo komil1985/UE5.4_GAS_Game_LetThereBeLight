@@ -14,15 +14,15 @@ TArray<FVector> UKDSummonAbility::GetSpawnLocation()
 	for (int32 i = 0; i < NumMinions; i++)
 	{
 		const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i, FVector::UpVector);
-		FVector RandomSpawnLocation = Location + Direction * FMath::FRandRange(MinSpawnDistance, MaxSpawnDistance);
+		FVector ChosenSpawnLocation = Location + Direction * FMath::FRandRange(MinSpawnDistance, MaxSpawnDistance);
 
 		FHitResult Hit;
-		GetWorld()->LineTraceSingleByChannel(Hit, RandomSpawnLocation + FVector(0.0f, 0.0f, 400.0f), RandomSpawnLocation - FVector(0.0f, 0.0f, 400.0f), ECC_Visibility);
+		GetWorld()->LineTraceSingleByChannel(Hit, ChosenSpawnLocation + FVector(0.0f, 0.0f, 400.0f), ChosenSpawnLocation - FVector(0.0f, 0.0f, 400.0f), ECC_Visibility);
 		if (Hit.bBlockingHit)
 		{
-			RandomSpawnLocation = Hit.ImpactPoint;
+			ChosenSpawnLocation = Hit.ImpactPoint;
 		}
-		SpawnLocations.Add(RandomSpawnLocation);
+		SpawnLocations.Add(ChosenSpawnLocation);
 	}
 
 	return SpawnLocations;

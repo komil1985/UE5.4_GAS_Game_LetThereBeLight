@@ -2,6 +2,7 @@
 
 
 #include "AbilitySystem/Abilities/KDFireBall.h"
+#include <Kismet/KismetSystemLibrary.h>
 
 
 FString UKDFireBall::GetDescription(int32 Level)
@@ -82,4 +83,64 @@ FString UKDFireBall::GetNextLevelDescription(int32 Level)
 		Cooldown,
 		FMath::Min(Level, NumProjectiles), 
 		ScaledDamage);
+}
+
+void UKDFireBall::SpawnProjectiles(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag, bool bOverridePitch, float PitchOverride, AActor* HomingTarget)
+{
+	//To check if it is on server
+	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
+	if (!bIsServer) return;
+
+	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation
+	(
+		GetAvatarActorFromActorInfo(),
+		SocketTag
+	);
+	FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
+	if (bOverridePitch) Rotation.Pitch = PitchOverride;
+
+	const FVector Forward = Rotation.Vector();
+	const FVector LeftOfSpread = Forward.RotateAngleAxis(-ProjectileSpread / 2.0f, FVector::UpVector);
+	const FVector RightOfSpread = Forward.RotateAngleAxis(ProjectileSpread / 2.0f, FVector::UpVector);
+	//NumProjectiles = FMath::Min(MaxNumProjectiles, GetAbilityLevel());
+
+	if (NumProjectiles > 1)
+	{
+		const float DeltaSpread = ProjectileSpread / (NumProjectiles - 1);
+		for (int32 i = 0; i < NumProjectiles; i++)
+		{
+			FVector Start = SocketLocation + FVector(0, 0, 10);
+			const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i, FVector::UpVector);
+			
+			UKismetSystemLibrary::DrawDebugArrow
+			(
+				GetAvatarActorFromActorInfo(), 
+				Start, 
+				Start + Direction * 75.0f, 
+				1, 
+				FLinearColor::Red, 
+				120.0f, 
+				1
+			);
+		}
+	}
+	else
+	{
+		// Single Projectile
+		FVector Start = SocketLocation + FVector(0, 0, 5);
+		UKismetSystemLibrary::DrawDebugArrow
+		(
+			GetAvatarActorFromActorInfo(),
+			Start,
+			Start + Forward * 75.0f,
+			1,
+			FLinearColor::Red,
+			120.0f,
+			1
+		);
+	}
+
+	UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), SocketLocation, SocketLocation + Forward * 100.0f, 1, FLinearColor::White, 120.0f, 1);
+	UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), SocketLocation, SocketLocation + LeftOfSpread * 100.0f, 1, FLinearColor::White, 120.0f, 1);
+	UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), SocketLocation, SocketLocation + RightOfSpread * 100.0f, 1, FLinearColor::White, 120.0f, 1);
 }
