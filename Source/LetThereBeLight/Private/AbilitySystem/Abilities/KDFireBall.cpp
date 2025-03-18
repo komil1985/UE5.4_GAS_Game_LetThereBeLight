@@ -4,7 +4,7 @@
 #include "AbilitySystem/Abilities/KDFireBall.h"
 #include "AbilitySystem/KDAbilitySystemLibrary.h"
 #include "Actors/KDProjectile.h"
-#include <Kismet/KismetSystemLibrary.h>
+#include "GameFramework/ProjectileMovementComponent.h"
 
 
 FString UKDFireBall::GetDescription(int32 Level)
@@ -122,53 +122,19 @@ void UKDFireBall::SpawnProjectiles(const FVector& ProjectileTargetLocation, cons
 			);
 
 		Projectile->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
+
+		if (HomingTarget->Implements<UCombatInterface>())
+		{
+			Projectile->ProjectileMovement->HomingTargetComponent = HomingTarget->GetRootComponent();
+		}
+		else
+		{
+			Projectile->HomingTargetSceneComponent = NewObject<USceneComponent>(USceneComponent::StaticClass());
+			Projectile->ProjectileMovement->HomingTargetComponent = Projectile->HomingTargetSceneComponent;
+		}
+
+		Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::FRandRange(HomingAccelerationMin, HomingAccelerationMax);
+		Projectile->ProjectileMovement->bIsHomingProjectile = bLaunchHomingProjectiles;
 		Projectile->FinishSpawning(SpawnTransform);
 	}
-
-
-	//const FVector LeftOfSpread = Forward.RotateAngleAxis(-ProjectileSpread / 2.0f, FVector::UpVector);
-	//const FVector RightOfSpread = Forward.RotateAngleAxis(ProjectileSpread / 2.0f, FVector::UpVector);
-	//
-	//
-	////NumProjectiles = FMath::Min(MaxNumProjectiles, GetAbilityLevel());
-
-	//if (NumProjectiles > 1)
-	//{
-	//	const float DeltaSpread = ProjectileSpread / (NumProjectiles - 1);
-	//	for (int32 i = 0; i < NumProjectiles; i++)
-	//	{
-	//		FVector Start = SocketLocation + FVector(0, 0, 10);
-	//		const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i, FVector::UpVector);
-	//		
-	//		UKismetSystemLibrary::DrawDebugArrow
-	//		(
-	//			GetAvatarActorFromActorInfo(), 
-	//			Start, 
-	//			Start + Direction * 75.0f, 
-	//			1, 
-	//			FLinearColor::Red, 
-	//			120.0f, 
-	//			1
-	//		);
-	//	}
-	//}
-	//else
-	//{
-	//	// Single Projectile
-	//	FVector Start = SocketLocation + FVector(0, 0, 5);
-	//	UKismetSystemLibrary::DrawDebugArrow
-	//	(
-	//		GetAvatarActorFromActorInfo(),
-	//		Start,
-	//		Start + Forward * 75.0f,
-	//		1,
-	//		FLinearColor::Red,
-	//		120.0f,
-	//		1
-	//	);
-	//}
-
-	//UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), SocketLocation, SocketLocation + Forward * 100.0f, 1, FLinearColor::White, 120.0f, 1);
-	//UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), SocketLocation, SocketLocation + LeftOfSpread * 100.0f, 1, FLinearColor::White, 120.0f, 1);
-	//UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), SocketLocation, SocketLocation + RightOfSpread * 100.0f, 1, FLinearColor::White, 120.0f, 1);
 }

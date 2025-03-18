@@ -28,4 +28,13 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "FireBall")
 	int32 MaxNumProjectiles = 5;
+
+	UPROPERTY(EditDefaultsOnly, Category = "FireBall")
+	float HomingAccelerationMin = 1500.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "FireBall")
+	float HomingAccelerationMax = 3000.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "FireBall")
+	bool bLaunchHomingProjectiles = true;
 };
