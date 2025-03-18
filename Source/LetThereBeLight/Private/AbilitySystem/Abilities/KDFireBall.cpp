@@ -99,12 +99,14 @@ void UKDFireBall::SpawnProjectiles(const FVector& ProjectileTargetLocation, cons
 		GetAvatarActorFromActorInfo(),
 		SocketTag
 	);
+
 	FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
 	if (bOverridePitch) Rotation.Pitch = PitchOverride;
 
 	const FVector Forward = Rotation.Vector();
-
-	TArray<FRotator> Rotations = UKDAbilitySystemLibrary::EvenlySpacedRotators(Forward, FVector::UpVector, ProjectileSpread, NumProjectiles);
+	const int32 EffectNumProjectiles = FMath::Min(NumProjectiles, GetAbilityLevel());
+	TArray<FRotator> Rotations = UKDAbilitySystemLibrary::EvenlySpacedRotators(Forward, FVector::UpVector, ProjectileSpread, EffectNumProjectiles);
+	
 	for (FRotator& Rot : Rotations)
 	{
 		FTransform SpawnTransform;
@@ -123,13 +125,14 @@ void UKDFireBall::SpawnProjectiles(const FVector& ProjectileTargetLocation, cons
 
 		Projectile->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
 
-		if (HomingTarget->Implements<UCombatInterface>())
+		if (HomingTarget && HomingTarget->Implements<UCombatInterface>())
 		{
 			Projectile->ProjectileMovement->HomingTargetComponent = HomingTarget->GetRootComponent();
 		}
 		else
 		{
 			Projectile->HomingTargetSceneComponent = NewObject<USceneComponent>(USceneComponent::StaticClass());
+			Projectile->HomingTargetSceneComponent->SetWorldLocation(ProjectileTargetLocation);
 			Projectile->ProjectileMovement->HomingTargetComponent = Projectile->HomingTargetSceneComponent;
 		}
 

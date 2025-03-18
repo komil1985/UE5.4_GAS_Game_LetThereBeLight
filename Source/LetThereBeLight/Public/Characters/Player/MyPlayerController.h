@@ -18,6 +18,7 @@ class UKDInputConfig;
 class UKDAbilitySystemComponent;
 class USplineComponent;
 class UDamageTextComponent;
+class UNiagaraSystem;
 
 UCLASS()
 class LETTHEREBELIGHT_API AMyPlayerController : public APlayerController
@@ -82,6 +83,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UNiagaraSystem> ClickNiagaraSystem;
 
 	void AutoRunning();
 

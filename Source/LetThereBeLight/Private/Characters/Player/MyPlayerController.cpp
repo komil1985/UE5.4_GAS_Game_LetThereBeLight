@@ -13,6 +13,7 @@
 #include "NavigationPath.h"
 #include "GameFramework/Character.h"
 #include "UI/Widget/FloatingText/DamageTextComponent.h"
+#include <NiagaraFunctionLibrary.h>
 
 
 AMyPlayerController::AMyPlayerController()
@@ -120,6 +121,7 @@ void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 					bAutoRunning = true;
 				}
 			}
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
 		}
 		FollowTime = 0.0f;
 		bTargeting = false;

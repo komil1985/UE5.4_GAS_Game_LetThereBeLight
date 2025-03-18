@@ -37,7 +37,7 @@ struct FKDAbilityInfo
 	TObjectPtr<const UMaterialInstance> BackgroundMaterial = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	int32 LevelRequirement;
+	int32 LevelRequirement = 0;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<UGameplayAbility> Ability;
@@ -57,3 +57,4 @@ public:
 	
 	FKDAbilityInfo FindAbilityInfoForTag(const FGameplayTag& AbilityTag, bool bLogNotFound = false) const;
 };
+	
