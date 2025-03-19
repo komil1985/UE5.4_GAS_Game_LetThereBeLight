@@ -44,20 +44,25 @@ void UKDAbilitySystemComponent::AddCharacterPassiveAbilities(const TArray<TSubcl
 void UKDAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
 {
 	if (!InputTag.IsValid()) return;
-	FScopedAbilityListLock ActiveScopeLocl(*this);
+	
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
-		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag) && AbilitySpec.IsActive())
 		{
 			AbilitySpecInputReleased(AbilitySpec);
-			
+			InvokeReplicatedEvent
+			(
+				EAbilityGenericReplicatedEvent::InputReleased, 
+				AbilitySpec.Handle, 
+				AbilitySpec.ActivationInfo.GetActivationPredictionKey()
+			);
 		}
 	}
 }
 void UKDAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
 {
 	if (!InputTag.IsValid()) return;
-	FScopedAbilityListLock ActiveScopeLocl(*this);
+	
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
@@ -66,6 +71,29 @@ void UKDAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag
 			if (!AbilitySpec.IsActive())
 			{
 				TryActivateAbility(AbilitySpec.Handle);
+			}
+		}
+	}
+}
+
+void UKDAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid()) return;
+
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputPressed(AbilitySpec);
+			if (AbilitySpec.IsActive())
+			{
+				TryActivateAbility(AbilitySpec.Handle);
+				InvokeReplicatedEvent
+				(
+					EAbilityGenericReplicatedEvent::InputPressed,
+					AbilitySpec.Handle,
+					AbilitySpec.ActivationInfo.GetActivationPredictionKey()
+				);
 			}
 		}
 	}

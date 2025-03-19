@@ -76,7 +76,6 @@ void AMyPlayerController::CursorTrace()
 
 }
 
-///////////////////////////////////////////////////////////////////////////////////
 
 void AMyPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
@@ -85,7 +84,7 @@ void AMyPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 		bTargeting = ThisActor ? true : false;
 		bAutoRunning = false;
 	}
-
+	if (GetKDASC()) GetKDASC()->AbilityInputTagPressed(InputTag);
 }
 
 void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
@@ -164,7 +163,6 @@ void AMyPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 
 }
 
-///////////////////////////////////////////////////////////////////////////////////
 
 UKDAbilitySystemComponent* AMyPlayerController::GetKDASC()
 {
