@@ -266,7 +266,7 @@ void UKDAttributeSet::HandleDebuff(const FEffectProperties& Props)
 
 	//Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);   <-- This function is deprecated see line below
 
-	UTargetTagsGameplayEffectComponent& Component = Effect->FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
+	UTargetTagsGameplayEffectComponent& Component = Effect->AddComponent<UTargetTagsGameplayEffectComponent>();
 	FInheritedTagContainer TagContainer = FInheritedTagContainer();
 	TagContainer.Added.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);
 	Component.SetAndApplyTargetTagChanges(TagContainer);

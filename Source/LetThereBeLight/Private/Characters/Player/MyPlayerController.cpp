@@ -56,11 +56,20 @@ void AMyPlayerController::ShowDamageNumber_Implementation(float DamageAmount, AC
 
 void AMyPlayerController::CursorTrace()
 {
+	if (GetKDASC() && GetKDASC()->HasMatchingGameplayTag(FKDGameplayTags::Get().Player_Block_CursorTrace))
+	{
+		if (LastActor) LastActor->UnHighlightActor();
+		if (ThisActor) ThisActor->UnHighlightActor();
+		LastActor = nullptr;
+		ThisActor = nullptr;
+		return;
+	}
+
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if (!CursorHit.bBlockingHit) return;
 
 	LastActor = ThisActor;
-	ThisActor = CursorHit.GetActor();
+	ThisActor = (CursorHit.GetActor());
 	
 	if (LastActor != ThisActor)
 	{
@@ -79,6 +88,10 @@ void AMyPlayerController::CursorTrace()
 
 void AMyPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
+	if (GetKDASC() && GetKDASC()->HasMatchingGameplayTag(FKDGameplayTags::Get().Player_Block_InputPressed))
+	{
+		return;
+	}
 	if(InputTag.MatchesTagExact(FKDGameplayTags::Get().InputTag_LMB))
 	{
 		bTargeting = ThisActor ? true : false;
@@ -89,6 +102,10 @@ void AMyPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 
 void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
+	if (GetKDASC() && GetKDASC()->HasMatchingGameplayTag(FKDGameplayTags::Get().Player_Block_InputReleased))
+	{
+		return;
+	}
 	if (!InputTag.MatchesTagExact(FKDGameplayTags::Get().InputTag_LMB))
 	{
 		if (GetKDASC())
@@ -120,7 +137,10 @@ void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 					bAutoRunning = true;
 				}
 			}
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
+			if (GetKDASC() && !GetKDASC()->HasMatchingGameplayTag(FKDGameplayTags::Get().Player_Block_InputPressed))
+			{
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
+			}
 		}
 		FollowTime = 0.0f;
 		bTargeting = false;
@@ -129,6 +149,10 @@ void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 void AMyPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
+	if (GetKDASC() && GetKDASC()->HasMatchingGameplayTag(FKDGameplayTags::Get().Player_Block_InputHeld))
+	{
+		return;
+	}
 	if (!InputTag.MatchesTagExact(FKDGameplayTags::Get().InputTag_LMB))
 	{
 		if (GetKDASC())
@@ -222,6 +246,10 @@ void AMyPlayerController::SetupInputComponent()
 
 void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
 {
+	if (GetKDASC() && GetKDASC()->HasMatchingGameplayTag(FKDGameplayTags::Get().Player_Block_InputPressed))
+	{
+		return;
+	}
 	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
