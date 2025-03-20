@@ -12,6 +12,7 @@
 #include <Characters/Player/MyPlayerController.h>
 #include "Interactions/PlayerInterface.h"
 #include <KDAbilityTypes.h>
+#include <GameplayEffectComponents/TargetTagsGameplayEffectComponent.h>
 
 
 UKDAttributeSet::UKDAttributeSet()
@@ -263,7 +264,12 @@ void UKDAttributeSet::HandleDebuff(const FEffectProperties& Props)
 	Effect->Period = DebuffFrequrncy;
 	Effect->DurationMagnitude = FScalableFloat(DebuffDuration);
 
-	Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);
+	//Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);   <-- This function is deprecated see line below
+
+	UTargetTagsGameplayEffectComponent& Component = Effect->FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
+	FInheritedTagContainer TagContainer = FInheritedTagContainer();
+	TagContainer.Added.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);
+	Component.SetAndApplyTargetTagChanges(TagContainer);
 
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;
 	Effect->StackLimitCount = 1;

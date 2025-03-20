@@ -2,6 +2,7 @@
 
 
 #include "AbilitySystem/Abilities/KDBeamSpell.h"
+#include "GameFramework/Character.h"
 
 void UKDBeamSpell::StoreMouseDataInfo(const FHitResult& HitResult)
 {
@@ -16,10 +17,11 @@ void UKDBeamSpell::StoreMouseDataInfo(const FHitResult& HitResult)
 	}
 }
 
-void UKDBeamSpell::StoreOwnerPlayerController()
+void UKDBeamSpell::StoreOwnerVariables()
 {
 	if (CurrentActorInfo)
 	{
 		OwnerPlayerController = CurrentActorInfo->PlayerController.Get();
+		OwnerCharacter = Cast<ACharacter>(CurrentActorInfo->AvatarActor);
 	}
 }
