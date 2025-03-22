@@ -158,6 +158,12 @@ FOnDeath ABaseCharacter::GetOnDeathDelegate()
 	return OnDeath;
 }
 
+USkeletalMeshComponent* ABaseCharacter::GetWeapon_Implementation()
+{
+	return Weapon;
+}
+
+
 void ABaseCharacter::InitAbilityActorInfo(){}
 
 
