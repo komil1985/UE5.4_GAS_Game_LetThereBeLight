@@ -266,9 +266,10 @@ void UKDAttributeSet::HandleDebuff(const FEffectProperties& Props)
 
 	//Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);   <-- This function is deprecated see line below
 
-	UTargetTagsGameplayEffectComponent& Component = Effect->AddComponent<UTargetTagsGameplayEffectComponent>();
 	FInheritedTagContainer TagContainer = FInheritedTagContainer();
+	UTargetTagsGameplayEffectComponent& Component = Effect->FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
 	TagContainer.Added.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);
+	TagContainer.CombinedTags.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);
 	Component.SetAndApplyTargetTagChanges(TagContainer);
 
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;
@@ -290,7 +291,6 @@ void UKDAttributeSet::HandleDebuff(const FEffectProperties& Props)
 
 		Props.TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*MutableSpec);
 	}
-
 }
 
 void UKDAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
