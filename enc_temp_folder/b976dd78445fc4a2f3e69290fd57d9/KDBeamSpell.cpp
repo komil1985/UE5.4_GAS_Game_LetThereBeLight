@@ -5,7 +5,6 @@
 #include "GameFramework/Character.h"
 #include <Kismet/KismetSystemLibrary.h>
 #include "AbilitySystem/KDAbilitySystemLibrary.h"
-#include "AbilitySystemBlueprintLibrary.h"
 
 void UKDBeamSpell::StoreMouseDataInfo(const FHitResult& HitResult)
 {
