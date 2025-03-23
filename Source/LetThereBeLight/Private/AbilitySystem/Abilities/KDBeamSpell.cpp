@@ -4,6 +4,7 @@
 #include "AbilitySystem/Abilities/KDBeamSpell.h"
 #include "GameFramework/Character.h"
 #include <Kismet/KismetSystemLibrary.h>
+#include "AbilitySystem/KDAbilitySystemLibrary.h"
 
 void UKDBeamSpell::StoreMouseDataInfo(const FHitResult& HitResult)
 {
@@ -60,4 +61,29 @@ void UKDBeamSpell::TraceFirstTarget(const FVector& BeamTargetLocation)
 			}
 		}
 	}
+}
+
+void UKDBeamSpell::StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTargets)
+{
+	TArray<AActor*> ActorsToIgnore;
+	ActorsToIgnore.Add(GetAvatarActorFromActorInfo());
+	ActorsToIgnore.Add(MouseHitActor);
+
+	TArray<AActor*> OverlappingActors;
+
+	UKDAbilitySystemLibrary::GetLivePlayersWithinRadius
+	(
+		GetAvatarActorFromActorInfo(),
+		OverlappingActors,
+		ActorsToIgnore,
+		500.0f,
+		MouseHitActor->GetActorLocation()
+	);
+
+	//int32 NumAdditionalTargets = FMath::Min(GetAbilityLevel() - 1, MaxNumShockTargets);
+
+	int32 NumAdditionalTargets = 5;
+
+	UKDAbilitySystemLibrary::GetClosestTargets(NumAdditionalTargets, OverlappingActors, OutAdditionalTargets, MouseHitActor->GetActorLocation());
+
 }
