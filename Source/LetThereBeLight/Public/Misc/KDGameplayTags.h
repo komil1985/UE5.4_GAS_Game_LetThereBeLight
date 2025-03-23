@@ -94,10 +94,12 @@ public:
 	// Type Of Ability Tags
 	FGameplayTag Abilities_Fire_FireBall;
 	FGameplayTag Abilities_Lightning_LightningBolt;
+	FGameplayTag Abilities_Lightning_LightningBeam;
 
 	// Cooldown Ability Tags
 	FGameplayTag CoolDown_Fire_FireBall;
 	FGameplayTag CoolDown_Lightning_LightningBolt;
+	FGameplayTag CoolDown_Lightning_LightningBeam;
 
 	// Combat Socket Tags
 	FGameplayTag CombatSocket_Weapon;

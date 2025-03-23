@@ -227,10 +227,22 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("LightningBolt Cooldown Tag")
 	);
 
+	GameplayTags.Abilities_Lightning_LightningBeam = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Lightning.LightningBeam"),
+		FString("LightningBeam Ability Tag")
+	);
+	GameplayTags.CoolDown_Lightning_LightningBeam = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("CoolDown.Lightning.LightningBeam"),
+		FString("LightningBeam Cooldown Tag")
+	);
+
+	////   Extra Ability Tags
 	GameplayTags.Abilities_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.HitReact"),
 		FString("Hit React Ability Tag")
 	);
+
+	////   Ability Status Tags
 	GameplayTags.Abilities_Status_Eligible = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Status.Eligible"),
 		FString("Eligible Status Ability Tag")
