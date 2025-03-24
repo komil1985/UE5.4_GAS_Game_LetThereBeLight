@@ -69,7 +69,7 @@ void ABaseCharacter::MulticastHandleDeath_Implementation(const FVector& DeathImp
 	Dissolve();
 	bDead = true;
 	BurnDebuffComponent->Deactivate();
-	OnDeath.Broadcast(this);
+	OnDeathDelegate.Broadcast(this);
 }
 
 void ABaseCharacter::BeginPlay()
@@ -153,9 +153,9 @@ FOnASCRegistered ABaseCharacter::GetOnASCRegisteredDelegate()
 	return OnAscRegistered;
 }
 
-FOnDeath ABaseCharacter::GetOnDeathDelegate()
+FOnDeathSignature& ABaseCharacter::GetOnDeathDelegate()
 {
-	return OnDeath;
+	return OnDeathDelegate;
 }
 
 USkeletalMeshComponent* ABaseCharacter::GetWeapon_Implementation()
