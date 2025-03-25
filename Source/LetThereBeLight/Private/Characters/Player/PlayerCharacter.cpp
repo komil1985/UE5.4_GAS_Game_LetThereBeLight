@@ -13,6 +13,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/BoxComponent.h"
+#include "Misc/KDGameplayTags.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -180,6 +181,27 @@ int32 APlayerCharacter::GetSpellPoints_Implementation() const
 	return MyPlayerState->GetSpellPoints();
 }
 
+void APlayerCharacter::OnRep_Stunned()
+{
+	if (UKDAbilitySystemComponent* KDASC = Cast<UKDAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		const FKDGameplayTags GameplayTags = FKDGameplayTags::Get();
+		FGameplayTagContainer BlockedTags;
+		BlockedTags.AddTag(GameplayTags.Player_Block_CursorTrace);
+		BlockedTags.AddTag(GameplayTags.Player_Block_InputHeld);
+		BlockedTags.AddTag(GameplayTags.Player_Block_InputPressed);
+		BlockedTags.AddTag(GameplayTags.Player_Block_InputReleased);
+		if (bIsStunned)
+		{
+			KDASC->AddLooseGameplayTags(BlockedTags);
+		}
+		else
+		{
+			KDASC->RemoveLooseGameplayTags(BlockedTags);
+		}
+	}
+}
+
 void APlayerCharacter::InitAbilityActorInfo()
 {
 	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
@@ -189,6 +211,7 @@ void APlayerCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = MyPlayerState->GetAbilitySystemComponent();
 	AttributeSet = MyPlayerState->GetAttributeSet();
 	OnAscRegistered.Broadcast(AbilitySystemComponent);
+	AbilitySystemComponent->RegisterGameplayTagEvent(FKDGameplayTags::Get().Debuff_Stun, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &APlayerCharacter::StunTagChanged);
 
 	if(APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
