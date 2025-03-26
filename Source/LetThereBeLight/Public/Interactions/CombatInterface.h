@@ -98,6 +98,6 @@ public:
 
 	// Pure virtual functions
 	virtual void Die(const FVector& DeathImpulse) = 0;
-	virtual FOnASCRegistered GetOnASCRegisteredDelegate() = 0;
+	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() = 0;
 	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
 };

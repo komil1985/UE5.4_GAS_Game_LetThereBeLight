@@ -6,6 +6,7 @@
 #include "AbilitySystem/KDAbilitySystemComponent.h"
 #include "AbilitySystem/KDAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "UI/HUD/KDHUD.h"
 #include "Components/CapsuleComponent.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
@@ -185,7 +186,7 @@ void APlayerCharacter::OnRep_Stunned()
 {
 	if (UKDAbilitySystemComponent* KDASC = Cast<UKDAbilitySystemComponent>(AbilitySystemComponent))
 	{
-		const FKDGameplayTags GameplayTags = FKDGameplayTags::Get();
+		const FKDGameplayTags& GameplayTags = FKDGameplayTags::Get();
 		FGameplayTagContainer BlockedTags;
 		BlockedTags.AddTag(GameplayTags.Player_Block_CursorTrace);
 		BlockedTags.AddTag(GameplayTags.Player_Block_InputHeld);
@@ -194,11 +195,25 @@ void APlayerCharacter::OnRep_Stunned()
 		if (bIsStunned)
 		{
 			KDASC->AddLooseGameplayTags(BlockedTags);
+			StunDebuffComponent->Activate();
 		}
 		else
 		{
 			KDASC->RemoveLooseGameplayTags(BlockedTags);
+			StunDebuffComponent->Deactivate();
 		}
+	}
+}
+
+void APlayerCharacter::OnRep_Burned()
+{
+	if (bIsBurned)
+	{
+		BurnDebuffComponent->Activate();
+	}
+	else
+	{
+		BurnDebuffComponent->Deactivate();
 	}
 }
 

@@ -43,6 +43,7 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ABaseCharacter, bIsStunned);
+	DOREPLIFETIME(ABaseCharacter, bIsBurned);
 }
 
 UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
@@ -68,7 +69,7 @@ void ABaseCharacter::MulticastHandleDeath_Implementation(const FVector& DeathImp
 	Weapon->SetSimulatePhysics(true);
 	Weapon->SetEnableGravity(true);
 	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	Weapon->AddImpulse(DeathImpulse * 0.1f, NAME_None, true);
+	//Weapon->AddImpulse(DeathImpulse * 0.1f, NAME_None, true);
 
 	GetMesh()->SetSimulatePhysics(false);
 	GetMesh()->SetEnableGravity(true);
@@ -81,6 +82,7 @@ void ABaseCharacter::MulticastHandleDeath_Implementation(const FVector& DeathImp
 	Dissolve();
 	bDead = true;
 	BurnDebuffComponent->Deactivate();
+	StunDebuffComponent->Deactivate();
 	OnDeathDelegate.Broadcast(this);
 }
 
@@ -90,10 +92,11 @@ void ABaseCharacter::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCou
 	GetCharacterMovement()->MaxWalkSpeed = bIsStunned ? 0.0f : BaseWalkSpeed;
 }
 
-void ABaseCharacter::OnRep_Stunned()
-{
 
-}
+void ABaseCharacter::OnRep_Stunned() {}
+
+void ABaseCharacter::OnRep_Burned() {}
+
 
 void ABaseCharacter::BeginPlay()
 {
@@ -171,7 +174,7 @@ ECharacterClass ABaseCharacter::GetCharacterClass_Implementation()
 	return CharacterClass;
 }
 
-FOnASCRegistered ABaseCharacter::GetOnASCRegisteredDelegate()
+FOnASCRegistered& ABaseCharacter::GetOnASCRegisteredDelegate()
 {
 	return OnAscRegistered;
 }
