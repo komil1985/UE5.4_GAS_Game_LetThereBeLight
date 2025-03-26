@@ -44,6 +44,7 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
 	DOREPLIFETIME(ABaseCharacter, bIsStunned);
 	DOREPLIFETIME(ABaseCharacter, bIsBurned);
+	DOREPLIFETIME(ABaseCharacter, bIsBeingShocked);
 }
 
 UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
@@ -189,11 +190,18 @@ USkeletalMeshComponent* ABaseCharacter::GetWeapon_Implementation()
 	return Weapon;
 }
 
-
-void ABaseCharacter::InitAbilityActorInfo()
+void ABaseCharacter::SetIsBeingShocked_Implementation(bool bInShock)
 {
-
+	bIsBeingShocked = bInShock;
 }
+
+bool ABaseCharacter::IsBeingShocked_Implementation() const
+{
+	return bIsBeingShocked;
+}
+
+
+void ABaseCharacter::InitAbilityActorInfo() {}
 
 
 void ABaseCharacter::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const

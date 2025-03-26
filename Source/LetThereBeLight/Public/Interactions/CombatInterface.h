@@ -96,6 +96,12 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	USkeletalMeshComponent* GetWeapon();
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool IsBeingShocked() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetIsBeingShocked(bool bInShock);
+
 	// Pure virtual functions
 	virtual void Die(const FVector& DeathImpulse) = 0;
 	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() = 0;
