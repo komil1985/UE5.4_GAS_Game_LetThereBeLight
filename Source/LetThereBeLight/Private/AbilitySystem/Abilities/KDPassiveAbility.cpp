@@ -2,9 +2,8 @@
 
 
 #include "AbilitySystem/Abilities/KDPassiveAbility.h"
-#include "KDPassiveAbility.h"
 #include "AbilitySystem/KDAbilitySystemComponent.h"
-#include"AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 void UKDPassiveAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
