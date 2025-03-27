@@ -93,7 +93,7 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 	ShouldEnableButton(AbilityStatus, SpellPoints, bEnableSpendpoints, bEnableEquip);
 	FString Description;
 	FString NextLevelDescription;
-	GetKDAbilitySystemComponent()->GetDescriptionByAbilityTag(SelectedAbility.Ability, Description, NextLevelDescription);
+	GetKDAbilitySystemComponent()->GetDescriptionByAbilityTag(AbilityTag, Description, NextLevelDescription);
 	SpellGlobeSelectedDelegate.Broadcast(bEnableSpendpoints, bEnableEquip, Description, NextLevelDescription);
 }
 

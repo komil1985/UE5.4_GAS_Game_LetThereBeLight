@@ -266,9 +266,10 @@ void UKDAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamepla
 		const bool bStatusValid = Status == GameplayTags.Abilities_Status_Equipped || Status == GameplayTags.Abilities_Status_Unlocked;
 		if (bStatusValid)
 		{
-			ClearAbilitiesOfSlot(Slot);
-			ClearSlot(AbilitySpec);
-			AbilitySpec->DynamicAbilityTags.AddTag(Slot);
+			ClearAbilitiesOfSlot(Slot);								// Remove this InputTag(slot) from any ability that has it.
+			ClearSlot(AbilitySpec);									// Clear this ability's slot, just in case, it's a different slot
+			AbilitySpec->DynamicAbilityTags.AddTag(Slot);	// Now assign this ability to this slot
+			
 			if (Status.MatchesTagExact(GameplayTags.Abilities_Status_Unlocked))
 			{
 				AbilitySpec->DynamicAbilityTags.RemoveTag(GameplayTags.Abilities_Status_Unlocked);
