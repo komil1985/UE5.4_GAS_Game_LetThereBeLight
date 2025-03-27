@@ -101,6 +101,11 @@ public:
 	FGameplayTag CoolDown_Lightning_LightningBolt;
 	FGameplayTag CoolDown_Lightning_LightningBeam;
 
+	// Passive Ability Tags
+	FGameplayTag Abilities_Passive_Halo;
+	FGameplayTag Abilities_Passive_Life;
+	FGameplayTag Abilities_Passive_Mana;
+
 	// Combat Socket Tags
 	FGameplayTag CombatSocket_Weapon;
 	FGameplayTag CombatSocket_RightHand;

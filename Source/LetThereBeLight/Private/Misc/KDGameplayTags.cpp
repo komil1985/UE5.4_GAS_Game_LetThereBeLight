@@ -236,6 +236,20 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("LightningBeam Cooldown Tag")
 	);
 
+	////   Passive Ability Tags
+	GameplayTags.Abilities_Passive_Halo = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Passive.Halo"),
+		FString("Passive Ability Tag Halo")
+	);
+	GameplayTags.Abilities_Passive_Life = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Passive.Life"),
+		FString("Passive Ability Tag Life")
+	);
+	GameplayTags.Abilities_Passive_Mana = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Passive.Mana"),
+		FString("Passive Ability Tag Mana")
+	);
+
 	////   Extra Ability Tags
 	GameplayTags.Abilities_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.HitReact"),
