@@ -4,7 +4,6 @@
 #include "Actors/MagicCircle.h"
 #include "Components/DecalComponent.h"
 
-// Sets default values
 AMagicCircle::AMagicCircle()
 {
 	PrimaryActorTick.bCanEverTick = true;

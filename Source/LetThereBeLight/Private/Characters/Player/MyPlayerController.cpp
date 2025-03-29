@@ -15,6 +15,7 @@
 #include "UI/Widget/FloatingText/DamageTextComponent.h"
 #include <NiagaraFunctionLibrary.h>
 #include "Actors/MagicCircle.h"
+#include "Components/DecalComponent.h"
 
 
 AMyPlayerController::AMyPlayerController()
@@ -43,11 +44,16 @@ void AMyPlayerController::PlayerTick(float DeltaTime)
 	UpdateMagicCircleLocation();
 }
 
-void AMyPlayerController::ShowMagicCircle()
+void AMyPlayerController::ShowMagicCircle(UMaterialInterface* DecalMaterial)
 {
 	if (!IsValid(MagicCircle))
 	{
 		MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass);
+
+		if (DecalMaterial)
+		{
+			MagicCircle->MagicCircleDecal->SetMaterial(0, DecalMaterial);
+		}
 	}
 }
 

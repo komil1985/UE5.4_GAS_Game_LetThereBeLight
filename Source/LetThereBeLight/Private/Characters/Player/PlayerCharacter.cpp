@@ -3,6 +3,7 @@
 
 #include "Characters/Player/PlayerCharacter.h"
 #include "Characters/Player/MyPlayerState.h"
+#include "Characters/Player/MyPlayerController.h"
 #include "AbilitySystem/KDAbilitySystemComponent.h"
 #include "AbilitySystem/KDAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -182,6 +183,22 @@ int32 APlayerCharacter::GetSpellPoints_Implementation() const
 	return MyPlayerState->GetSpellPoints();
 }
 
+void APlayerCharacter::ShowMagicCircle_Implementation(UMaterialInterface* DecalMaterial)
+{
+	if (AMyPlayerController* KDPlayerController = Cast<AMyPlayerController>(GetController()))
+	{
+		KDPlayerController->ShowMagicCircle(DecalMaterial);
+	}
+}
+
+void APlayerCharacter::HideMagicCircle_Implementation()
+{
+	if (AMyPlayerController* KDPlayerController = Cast<AMyPlayerController>(GetController()))
+	{
+		KDPlayerController->HideMagicCircle();
+	}
+}
+
 void APlayerCharacter::OnRep_Stunned()
 {
 	if (UKDAbilitySystemComponent* KDASC = Cast<UKDAbilitySystemComponent>(AbilitySystemComponent))
@@ -228,7 +245,7 @@ void APlayerCharacter::InitAbilityActorInfo()
 	OnAscRegistered.Broadcast(AbilitySystemComponent);
 	AbilitySystemComponent->RegisterGameplayTagEvent(FKDGameplayTags::Get().Debuff_Stun, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &APlayerCharacter::StunTagChanged);
 
-	if(APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	if(AMyPlayerController* PlayerController = Cast<AMyPlayerController>(GetController()))
 	{
 		if (AKDHUD* KDHUD = Cast<AKDHUD>(PlayerController->GetHUD()))
 		{
