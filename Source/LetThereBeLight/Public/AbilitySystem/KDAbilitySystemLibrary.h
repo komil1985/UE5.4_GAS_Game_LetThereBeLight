@@ -22,6 +22,8 @@ class LETTHEREBELIGHT_API UKDAbilitySystemLibrary : public UBlueprintFunctionLib
 {
 	GENERATED_BODY()
 public:
+
+	// Widget Controller
 	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static bool MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, AKDHUD*& OutKDHUD);
 
@@ -34,6 +36,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static USpellMenuWidgetController* GetSpellMenuWidgetController(const UObject* WorldContextObject);
 
+
+
+	// Ability System Class Defaults
 	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | Character Class Defaults")
 	static void InitilizeDefaultAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* ASC);
 
@@ -46,6 +51,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | Character Class Defaults")
 	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject);
 
+
+
+	// Gameplay Effects Getters
 	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | Gameplay Effects")
 	static bool IsSuccessfulDebuff(const FGameplayEffectContextHandle& EffectContextHandle);
 
@@ -73,6 +81,21 @@ public:
 	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | Gameplay Effects")
 	static bool IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle);
 
+	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | Gameplay Effects")
+	static bool IsRadialDamage(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | Gameplay Effects")
+	static float GetRadialDamageInnerRadius(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | Gameplay Effects")
+	static float GetRadialDamageOuterRadius(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | Gameplay Effects")
+	static FVector GetRadialDamageOrigin(const FGameplayEffectContextHandle& EffectContextHandle);
+
+
+
+	// Gameplay Effects Setters
 	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | Gameplay Effects")
 	static void SetIsBlockedHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bInIsBlockedHit);
 
@@ -100,6 +123,21 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | Gameplay Effects")
 	static void SetKnockbackForce(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, const FVector& InForce);
 
+	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | Gameplay Effects")
+	static void SetIsRadialDamage(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, const bool bInIsRadialDamage);
+
+	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | Gameplay Effects")
+	static void SetRadialDamageInnerRadius(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, float InInnerRadius);
+
+	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | Gameplay Effects")
+	static void SetRadialDamageOuterRadius(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, float InOuterRadius);
+
+	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | Gameplay Effects")
+	static void SetRadialDamageOrigin(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, const FVector& InOrigin);
+
+
+
+	// Gameplay Mechanics
 	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | GameplayMechanics")
 	static void GetLivePlayersWithinRadius(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin);
 	
@@ -109,14 +147,19 @@ public:
 	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | GameplayMechanics")
 	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor);
 
-	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | DamageEffect")
-	static FGameplayEffectContextHandle ApplyDamageEffect(const FDamageEffectParams& Params);
-
 	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | GameplayMechanics")
 	static TArray<FRotator> EvenlySpacedRotators(const FVector& Forward, const FVector& Axis, float Spread, int32 NumRotators);
 
 	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | GameplayMechanics")
 	static TArray<FVector> EvenlyRotatedVectors(const FVector& Forward, const FVector& Axis, float Spread, int32 NumVectors);
 
+
+
+	// Damage Effect
+	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | DamageEffect")
+	static FGameplayEffectContextHandle ApplyDamageEffect(const FDamageEffectParams& Params);
+
+
+	// Xp Reward Getter
 	static int32 GetXPRewardForClassAndLevel(const UObject* WorldContextObject, ECharacterClass CharacterClass, int32 CharacterLevel);
 };
