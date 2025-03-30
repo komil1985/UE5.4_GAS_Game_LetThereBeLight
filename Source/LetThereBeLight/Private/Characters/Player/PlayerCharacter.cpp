@@ -188,6 +188,7 @@ void APlayerCharacter::ShowMagicCircle_Implementation(UMaterialInterface* DecalM
 	if (AMyPlayerController* KDPlayerController = Cast<AMyPlayerController>(GetController()))
 	{
 		KDPlayerController->ShowMagicCircle(DecalMaterial);
+		KDPlayerController->bShowMouseCursor = false;
 	}
 }
 
@@ -196,6 +197,7 @@ void APlayerCharacter::HideMagicCircle_Implementation()
 	if (AMyPlayerController* KDPlayerController = Cast<AMyPlayerController>(GetController()))
 	{
 		KDPlayerController->HideMagicCircle();
+		KDPlayerController->bShowMouseCursor = true;
 	}
 }
 
