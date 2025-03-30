@@ -32,6 +32,7 @@ FDamageEffectParams UKDDamageGameplayAbility::MakeDamageEffectParamsFromClassDef
 	Params.DeathImpulseMagnitude = DeathImpulseMagnitude;
 	Params.KnockbackForceMagnitude = KnockbackFroceMagnitude;
 	Params.KnockbackChance = KnockbackChance;
+	
 	if (IsValid(TargetActor))
 	{
 		FRotator Rotation = (TargetActor->GetActorLocation() - GetAvatarActorFromActorInfo()->GetActorLocation()).Rotation();
@@ -40,6 +41,15 @@ FDamageEffectParams UKDDamageGameplayAbility::MakeDamageEffectParamsFromClassDef
 		Params.DeathImpulse = ToTarget * DeathImpulseMagnitude;
 		Params.KnockbackForce = ToTarget * KnockbackFroceMagnitude;
 	}
+
+	if (bIsRadialDamage)
+	{
+		Params.bIsRadialDamage = bIsRadialDamage;
+		Params.RadialDamageInnerRadius = RadialDamageInnerRadius;
+		Params.RadialDamageOuterRadius = RadialDamageOuterRadius;
+		Params.RadialDamageOrigin = RadialDamageOrigin;
+	}
+
 	return Params;
 }
 
