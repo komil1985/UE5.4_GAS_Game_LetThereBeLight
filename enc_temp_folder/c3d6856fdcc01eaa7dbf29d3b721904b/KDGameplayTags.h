@@ -92,7 +92,7 @@ public:
 	FGameplayTag Abilities_Type_Passive;
 	FGameplayTag Abilities_Type_None;
 
-	// Offensive Skills Ability Tags
+	// Attack Skills Ability Tags
 	FGameplayTag Abilities_Fire_FireBall;
 	FGameplayTag Abilities_Lightning_LightningBolt;
 	FGameplayTag Abilities_Lightning_LightningBeam;

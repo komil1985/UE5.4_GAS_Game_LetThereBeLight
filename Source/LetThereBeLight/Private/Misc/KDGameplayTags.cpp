@@ -236,6 +236,16 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("LightningBeam Cooldown Tag")
 	);
 
+	////   Ice Abilities and Cooldown
+	GameplayTags.Abilities_Ice_IcyThorns = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Ice.IcyThorns"),
+		FString("IcyThorns Ability Tag")
+	);
+	GameplayTags.CoolDown_Ice_IcyThorns = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("CoolDown.Ice.IcyThorns"),
+		FString("IcyThorns Cooldown Tag")
+	);
+
 	////   Passive Ability Tags
 	GameplayTags.Abilities_Passive_Halo = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Passive.Halo"),
