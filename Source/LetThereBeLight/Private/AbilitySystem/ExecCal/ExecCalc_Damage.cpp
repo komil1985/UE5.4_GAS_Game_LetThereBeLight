@@ -9,6 +9,7 @@
 #include <AbilitySystem/KDAbilitySystemLibrary.h>
 #include <Interactions/CombatInterface.h>
 #include <KDAbilityTypes.h>
+#include "Kismet/GameplayStatics.h"
 
 
 struct KDDamageStatics
@@ -102,6 +103,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 
 	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
+	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
 
 	const FGameplayTagContainer* SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
 	const FGameplayTagContainer* TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
@@ -166,6 +168,34 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 		DamageTypesValue *= (100.0f - Resistance) / 100.0f;
 
+		if (UKDAbilitySystemLibrary::IsRadialDamage(EffectContextHandle))
+		{
+			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(TargetAvatar))
+			{
+				CombatInterface->GetOnDamageDelegate().AddLambda
+				(
+					[&](float DamageAmount)
+					{
+						DamageTypesValue = DamageAmount;
+					}
+				);
+			}
+			UGameplayStatics::ApplyRadialDamageWithFalloff
+			(
+				TargetAvatar,
+				DamageTypesValue,
+				0.0f,
+				UKDAbilitySystemLibrary::GetRadialDamageOrigin(EffectContextHandle),
+				UKDAbilitySystemLibrary::GetRadialDamageInnerRadius(EffectContextHandle),
+				UKDAbilitySystemLibrary::GetRadialDamageOuterRadius(EffectContextHandle),
+				1.0f,
+				UDamageType::StaticClass(),
+				TArray<AActor*>(),
+				SourceAvatar,
+				nullptr
+			);
+		}
+
 		Damage += DamageTypesValue;
 	}
 
@@ -181,7 +211,6 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	
 	const bool bBlocked = FMath::RandRange(1, 100) < TargetBlockChance;
 
-	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
 	UKDAbilitySystemLibrary::SetIsBlockedHit(EffectContextHandle, bBlocked);
 
 

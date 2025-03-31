@@ -68,6 +68,13 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	DOREPLIFETIME(ABaseCharacter, bIsBeingShocked);
 }
 
+float ABaseCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	const float DamageTaken = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	OnDamageDelegate.Broadcast(DamageTaken);
+	return DamageTaken;
+}
+
 UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
@@ -204,6 +211,11 @@ FOnASCRegistered& ABaseCharacter::GetOnASCRegisteredDelegate()
 FOnDeathSignature& ABaseCharacter::GetOnDeathDelegate()
 {
 	return OnDeathDelegate;
+}
+
+FOnDamageSignature& ABaseCharacter::GetOnDamageDelegate()
+{
+	return OnDamageDelegate;
 }
 
 USkeletalMeshComponent* ABaseCharacter::GetWeapon_Implementation()
