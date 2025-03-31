@@ -1,7 +1,6 @@
 // Copyright ASKD Games
 
 #pragma once
-
 #include "CoreMinimal.h"
 #include "AbilitySystem/Abilities/KDGameplayAbility.h"
 #include "Interactions/CombatInterface.h"
@@ -21,7 +20,7 @@ public:
 	void CauseDamage(AActor* TargetActor);
 
 	UFUNCTION(BlueprintPure)
-	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr) const;
+	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr, FVector InRadialDamageOrigin = FVector::ZeroVector) const;
 
 	UFUNCTION(BlueprintPure)
 	float GetDamageAtLevel() const;
@@ -60,14 +59,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	bool bIsRadialDamage = false;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
 	float RadialDamageInnerRadius = 0.0f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
 	float RadialDamageOuterRadius = 0.0f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Damage")
-	FVector RadialDamageOrigin = FVector::ZeroVector;
+	/*UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	FVector RadialDamageOrigin = FVector::ZeroVector;*/
 
 	UFUNCTION(BlueprintPure)
 	FTaggedMontage GetRandomTaggedMontageFromArray(const TArray<FTaggedMontage>& TaggedMontages) const;
