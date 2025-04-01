@@ -16,6 +16,8 @@
 #include <NiagaraFunctionLibrary.h>
 #include "Actors/MagicCircle.h"
 #include "Components/DecalComponent.h"
+#include "LetThereBeLight/LetThereBeLight.h"
+
 
 
 AMyPlayerController::AMyPlayerController()
@@ -96,7 +98,8 @@ void AMyPlayerController::CursorTrace()
 		return;
 	}
 
-	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	const ECollisionChannel TraceChannel = IsValid(MagicCircle) ? ECC_ExcludeCharacters : ECC_Visibility;
+	GetHitResultUnderCursor(TraceChannel, false, CursorHit);
 	if (!CursorHit.bBlockingHit) return;
 
 	LastActor = ThisActor;
