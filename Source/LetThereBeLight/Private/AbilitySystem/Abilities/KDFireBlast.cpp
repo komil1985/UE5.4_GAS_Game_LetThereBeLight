@@ -63,3 +63,8 @@ FString UKDFireBlast::GetNextLevelDescription(int32 Level)
 		Cooldown,
 		ScaledDamage);
 }
+
+TArray<AKDProjectileFireBall*> UKDFireBlast::SpawnFireBalls()
+{
+	return TArray<AKDProjectileFireBall*>();
+}

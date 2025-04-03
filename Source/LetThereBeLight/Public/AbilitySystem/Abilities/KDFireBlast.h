@@ -6,6 +6,9 @@
 #include "AbilitySystem/Abilities/KDDamageGameplayAbility.h"
 #include "KDFireBlast.generated.h"
 
+
+class AKDProjectileFireBall;
+
 /**
  * 
  */
@@ -18,9 +21,15 @@ public:
 	virtual FString GetDescription(int32 Level) override;
 	virtual FString GetNextLevelDescription(int32 Level) override;
 
-protected:
+	UFUNCTION(BlueprintCallable)
+	TArray<AKDProjectileFireBall*> SpawnFireBalls();
 
-	UPROPERTY(EditDefaultsOnly, Category = "FrireBlast")
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "FireBlast")
 	int32 NumFireBalls = 10;
+
+private:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AKDProjectileFireBall> ProjectileFireBallClass;
 	
 };
