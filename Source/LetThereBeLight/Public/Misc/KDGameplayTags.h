@@ -94,12 +94,14 @@ public:
 
 	// Offensive Skills Ability Tags
 	FGameplayTag Abilities_Fire_FireBall;
+	FGameplayTag Abilities_Fire_FireBlast;
 	FGameplayTag Abilities_Lightning_LightningBolt;
 	FGameplayTag Abilities_Lightning_LightningBeam;
 	FGameplayTag Abilities_Ice_IcyThorns;
 
 	// Skills Cooldown Ability Tags
 	FGameplayTag CoolDown_Fire_FireBall;
+	FGameplayTag CoolDown_Fire_FireBlast;
 	FGameplayTag CoolDown_Lightning_LightningBolt;
 	FGameplayTag CoolDown_Lightning_LightningBeam;
 	FGameplayTag CoolDown_Ice_IcyThorns;

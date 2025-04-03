@@ -210,11 +210,19 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 	////   Fire Abilities and Cooldown
 	GameplayTags.Abilities_Fire_FireBall = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Fire.FireBall"),
-		FString("FireBolt Ability Tag")
+		FString("FireBall Ability Tag")
 	);
 	GameplayTags.CoolDown_Fire_FireBall = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("CoolDown.Fire.FireBall"),
 		FString("FireBall Cooldown Tag")
+	);
+	GameplayTags.Abilities_Fire_FireBlast = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Fire.FireBlast"),
+		FString("FireBlast Ability Tag")
+	);
+	GameplayTags.CoolDown_Fire_FireBlast = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("CoolDown.Fire.FireBlast"),
+		FString("FireBlast Cooldown Tag")
 	);
 
 	////   Lightning Abilities and Cooldown
