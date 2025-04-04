@@ -2,6 +2,8 @@
 
 
 #include "AbilitySystem/Abilities/KDFireBlast.h"
+#include "AbilitySystem/KDAbilitySystemLibrary.h"
+#include "Actors/KDProjectileFireBall.h"
 
 FString UKDFireBlast::GetDescription(int32 Level)
 {
@@ -66,5 +68,34 @@ FString UKDFireBlast::GetNextLevelDescription(int32 Level)
 
 TArray<AKDProjectileFireBall*> UKDFireBlast::SpawnFireBalls()
 {
-	return TArray<AKDProjectileFireBall*>();
+	TArray<AKDProjectileFireBall*> FireBalls;
+	const FVector Forward = GetAvatarActorFromActorInfo()->GetActorForwardVector();
+	const FVector Location = GetAvatarActorFromActorInfo()->GetActorLocation();
+	TArray<FRotator> Rotators = UKDAbilitySystemLibrary::EvenlySpacedRotators(Forward, FVector::UpVector, 360.0f, NumFireBalls);
+
+	for (const FRotator& Rotator : Rotators)
+	{
+		FTransform SpawnTransform;
+		SpawnTransform.SetLocation(Location);
+		SpawnTransform.SetRotation(Rotator.Quaternion());
+
+		AKDProjectileFireBall* FireBall = GetWorld()->SpawnActorDeferred<AKDProjectileFireBall>
+			(
+				ProjectileFireBallClass,
+				SpawnTransform,
+				GetOwningActorFromActorInfo(),
+				CurrentActorInfo->PlayerController->GetPawn(),
+				ESpawnActorCollisionHandlingMethod::AlwaysSpawn
+			);
+
+		FireBall->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
+		FireBall->ReturnToActor = GetAvatarActorFromActorInfo();
+
+		FireBalls.Add(FireBall);
+
+		FireBall->FinishSpawning(SpawnTransform);
+	}
+
+	return FireBalls;
+
 }
