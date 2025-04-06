@@ -46,9 +46,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<USphereComponent> Sphere;
 
-private:
+	bool IsValidOverlap(AActor* OtherActor);
+
 	bool bHit = false;
 
+private:
 	UPROPERTY(EditDefaultsOnly)
 	float LifeSpan = 15.0f;
 

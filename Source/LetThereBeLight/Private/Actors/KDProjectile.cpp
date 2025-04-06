@@ -78,10 +78,7 @@ void AKDProjectile::Destroyed()
 
 void AKDProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (DamageEffectParams.SourceAbilitySystemComponent == nullptr) return;
-	AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();	
-	if (SourceAvatarActor == OtherActor) return;
-	if (!UKDAbilitySystemLibrary::IsNotFriend(SourceAvatarActor, OtherActor)) return;
+	if (!IsValidOverlap(OtherActor)) return;
 	if (!bHit) OnHit();
 
 	if (HasAuthority())
@@ -111,4 +108,14 @@ void AKDProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AA
 		Destroy();
 	}
 	else bHit = true;
+}
+
+bool AKDProjectile::IsValidOverlap(AActor* OtherActor)
+{
+	if (DamageEffectParams.SourceAbilitySystemComponent == nullptr) return false;
+	AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
+	if (SourceAvatarActor == OtherActor) return false;
+	if (!UKDAbilitySystemLibrary::IsNotFriend(SourceAvatarActor, OtherActor)) return false;
+	
+	return true;
 }
