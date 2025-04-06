@@ -4,6 +4,9 @@
 #include "Actors/KDProjectileFireBall.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystem/KDAbilitySystemLibrary.h"
+#include "GameplayCueManager.h"
+#include "Components/AudioComponent.h"
+#include "Misc/KDGameplayTags.h"
 
 void AKDProjectileFireBall::BeginPlay()
 {
@@ -29,4 +32,21 @@ void AKDProjectileFireBall::OnSphereOverlap(UPrimitiveComponent* OverlappedCompo
 			UKDAbilitySystemLibrary::ApplyDamageEffect(DamageEffectParams);
 		}
 	}
+}
+
+void AKDProjectileFireBall::OnHit()
+{
+	if (GetOwner())
+	{
+		FGameplayCueParameters CueParams;
+		CueParams.Location = GetActorLocation();
+		UGameplayCueManager::ExecuteGameplayCue_NonReplicated(GetOwner(), FKDGameplayTags::Get().GameplayCue_FireBlast, CueParams);
+	}
+
+	if (LoopingSoundComponent)
+	{
+		LoopingSoundComponent->Stop();
+		LoopingSoundComponent->DestroyComponent();
+	}
+	bHit = true;
 }

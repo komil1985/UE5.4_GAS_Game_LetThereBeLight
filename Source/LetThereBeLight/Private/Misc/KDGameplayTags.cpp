@@ -365,6 +365,12 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FString("Block tracing under cursor")
 	);
 
+	// Gameplay Cue Tags
+	GameplayTags.GameplayCue_FireBlast = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("GameplayCue.FireBlast"),
+		FString("FireBlast Gameplay Cue Tag")
+	);
+
 	// Map of damage types to resistances /////////////////////////////////////////////////////////////////////////////////////////////
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Fire, GameplayTags.Attributes_Resistance_Fire);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Ice, GameplayTags.Attributes_Resistance_Ice);
