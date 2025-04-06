@@ -23,7 +23,7 @@ class LETTHEREBELIGHT_API UKDAbilitySystemLibrary : public UBlueprintFunctionLib
 	GENERATED_BODY()
 public:
 
-	// Widget Controller
+	// Widget Controllers
 	UFUNCTION(BlueprintPure, Category = "KDAbilitySystemLibrary | WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static bool MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, AKDHUD*& OutKDHUD);
 
@@ -160,6 +160,23 @@ public:
 	static FGameplayEffectContextHandle ApplyDamageEffect(const FDamageEffectParams& Params);
 
 
+
 	// Xp Reward Getter
 	static int32 GetXPRewardForClassAndLevel(const UObject* WorldContextObject, ECharacterClass CharacterClass, int32 CharacterLevel);
+
+
+	
+	// Damage Effect Params
+	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | DamageEffectParams")
+	static void SetIsRadialDamageEffectParam(UPARAM(ref) FDamageEffectParams& DamageEffectParams, bool bIsRadial, float InnerRadius, float OuterRadius, FVector Origin);
+
+	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | DamageEffectParams")
+	static void SetKnockbackDirectionDamageEffectParam(UPARAM(ref)  FDamageEffectParams& DamageEffectParams, FVector KnockbackDirection, float Magnitude = 0.0f);
+
+	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | DamageEffectParams")
+	static void SetDeathImpulseDirectionDamageEffectParam(UPARAM(ref)  FDamageEffectParams& DamageEffectParams, FVector ImpulseDirection, float Magnitude = 0.0f);
+
+	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | DamageEffectParams")
+	static void SetTargetEffectParamsASC(UPARAM(ref)  FDamageEffectParams& DamageEffectParams, UAbilitySystemComponent* InASC);
+
 };
