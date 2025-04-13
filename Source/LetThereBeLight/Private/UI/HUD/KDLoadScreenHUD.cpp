@@ -12,8 +12,10 @@ void AKDLoadScreenHUD::BeginPlay()
 	Super::BeginPlay();
 
 	LoadScreenViewModel = NewObject<UKD_MVVM_LoadScreen> (this, LoadScreenViewModelClass);
+	LoadScreenViewModel->InitializeLoadSlots();
 
 	LoadScreenWidget = CreateWidget<UKDLoadScreenWidget>(GetWorld(), LoadScreenWidgetClass);
 	LoadScreenWidget->AddToViewport();
+	LoadScreenWidget->BlueprintInitializeWidget();
 
 }
