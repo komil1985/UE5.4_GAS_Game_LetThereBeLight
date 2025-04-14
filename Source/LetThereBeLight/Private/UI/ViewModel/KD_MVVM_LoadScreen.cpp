@@ -31,9 +31,9 @@ void UKD_MVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& Entere
 	AMyGameModeBase* KDGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this));
 
 	LoadSlots[Slot]->SetPlayerName(EnteredName);
+	LoadSlots[Slot]->SlotStatus = Taken;
 	
 	KDGameMode->SaveSlotData(LoadSlots[Slot], Slot);
-
 	LoadSlots[Slot]->InitializeSlot();
 }
 
@@ -45,4 +45,20 @@ void UKD_MVVM_LoadScreen::NewGameButtonPressed(int32 Slot)
 void UKD_MVVM_LoadScreen::SelectSlotButtonPressed(int32 Slot)
 {
 
+}
+
+void UKD_MVVM_LoadScreen::LoadData()
+{
+	AMyGameModeBase* KDGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this));
+
+	for (const TTuple<int32, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
+	{
+		ULoadScreenSaveGame* SaveGameObject = KDGameMode->GetSaveSlotData(LoadSlot.Value->LoadSlotName, LoadSlot.Key);
+		const FString PlayerName = SaveGameObject->PlayerName;
+		TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = SaveGameObject->SaveSlotStatus;
+
+		LoadSlot.Value->SlotStatus = SaveSlotStatus;
+		LoadSlot.Value->SetPlayerName(PlayerName);
+		LoadSlot.Value->InitializeSlot();
+	}
 }
