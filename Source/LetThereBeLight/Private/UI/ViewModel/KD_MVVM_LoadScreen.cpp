@@ -13,12 +13,12 @@ void UKD_MVVM_LoadScreen::InitializeLoadSlots()
 	LoadSlots.Add(0, LoadSlot_0);
 
 	LoadSlot_1 = NewObject<UMVVM_LoadSlot>(this, LoadSlotViewModelClass);
-	LoadSlot_1->LoadSlotName = FString("LoadSlot_1");
 	LoadSlots.Add(1, LoadSlot_1);
+	LoadSlot_1->LoadSlotName = FString("LoadSlot_1");
 
 	LoadSlot_2 = NewObject<UMVVM_LoadSlot>(this, LoadSlotViewModelClass);
-	LoadSlot_2->LoadSlotName = FString("LoadSlot_2");
 	LoadSlots.Add(2, LoadSlot_2);
+	LoadSlot_2->LoadSlotName = FString("LoadSlot_2");
 }
 
 UMVVM_LoadSlot* UKD_MVVM_LoadScreen::GetLoadSlotViewModelByIndex(int32 Index) const
@@ -30,7 +30,8 @@ void UKD_MVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& Entere
 {
 	AMyGameModeBase* KDGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this));
 
-	LoadSlots[Slot]->PlayerName = EnteredName;
+	LoadSlots[Slot]->SetPlayerName(EnteredName);
+	
 	KDGameMode->SaveSlotData(LoadSlots[Slot], Slot);
 
 	LoadSlots[Slot]->InitializeSlot();
