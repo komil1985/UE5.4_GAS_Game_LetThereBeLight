@@ -6,6 +6,7 @@
 #include "MVVMViewModelBase.h"
 #include "KD_MVVM_LoadScreen.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSlotSelected);
 
 class UMVVM_LoadSlot;
 
@@ -19,6 +20,9 @@ class LETTHEREBELIGHT_API UKD_MVVM_LoadScreen : public UMVVMViewModelBase
 
 public:
 	void InitializeLoadSlots();
+
+	UPROPERTY(BlueprintAssignable)
+	FSlotSelected SlotSelected;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UMVVM_LoadSlot>LoadSlotViewModelClass;
