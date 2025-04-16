@@ -87,5 +87,6 @@ void UKD_MVVM_LoadScreen::LoadData()
 		LoadSlot.Value->SlotStatus = SaveSlotStatus;
 		LoadSlot.Value->SetPlayerName(PlayerName);
 		LoadSlot.Value->InitializeSlot();
+		LoadSlot.Value->SetMapName(SaveGameObject->MapName);
 	}
 }
