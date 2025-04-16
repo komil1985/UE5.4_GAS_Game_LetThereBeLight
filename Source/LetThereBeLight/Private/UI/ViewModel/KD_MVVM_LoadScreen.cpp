@@ -67,6 +67,9 @@ void UKD_MVVM_LoadScreen::YesButtonPressed(int32 Slot)
 	if (IsValid(SelectedSlot))
 	{
 		AMyGameModeBase::DeleteSlot(SelectedSlot->LoadSlotName, SelectedSlot->SlotIndex);
+		SelectedSlot->SlotStatus = Vacant;
+		SelectedSlot->InitializeSlot();
+		SelectedSlot->EnableSelectSlotButton.Broadcast(true);
 	}
 }
 
