@@ -33,6 +33,7 @@ void UKD_MVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& Entere
 {
 	AMyGameModeBase* KDGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this));
 
+	LoadSlots[Slot]->SetMapName(KDGameMode->DefaultMapName);
 	LoadSlots[Slot]->SetPlayerName(EnteredName);
 	LoadSlots[Slot]->SlotStatus = Taken;
 	
