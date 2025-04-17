@@ -6,6 +6,7 @@
 #include "UI/ViewModel/MVVM_LoadSlot.h"
 #include "GameFramework/SaveGame.h"
 #include "SaveSystem/LoadScreenSaveGame.h"
+#include "GameFramework/PlayerStart.h"
 
 void AMyGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 {
@@ -52,6 +53,29 @@ void AMyGameModeBase::TravelToMap(UMVVM_LoadSlot* Slot)
 	const int32 SotIndex = Slot->SlotIndex;
 
 	UGameplayStatics::OpenLevelBySoftObjectPtr(Slot, Maps.FindChecked(Slot->GetMapName()));
+}
+
+AActor* AMyGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
+{
+	TArray<AActor*> Actors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), Actors);
+	if (Actors.Num() > 0)
+	{
+		AActor* SelectedActor = Actors[0];
+		for (AActor* Actor : Actors)
+		{
+			if (APlayerStart* PlayerStart = Cast<APlayerStart>(Actor))
+			{
+				if (PlayerStart->PlayerStartTag == FName("TheTag"))
+				{
+					SelectedActor = PlayerStart;
+					break;
+				}
+			}
+		}
+		return SelectedActor;
+	}
+	return nullptr;
 }
 
 void AMyGameModeBase::BeginPlay()
