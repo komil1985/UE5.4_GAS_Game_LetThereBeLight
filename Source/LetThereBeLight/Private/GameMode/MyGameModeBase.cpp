@@ -9,21 +9,18 @@
 
 void AMyGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 {
-	/*if (UGameplayStatics::DoesSaveGameExist(LoadSlot->LoadSlotName, SlotIndex))
+	if (UGameplayStatics::DoesSaveGameExist(LoadSlot->GetLoadSlotName(), SlotIndex))
 	{
-		UGameplayStatics::DeleteGameInSlot(LoadSlot->LoadSlotName, SlotIndex);
-	}*/
-
-	DeleteSlot(LoadSlot->LoadSlotName, SlotIndex);
-
+		UGameplayStatics::DeleteGameInSlot(LoadSlot->GetLoadSlotName(), SlotIndex);
+	}
 	USaveGame* SaveGameObject = UGameplayStatics::CreateSaveGameObject(LoadScreenSaveGameClass);
-	
 	ULoadScreenSaveGame* LoadScreenSaveGame = Cast<ULoadScreenSaveGame>(SaveGameObject);
+
 	LoadScreenSaveGame->PlayerName = LoadSlot->GetPlayerName();
 	LoadScreenSaveGame->SaveSlotStatus = Taken;
 	LoadScreenSaveGame->MapName = LoadSlot->GetMapName();
 
-	UGameplayStatics::SaveGameToSlot(LoadScreenSaveGame, LoadSlot->LoadSlotName, SlotIndex);
+	UGameplayStatics::SaveGameToSlot(LoadScreenSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex);
 }
 
 ULoadScreenSaveGame* AMyGameModeBase::GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const
@@ -51,7 +48,7 @@ void AMyGameModeBase::DeleteSlot(const FString& SlotName, int32 SlotIndex)
 
 void AMyGameModeBase::TravelToMap(UMVVM_LoadSlot* Slot)
 {
-	const FString SlotName = Slot->LoadSlotName;
+	const FString SlotName = Slot->GetLoadSlotName();
 	const int32 SotIndex = Slot->SlotIndex;
 
 	UGameplayStatics::OpenLevelBySoftObjectPtr(Slot, Maps.FindChecked(Slot->GetMapName()));

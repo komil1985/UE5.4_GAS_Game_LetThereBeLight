@@ -9,19 +9,21 @@
 void UKD_MVVM_LoadScreen::InitializeLoadSlots()
 {
 	LoadSlot_0 = NewObject<UMVVM_LoadSlot>(this, LoadSlotViewModelClass);
-	LoadSlot_0->LoadSlotName = FString("LoadSlot_0");
+	LoadSlot_0->SetLoadSlotName(FString("LoadSlot_0"));
 	LoadSlot_0->SlotIndex = 0;
 	LoadSlots.Add(0, LoadSlot_0);
 	
 	LoadSlot_1 = NewObject<UMVVM_LoadSlot>(this, LoadSlotViewModelClass);
-	LoadSlot_1->LoadSlotName = FString("LoadSlot_1");
+	LoadSlot_1->SetLoadSlotName(FString("LoadSlot_1"));
 	LoadSlot_1->SlotIndex = 1;
 	LoadSlots.Add(1, LoadSlot_1);
 
 	LoadSlot_2 = NewObject<UMVVM_LoadSlot>(this, LoadSlotViewModelClass);
-	LoadSlot_2->LoadSlotName = FString("LoadSlot_2");
+	LoadSlot_2->SetLoadSlotName(FString("LoadSlot_2"));
 	LoadSlot_2->SlotIndex = 2;
 	LoadSlots.Add(2, LoadSlot_2);
+
+	SetNumLoadSlots(LoadSlots.Num());
 }
 
 UMVVM_LoadSlot* UKD_MVVM_LoadScreen::GetLoadSlotViewModelByIndex(int32 Index) const
@@ -67,7 +69,7 @@ void UKD_MVVM_LoadScreen::YesButtonPressed()
 {
 	if (IsValid(SelectedSlot))
 	{
-		AMyGameModeBase::DeleteSlot(SelectedSlot->LoadSlotName, SelectedSlot->SlotIndex);
+		AMyGameModeBase::DeleteSlot(SelectedSlot->GetLoadSlotName(), SelectedSlot->SlotIndex);
 		SelectedSlot->SlotStatus = Vacant;
 		SelectedSlot->InitializeSlot();
 		SelectedSlot->EnableSelectSlotButton.Broadcast(true);
@@ -90,7 +92,7 @@ void UKD_MVVM_LoadScreen::LoadData()
 
 	for (const TTuple<int32, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
 	{
-		ULoadScreenSaveGame* SaveGameObject = KDGameMode->GetSaveSlotData(LoadSlot.Value->LoadSlotName, LoadSlot.Key);
+		ULoadScreenSaveGame* SaveGameObject = KDGameMode->GetSaveSlotData(LoadSlot.Value->GetLoadSlotName(), LoadSlot.Key);
 		const FString PlayerName = SaveGameObject->PlayerName;
 		TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = SaveGameObject->SaveSlotStatus;
 
@@ -99,4 +101,9 @@ void UKD_MVVM_LoadScreen::LoadData()
 		LoadSlot.Value->InitializeSlot();
 		LoadSlot.Value->SetMapName(SaveGameObject->MapName);
 	}
+}
+
+void UKD_MVVM_LoadScreen::SetNumLoadSlots(int32 InNumLoadSlots)
+{
+	UE_MVVM_SET_PROPERTY_VALUE(NumLoadSlots, InNumLoadSlots);
 }
