@@ -63,7 +63,7 @@ void UKD_MVVM_LoadScreen::SelectSlotButtonPressed(int32 Slot)
 	SelectedSlot = LoadSlots[Slot];
 }
 
-void UKD_MVVM_LoadScreen::YesButtonPressed(int32 Slot)
+void UKD_MVVM_LoadScreen::YesButtonPressed()
 {
 	if (IsValid(SelectedSlot))
 	{
@@ -72,6 +72,16 @@ void UKD_MVVM_LoadScreen::YesButtonPressed(int32 Slot)
 		SelectedSlot->InitializeSlot();
 		SelectedSlot->EnableSelectSlotButton.Broadcast(true);
 	}
+}
+
+void UKD_MVVM_LoadScreen::PlayButtonPressed()
+{
+	AMyGameModeBase* KDGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (IsValid(SelectedSlot))
+	{
+		KDGameMode->TravelToMap(SelectedSlot);
+	}
+	
 }
 
 void UKD_MVVM_LoadScreen::LoadData()

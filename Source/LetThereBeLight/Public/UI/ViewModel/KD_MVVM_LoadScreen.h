@@ -40,7 +40,10 @@ public:
 	void SelectSlotButtonPressed(int32 Slot);
 
 	UFUNCTION(BlueprintCallable)
-	void YesButtonPressed(int32 Slot);
+	void YesButtonPressed();
+
+	UFUNCTION(BlueprintCallable)
+	void PlayButtonPressed();
 
 	void LoadData();
 
