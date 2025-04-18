@@ -5,6 +5,7 @@
 #include "UI/ViewModel/MVVM_LoadSlot.h"
 #include "GameMode/MyGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameMode/KDGameInstance.h"
 
 void UKD_MVVM_LoadScreen::InitializeLoadSlots()
 {
@@ -41,6 +42,12 @@ void UKD_MVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& Entere
 	
 	KDGameMode->SaveSlotData(LoadSlots[Slot], Slot);
 	LoadSlots[Slot]->InitializeSlot();
+
+	UKDGameInstance* KDGameInstance = Cast<UKDGameInstance>(KDGameMode->GetGameInstance());
+	KDGameInstance->LoadSlotName = LoadSlots[Slot]->GetLoadSlotName();
+	KDGameInstance->LoadSlotIndex = LoadSlots[Slot]->SlotIndex;
+	KDGameInstance->PlayerStartTag = KDGameMode->DefaultPlayerStartTag;
+
 }
 
 void UKD_MVVM_LoadScreen::NewGameButtonPressed(int32 Slot)
