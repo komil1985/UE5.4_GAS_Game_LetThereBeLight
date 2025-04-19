@@ -68,6 +68,18 @@ void AMyPlayerState::SetLevel(int32 InLevel)
 	OnLevelChangedDelegate.Broadcast(PlayerLevel);
 }
 
+void AMyPlayerState::SetAttributePoints(int32 InAttributePoints)
+{
+	AttributePoints = InAttributePoints;
+	OnAttributePointsChangedDelegate.Broadcast(AttributePoints);
+}
+
+void AMyPlayerState::SetSpellPoints(int32 InSpellPoints)
+{
+	SpellPoints = InSpellPoints;
+	OnSpellPointsChangedDelegate.Broadcast(SpellPoints);
+}
+
 void AMyPlayerState::OnRep_PlayerXP(int32 OldPlayerXP)
 {
 	OnXPChangedDelegate.Broadcast(PlayerXP);

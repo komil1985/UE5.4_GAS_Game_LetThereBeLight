@@ -66,8 +66,39 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 
 	// Init Ability actor info for the server
 	InitAbilityActorInfo();
+	LoadProgress();
+
 	AddCharacterAbilities();
 
+}
+
+void APlayerCharacter::LoadProgress()
+{
+	AMyGameModeBase* KDGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this));
+
+	if (KDGameMode)
+	{
+		ULoadScreenSaveGame* SaveData = KDGameMode->RetrieveInGameSaveData();
+		if (SaveData == nullptr) return;
+
+		if (AMyPlayerState* KDPlayerState = Cast<AMyPlayerState>(GetPlayerState()))
+		{
+			KDPlayerState->SetLevel(SaveData->PlayerLevel);
+			KDPlayerState->SetXP(SaveData->PlayerXP);
+			KDPlayerState->SetAttributePoints(SaveData->AttributePoints);
+			KDPlayerState->SetSpellPoints(SaveData->SpellPoints);
+		}
+
+		if (SaveData->bFirstTimeLoadIn)
+		{
+			InitializeDefaultAttributes();
+			AddCharacterAbilities();
+		}
+		else
+		{
+
+		}
+	}
 }
 
 void APlayerCharacter::OnRep_PlayerState()
@@ -227,6 +258,8 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 		SaveData->Intelligence = UKDAttributeSet::GetIntelligenceAttribute().GetNumericValue(GetAttributeSet());
 		SaveData->Resilience = UKDAttributeSet::GetResilienceAttribute().GetNumericValue(GetAttributeSet());
 		SaveData->Vigor = UKDAttributeSet::GetVigorAttribute().GetNumericValue(GetAttributeSet());
+		
+		SaveData->bFirstTimeLoadIn = false;
 
 		KDGameMode->SaveInGameProgressData(SaveData);
 	}
@@ -285,5 +318,5 @@ void APlayerCharacter::InitAbilityActorInfo()
 			KDHUD->InitOverlay(PlayerController, MyPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	InitializeDefaultAttributes();
+	//InitializeDefaultAttributes();
 }
