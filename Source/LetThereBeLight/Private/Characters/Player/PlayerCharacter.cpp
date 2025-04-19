@@ -16,6 +16,10 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/BoxComponent.h"
 #include "Misc/KDGameplayTags.h"
+#include "GameMode/MyGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameMode/KDGameInstance.h"
+#include "SaveSystem/LoadScreenSaveGame.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -198,6 +202,21 @@ void APlayerCharacter::HideMagicCircle_Implementation()
 	{
 		KDPlayerController->HideMagicCircle();
 		KDPlayerController->bShowMouseCursor = true;
+	}
+}
+
+void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
+{
+	AMyGameModeBase* KDGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this));
+
+	if (KDGameMode)
+	{
+		ULoadScreenSaveGame* SaveData = KDGameMode->RetrieveInGameSaveData();
+		if (SaveData == nullptr) return;
+
+		SaveData->PlayerStartTag = CheckpointTag;
+
+		KDGameMode->SaveInGameProgressData(SaveData);
 	}
 }
 

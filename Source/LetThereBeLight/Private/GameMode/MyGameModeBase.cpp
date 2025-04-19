@@ -41,6 +41,27 @@ ULoadScreenSaveGame* AMyGameModeBase::GetSaveSlotData(const FString& SlotName, i
 	return LoadScreenSaveGame;
 }
 
+ULoadScreenSaveGame* AMyGameModeBase::RetrieveInGameSaveData()
+{
+	UKDGameInstance* KDGameInstance = Cast<UKDGameInstance>(GetGameInstance());
+	const FString InGameLoadSlotName = KDGameInstance->LoadSlotName;
+	const int32 InGameLoadSlotIndex = KDGameInstance->LoadSlotIndex;
+
+	return GetSaveSlotData(InGameLoadSlotName, InGameLoadSlotIndex);
+}
+
+void AMyGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
+{
+	UKDGameInstance* KDGameInstance = Cast<UKDGameInstance>(GetGameInstance());
+
+	const FString InGameLoadSlotName = KDGameInstance->LoadSlotName;
+	const int32 InGameLoadSlotIndex = KDGameInstance->LoadSlotIndex;
+	KDGameInstance->PlayerStartTag = SaveObject->PlayerStartTag;
+
+	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
+
+}
+
 void AMyGameModeBase::DeleteSlot(const FString& SlotName, int32 SlotIndex)
 {
 	if (UGameplayStatics::DoesSaveGameExist(SlotName, SlotIndex))

@@ -89,6 +89,8 @@ void UKD_MVVM_LoadScreen::PlayButtonPressed()
 	AMyGameModeBase* KDGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this));
 	UKDGameInstance* KDGameInstance = Cast<UKDGameInstance>(KDGameMode->GetGameInstance());
 	KDGameInstance->PlayerStartTag = SelectedSlot->PlayerStartTag;
+	KDGameInstance->LoadSlotName = SelectedSlot->GetLoadSlotName();
+	KDGameInstance->LoadSlotIndex = SelectedSlot->SlotIndex;
 
 	if (IsValid(SelectedSlot))
 	{
