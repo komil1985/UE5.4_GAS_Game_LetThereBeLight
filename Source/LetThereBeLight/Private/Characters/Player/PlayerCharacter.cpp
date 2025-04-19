@@ -216,6 +216,18 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 
 		SaveData->PlayerStartTag = CheckpointTag;
 
+		if (AMyPlayerState* KDPlayerState = Cast<AMyPlayerState>(GetPlayerState()))
+		{
+			SaveData->PlayerLevel = KDPlayerState->GetPlayerLevel();
+			SaveData->PlayerXP = KDPlayerState->GetPlayerXP();
+			SaveData->AttributePoints = KDPlayerState->GetAttributePoints();
+			SaveData->SpellPoints = KDPlayerState->GetSpellPoints();
+		}
+		SaveData->Strength = UKDAttributeSet::GetStrengthAttribute().GetNumericValue(GetAttributeSet());
+		SaveData->Intelligence = UKDAttributeSet::GetIntelligenceAttribute().GetNumericValue(GetAttributeSet());
+		SaveData->Resilience = UKDAttributeSet::GetResilienceAttribute().GetNumericValue(GetAttributeSet());
+		SaveData->Vigor = UKDAttributeSet::GetVigorAttribute().GetNumericValue(GetAttributeSet());
+
 		KDGameMode->SaveInGameProgressData(SaveData);
 	}
 }

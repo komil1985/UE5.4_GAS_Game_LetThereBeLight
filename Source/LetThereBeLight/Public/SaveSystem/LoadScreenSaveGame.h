@@ -38,8 +38,36 @@ public:
 	FString MapName = FString("Default Map Name");
 
 	UPROPERTY()
-	FName PlayerStartTag;
+	FName PlayerStartTag = FName();
 
 	UPROPERTY()
 	TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = Vacant;
+
+	// Player
+
+	UPROPERTY()
+	int32 PlayerLevel = 0;
+
+	UPROPERTY()
+	int32 PlayerXP = 0;
+
+	UPROPERTY()
+	int32 SpellPoints = 0;
+
+	UPROPERTY()
+	int32 AttributePoints = 0;
+
+	// Primary Attributes
+
+	UPROPERTY()
+	int32 Strength = 0;
+
+	UPROPERTY()
+	int32 Intelligence = 0;
+
+	UPROPERTY()
+	int32 Resilience = 0;
+
+	UPROPERTY()
+	int32 Vigor = 0;
 };
