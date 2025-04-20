@@ -41,7 +41,7 @@ void AMyPlayerState::AddToXP(int32 InXP)
 void AMyPlayerState::AddToLevel(int32 InLevel)
 {
 	PlayerLevel += InLevel;
-	OnLevelChangedDelegate.Broadcast(PlayerLevel);
+	OnLevelChangedDelegate.Broadcast(PlayerLevel, true);
 }
 
 void AMyPlayerState::AddAttributePoints(int32 InAttributePoints)
@@ -65,7 +65,7 @@ void AMyPlayerState::SetXP(int32 InXP)
 void AMyPlayerState::SetLevel(int32 InLevel)
 {
 	PlayerLevel = InLevel;
-	OnLevelChangedDelegate.Broadcast(PlayerLevel);
+	OnLevelChangedDelegate.Broadcast(PlayerLevel, false);
 }
 
 void AMyPlayerState::SetAttributePoints(int32 InAttributePoints)
@@ -87,7 +87,7 @@ void AMyPlayerState::OnRep_PlayerXP(int32 OldPlayerXP)
 
 void AMyPlayerState::OnRep_PlayerLevel(int32 OldPlayerLevel)
 {
-	OnLevelChangedDelegate.Broadcast(PlayerLevel);
+	OnLevelChangedDelegate.Broadcast(PlayerLevel, true);
 }
 
 void AMyPlayerState::OnRep_AttributePoints(int32 OldAttributePoints)

@@ -9,6 +9,7 @@
 
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatsChanged, int32 /*StatValue*/)
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnLevelChanged, int32 /*StatValue*/, bool /*bLevelUp*/);
 
 
 /**
@@ -31,7 +32,7 @@ public:
 	TObjectPtr<ULevelUpInfo> LevelUpInfo;
 
 	FOnPlayerStatsChanged OnXPChangedDelegate;
-	FOnPlayerStatsChanged OnLevelChangedDelegate;
+	FOnLevelChanged OnLevelChangedDelegate;
 	FOnPlayerStatsChanged OnAttributePointsChangedDelegate;
 	FOnPlayerStatsChanged OnSpellPointsChangedDelegate;
 
@@ -60,7 +61,7 @@ protected:
 
 private:
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_PlayerXP)
-	int32 PlayerXP = 1;
+	int32 PlayerXP = 0;
 
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_PlayerLevel)
 	int32 PlayerLevel = 1;

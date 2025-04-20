@@ -69,8 +69,6 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	InitAbilityActorInfo();
 	LoadProgress();
 
-	AddCharacterAbilities();
-
 }
 
 void APlayerCharacter::LoadProgress()
@@ -82,14 +80,6 @@ void APlayerCharacter::LoadProgress()
 		ULoadScreenSaveGame* SaveData = KDGameMode->RetrieveInGameSaveData();
 		if (SaveData == nullptr) return;
 
-		if (AMyPlayerState* KDPlayerState = Cast<AMyPlayerState>(GetPlayerState()))
-		{
-			KDPlayerState->SetLevel(SaveData->PlayerLevel);
-			KDPlayerState->SetXP(SaveData->PlayerXP);
-			KDPlayerState->SetAttributePoints(SaveData->AttributePoints);
-			KDPlayerState->SetSpellPoints(SaveData->SpellPoints);
-		}
-
 		if (SaveData->bFirstTimeLoadIn)
 		{
 			InitializeDefaultAttributes();
@@ -97,6 +87,15 @@ void APlayerCharacter::LoadProgress()
 		}
 		else
 		{
+			// TODO: Load in Abilities From Disk
+			if (AMyPlayerState* KDPlayerState = Cast<AMyPlayerState>(GetPlayerState()))
+			{
+				KDPlayerState->SetLevel(SaveData->PlayerLevel);
+				KDPlayerState->SetXP(SaveData->PlayerXP);
+				KDPlayerState->SetAttributePoints(SaveData->AttributePoints);
+				KDPlayerState->SetSpellPoints(SaveData->SpellPoints);
+			}
+
 			UKDAbilitySystemLibrary::InitilizeDefaultAttributesFromSaveData(this, AbilitySystemComponent, SaveData);
 		}
 	}
