@@ -38,6 +38,7 @@ void UKD_MVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& Entere
 
 	LoadSlots[Slot]->SetMapName(KDGameMode->DefaultMapName);
 	LoadSlots[Slot]->SetPlayerName(EnteredName);
+	LoadSlots[Slot]->SetPlayerLevel(1);
 	LoadSlots[Slot]->SlotStatus = Taken;
 	LoadSlots[Slot]->PlayerStartTag = KDGameMode->DefaultPlayerStartTag;
 	
@@ -114,6 +115,7 @@ void UKD_MVVM_LoadScreen::LoadData()
 		LoadSlot.Value->InitializeSlot();
 		LoadSlot.Value->SetMapName(SaveGameObject->MapName);
 		LoadSlot.Value->PlayerStartTag = SaveGameObject->PlayerStartTag;
+		LoadSlot.Value->SetPlayerLevel(SaveGameObject->PlayerLevel);
 	}
 }
 
