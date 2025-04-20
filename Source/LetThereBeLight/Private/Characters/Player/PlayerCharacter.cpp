@@ -5,6 +5,7 @@
 #include "Characters/Player/MyPlayerState.h"
 #include "Characters/Player/MyPlayerController.h"
 #include "AbilitySystem/KDAbilitySystemComponent.h"
+#include "AbilitySystem/KDAbilitySystemLibrary.h"
 #include "AbilitySystem/KDAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
@@ -96,7 +97,7 @@ void APlayerCharacter::LoadProgress()
 		}
 		else
 		{
-
+			UKDAbilitySystemLibrary::InitilizeDefaultAttributesFromSaveData(this, AbilitySystemComponent, SaveData);
 		}
 	}
 }
