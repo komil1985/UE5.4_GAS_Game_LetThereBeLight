@@ -6,6 +6,7 @@
 #include "GameFramework/SaveGame.h"
 #include "LoadScreenSaveGame.generated.h"
 
+class UGameplayAbility;
 
 UENUM(BlueprintType)
 enum ESaveSlotStatus
@@ -15,6 +16,30 @@ enum ESaveSlotStatus
 	Taken
 };
 
+USTRUCT(BlueprintType)
+struct FSavedAbility
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Class Defaults")
+	TSubclassOf<UGameplayAbility> GameplayAbility;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGameplayTag AbilityTag = FGameplayTag();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGameplayTag AbilityStatus = FGameplayTag();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGameplayTag AbilitySlot = FGameplayTag();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGameplayTag AbilityType = FGameplayTag();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	int32 AbilityLevel;
+
+};
 
 /**
  * 
@@ -73,4 +98,9 @@ public:
 
 	UPROPERTY()
 	int32 Vigor = 0;
+
+	// Abilities
+
+	UPROPERTY()
+	TArray<FSavedAbility> SavedAbilities;
 };

@@ -21,6 +21,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameMode/KDGameInstance.h"
 #include "SaveSystem/LoadScreenSaveGame.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -261,6 +262,33 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 		
 		SaveData->bFirstTimeLoadIn = false;
 
+		if (!HasAuthority()) return;
+
+		UKDAbilitySystemComponent* KDASC = Cast<UKDAbilitySystemComponent>(AbilitySystemComponent);
+		FForEachAbility SaveAbilityDelegate;
+		SaveAbilityDelegate.BindLambda
+		(
+			[this, KDASC, SaveData](const FGameplayAbilitySpec& AbilitySpec)
+			{
+				
+				const FGameplayTag AbilityTag = KDASC->GetAbilityTagFromSpec(AbilitySpec);
+				UAbilityInfo* AbilityInfo = UKDAbilitySystemLibrary::GetAbilityInfo(this);
+				FKDAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+
+				FSavedAbility SavedAbility;
+				SavedAbility.GameplayAbility = Info.Ability;
+				SavedAbility.AbilityLevel = AbilitySpec.Level;
+				SavedAbility.AbilitySlot = KDASC->GetSlotFromAbilityTag(AbilityTag);
+				SavedAbility.AbilityStatus = KDASC->GetStatusFromAbilityTag(AbilityTag);
+				SavedAbility.AbilityTag = AbilityTag;
+				SavedAbility.AbilityType = Info.AbilityTypeTag;
+
+				SaveData->SavedAbilities.Add(SavedAbility);
+			}
+		);
+
+		KDASC->ForEachAbility(SaveAbilityDelegate);
+
 		KDGameMode->SaveInGameProgressData(SaveData);
 	}
 }
@@ -318,5 +346,4 @@ void APlayerCharacter::InitAbilityActorInfo()
 			KDHUD->InitOverlay(PlayerController, MyPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	//InitializeDefaultAttributes();
 }
