@@ -94,7 +94,6 @@ void APlayerCharacter::LoadProgress()
 				KDASC->AddCharacterAbilitiesFromSaveData(SaveData);
 			}
 
-
 			// Load Player State
 			if (AMyPlayerState* KDPlayerState = Cast<AMyPlayerState>(GetPlayerState()))
 			{
@@ -273,6 +272,7 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 
 		UKDAbilitySystemComponent* KDASC = Cast<UKDAbilitySystemComponent>(AbilitySystemComponent);
 		FForEachAbility SaveAbilityDelegate;
+		SaveData->SavedAbilities.Empty();
 		SaveAbilityDelegate.BindLambda
 		(
 			[this, KDASC, SaveData](const FGameplayAbilitySpec& AbilitySpec)
@@ -290,7 +290,7 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 				SavedAbility.AbilityTag = AbilityTag;
 				SavedAbility.AbilityType = Info.AbilityTypeTag;
 
-				SaveData->SavedAbilities.Add(SavedAbility);
+				SaveData->SavedAbilities.AddUnique(SavedAbility);
 			}
 		);
 

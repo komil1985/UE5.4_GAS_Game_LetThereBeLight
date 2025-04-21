@@ -32,7 +32,14 @@ void UKDAbilitySystemComponent::AddCharacterAbilitiesFromSaveData(ULoadScreenSav
 		}
 		else if (Data.AbilityType == FKDGameplayTags::Get().Abilities_Type_Passive)
 		{
-			GiveAbilityAndActivateOnce(LoadedAbilitySpec);
+			if (Data.AbilityStatus.MatchesTagExact(FKDGameplayTags::Get().Abilities_Status_Equipped))
+			{
+				GiveAbilityAndActivateOnce(LoadedAbilitySpec);
+			}
+			else
+			{
+				GiveAbility(LoadedAbilitySpec);
+			}
 		}
 	}
 	bStartupAbilitiesGiven = true;
@@ -60,7 +67,7 @@ void UKDAbilitySystemComponent::AddCharacterPassiveAbilities(const TArray<TSubcl
 	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupPassiveAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
-		//AbilitySpec.DynamicAbilityTags.AddTag(FKDGameplayTags::Get().Abilities_Status_Equipped);
+		AbilitySpec.DynamicAbilityTags.AddTag(FKDGameplayTags::Get().Abilities_Status_Equipped);
 		GiveAbilityAndActivateOnce(AbilitySpec);
 	}
 }
@@ -383,6 +390,8 @@ void UKDAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamepla
 					TryActivateAbility(AbilitySpec->Handle);
 					MulticastActivatePassiveEffect(AbilityTag, true);
 				}
+				AbilitySpec->DynamicAbilityTags.RemoveTag(GetStatusFromSpec(*AbilitySpec));
+				AbilitySpec->DynamicAbilityTags.AddTag(GameplayTags.Abilities_Status_Equipped);
 			}
 
 			AssignSlotToAbility(*AbilitySpec, Slot);
