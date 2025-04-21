@@ -9,10 +9,34 @@
 #include <Interactions/PlayerInterface.h>
 #include <AbilitySystemBlueprintLibrary.h>
 #include <AbilitySystem/Data/AbilityInfo.h>
+#include "SaveSystem/LoadScreenSaveGame.h"
 
 void UKDAbilitySystemComponent::AbilityActorInfoSet()
 {
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UKDAbilitySystemComponent::ClientEffectApplied);
+}
+
+void UKDAbilitySystemComponent::AddCharacterAbilitiesFromSaveData(ULoadScreenSaveGame* SaveData)
+{
+	for (const FSavedAbility& Data : SaveData->SavedAbilities)
+	{
+		const TSubclassOf<UGameplayAbility> LoadedAbilityClass = Data.GameplayAbility;
+		FGameplayAbilitySpec LoadedAbilitySpec = FGameplayAbilitySpec(LoadedAbilityClass, Data.AbilityLevel);
+
+		LoadedAbilitySpec.DynamicAbilityTags.AddTag(Data.AbilitySlot);
+		LoadedAbilitySpec.DynamicAbilityTags.AddTag(Data.AbilityStatus);
+
+		if (Data.AbilityType == FKDGameplayTags::Get().Abilities_Type_Offensive)
+		{	
+			GiveAbility(LoadedAbilitySpec);
+		}
+		else if (Data.AbilityType == FKDGameplayTags::Get().Abilities_Type_Passive)
+		{
+			GiveAbilityAndActivateOnce(LoadedAbilitySpec);
+		}
+	}
+	bStartupAbilitiesGiven = true;
+	AbilitiesGivenDelegate.Broadcast();
 }
 
 void UKDAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)

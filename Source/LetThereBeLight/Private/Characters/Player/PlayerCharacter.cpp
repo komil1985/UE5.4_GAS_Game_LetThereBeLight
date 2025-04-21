@@ -88,7 +88,14 @@ void APlayerCharacter::LoadProgress()
 		}
 		else
 		{
-			// TODO: Load in Abilities From Disk
+			// Load Abilities From Disk
+			if (UKDAbilitySystemComponent* KDASC = Cast<UKDAbilitySystemComponent>(AbilitySystemComponent))
+			{
+				KDASC->AddCharacterAbilitiesFromSaveData(SaveData);
+			}
+
+
+			// Load Player State
 			if (AMyPlayerState* KDPlayerState = Cast<AMyPlayerState>(GetPlayerState()))
 			{
 				KDPlayerState->SetLevel(SaveData->PlayerLevel);
