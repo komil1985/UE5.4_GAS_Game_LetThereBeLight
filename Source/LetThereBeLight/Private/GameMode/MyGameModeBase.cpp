@@ -10,6 +10,7 @@
 #include "GameMode/KDGameInstance.h"
 #include "EngineUtils.h"
 #include "Interactions/SaveInterface.h"
+#include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 
 
 void AMyGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
@@ -91,8 +92,30 @@ void AMyGameModeBase::SaveWorldState(UWorld* World)
 
 			if (!IsValid(Actor) || !Actor->Implements<USaveInterface>()) continue;
 
+			FSavedActor SavedActor;
+			SavedActor.ActorName = Actor->GetFName();
+			SavedActor.Transform = Actor->GetTransform();
+
+			FMemoryWriter MemoryWriter(SavedActor.Bytes);
+
+			FObjectAndNameAsStringProxyArchive Archive(MemoryWriter, true);
+			Archive.ArIsSaveGame = true;
+
+			Actor->Serialize(Archive);
+
+			SavedMap.SavedActors.AddUnique(SavedActor);
 
 		}
+
+		for (FSavedMap& MapToReplace : SaveGame->SavedMaps)
+		{
+			if (MapToReplace.MapAssetName == WorldName)
+			{
+				MapToReplace = SavedMap;
+			}
+		}
+
+		UGameplayStatics::SaveGameToSlot(SaveGame, KDGI->LoadSlotName, KDGI->LoadSlotIndex);
 	}
 }
 

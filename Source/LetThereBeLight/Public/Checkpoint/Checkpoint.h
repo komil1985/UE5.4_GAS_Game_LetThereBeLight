@@ -19,6 +19,9 @@ class LETTHEREBELIGHT_API ACheckpoint : public APlayerStart, public ISaveInterfa
 public:
 	ACheckpoint(const FObjectInitializer& ObjectInitializer);
 
+	UPROPERTY(BlueprintReadOnly, SaveGame)
+	bool bReached = false; 
+
 protected:
 	virtual void BeginPlay() override;
 
