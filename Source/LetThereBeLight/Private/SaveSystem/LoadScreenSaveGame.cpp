@@ -2,6 +2,7 @@
 
 
 #include "SaveSystem/LoadScreenSaveGame.h"
+#include "Abilities/GameplayAbility.h"
 
 FSavedMap ULoadScreenSaveGame::GetSavedMapWithMapName(const FString& InMapName)
 {

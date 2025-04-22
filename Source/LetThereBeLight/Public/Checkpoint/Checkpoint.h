@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerStart.h"
+#include "Interactions/SaveInterface.h"
 #include "Checkpoint.generated.h"
 
 class USphereComponent;
@@ -11,7 +12,7 @@ class USphereComponent;
  * 
  */
 UCLASS()
-class LETTHEREBELIGHT_API ACheckpoint : public APlayerStart
+class LETTHEREBELIGHT_API ACheckpoint : public APlayerStart, public ISaveInterface
 {
 	GENERATED_BODY()
 

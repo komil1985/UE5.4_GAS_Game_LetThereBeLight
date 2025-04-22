@@ -3,9 +3,6 @@
 
 #include "Checkpoint/Checkpoint.h"
 #include "Components/SphereComponent.h"
-
-
-
 #include "GameFramework/PlayerStart.h"  
 #include "Interactions/PlayerInterface.h"
 

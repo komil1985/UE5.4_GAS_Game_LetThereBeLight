@@ -8,6 +8,9 @@
 #include "SaveSystem/LoadScreenSaveGame.h"
 #include "GameFramework/PlayerStart.h"
 #include "GameMode/KDGameInstance.h"
+#include "EngineUtils.h"
+#include "Interactions/SaveInterface.h"
+
 
 void AMyGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 {
@@ -60,6 +63,37 @@ void AMyGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
 
 	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
 
+}
+
+void AMyGameModeBase::SaveWorldState(UWorld* World)
+{
+	FString WorldName = World->GetMapName();
+	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
+
+	UKDGameInstance* KDGI = Cast<UKDGameInstance>(GetGameInstance());
+	check(KDGI);
+
+	if (ULoadScreenSaveGame* SaveGame = GetSaveSlotData(KDGI->LoadSlotName, KDGI->LoadSlotIndex))
+	{
+		if (!SaveGame->HasMap(WorldName))
+		{
+			FSavedMap NewSavedMap;
+			NewSavedMap.MapAssetName = WorldName;
+			SaveGame->SavedMaps.Add(NewSavedMap);
+		}
+
+		FSavedMap SavedMap = SaveGame->GetSavedMapWithMapName(WorldName);
+		SavedMap.SavedActors.Empty();	// clear it out, we'll fill it in with "actors"
+
+		for (FActorIterator It(World); It; ++It)
+		{
+			AActor* Actor = *It;
+
+			if (!IsValid(Actor) || !Actor->Implements<USaveInterface>()) continue;
+
+
+		}
+	}
 }
 
 void AMyGameModeBase::DeleteSlot(const FString& SlotName, int32 SlotIndex)
