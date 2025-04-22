@@ -19,7 +19,7 @@
 #include "Misc/KDGameplayTags.h"
 #include "GameMode/MyGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
-#include "GameMode/KDGameInstance.h"
+//#include "GameMode/KDGameInstance.h"
 #include "SaveSystem/LoadScreenSaveGame.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
 
@@ -69,6 +69,11 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	// Init Ability actor info for the server
 	InitAbilityActorInfo();
 	LoadProgress();
+
+	if (AMyGameModeBase* KDGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this)))
+	{
+		KDGameMode->LoadWorldState(GetWorld());
+	}
 
 }
 

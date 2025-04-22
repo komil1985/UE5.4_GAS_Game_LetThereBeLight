@@ -11,6 +11,7 @@
 #include "EngineUtils.h"
 #include "Interactions/SaveInterface.h"
 #include "Serialization/ObjectAndNameAsStringProxyArchive.h"
+#include "LetThereBeLight/KDLogChannles.h"
 
 
 void AMyGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
@@ -66,7 +67,7 @@ void AMyGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
 
 }
 
-void AMyGameModeBase::SaveWorldState(UWorld* World)
+void AMyGameModeBase::SaveWorldState(UWorld* World) const
 {
 	FString WorldName = World->GetMapName();
 	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
@@ -76,6 +77,7 @@ void AMyGameModeBase::SaveWorldState(UWorld* World)
 
 	if (ULoadScreenSaveGame* SaveGame = GetSaveSlotData(KDGI->LoadSlotName, KDGI->LoadSlotIndex))
 	{
+		if (!IsValid(SaveGame)) return;
 		if (!SaveGame->HasMap(WorldName))
 		{
 			FSavedMap NewSavedMap;
@@ -117,6 +119,53 @@ void AMyGameModeBase::SaveWorldState(UWorld* World)
 
 		UGameplayStatics::SaveGameToSlot(SaveGame, KDGI->LoadSlotName, KDGI->LoadSlotIndex);
 	}
+}
+
+void AMyGameModeBase::LoadWorldState(UWorld* World) const
+{
+	FString WorldName = World->GetMapName();
+	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
+
+	UKDGameInstance* KDGI = Cast<UKDGameInstance>(GetGameInstance());
+	check(KDGI);
+
+	if (UGameplayStatics::DoesSaveGameExist(KDGI->LoadSlotName, KDGI->LoadSlotIndex))
+	{
+		ULoadScreenSaveGame* SaveGame = Cast<ULoadScreenSaveGame>(UGameplayStatics::LoadGameFromSlot(KDGI->LoadSlotName, KDGI->LoadSlotIndex));
+		if (SaveGame == nullptr)
+		{
+			UE_LOG(LogKD, Error, TEXT("Failed To Load Slot"));
+			return;
+		}
+
+		for (FActorIterator It(World); It; ++It)
+		{
+			AActor* Actor = *It;
+
+			if (!Actor->Implements<USaveInterface>()) continue;
+
+			for (FSavedActor SavedActor : SaveGame->GetSavedMapWithMapName(WorldName).SavedActors)
+			{
+				if (SavedActor.ActorName == Actor->GetFName())
+				{
+					if (ISaveInterface::Execute_ShouldLoadTransform(Actor))
+					{
+						Actor->SetActorTransform(SavedActor.Transform);
+					}
+					
+					FMemoryReader MemoryReader(SavedActor.Bytes);
+
+					FObjectAndNameAsStringProxyArchive Archive(MemoryReader, true);
+					Archive.ArIsSaveGame = true;
+					Actor->Serialize(Archive);	// converts binary bytes into variables
+
+					ISaveInterface::Execute_LoadActor(Actor);
+				}
+			}
+		}
+	}
+
+
 }
 
 void AMyGameModeBase::DeleteSlot(const FString& SlotName, int32 SlotIndex)
