@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Characters/Base/BaseCharacter.h"
 #include "Interactions/EnemyInterface.h"
+#include "Interactions/HighLightInterface.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "EnemyCharacter.generated.h"
 
@@ -15,7 +16,7 @@ class AKDAIController;
  * 
  */
 UCLASS()
-class LETTHEREBELIGHT_API AEnemyCharacter : public ABaseCharacter, public IEnemyInterface
+class LETTHEREBELIGHT_API AEnemyCharacter : public ABaseCharacter, public IEnemyInterface, public IHighLightInterface
 {
 	GENERATED_BODY()
 public:
@@ -23,8 +24,8 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 
-	virtual void HighlightActor() override;											// <-- Enemy Interface
-	virtual void UnHighlightActor() override;										// <-- Enemy Interface
+	virtual void HighlightActor() override;											// <-- Highlight Interface
+	virtual void UnHighlightActor() override;										// <-- Highlight Interface
 
 	virtual int32 GetPlayerLevel_Implementation() override;							// <-- Combat Interface
 	virtual void Die(const FVector& DeathImpulse) override;							// <-- Combat Interface
