@@ -13,7 +13,7 @@
 struct FInputActionValue;
 class UInputMappingContext;
 class UInputAction;
-class IEnemyInterface;
+class IHighLightInterface;
 class UKDInputConfig;
 class UKDAbilitySystemComponent;
 class USplineComponent;
@@ -64,8 +64,8 @@ private:
 
 	void CursorTrace();
 
-	TScriptInterface<IEnemyInterface> LastActor;
-	TScriptInterface<IEnemyInterface> ThisActor;
+	TScriptInterface<IHighLightInterface> LastActor;
+	TScriptInterface<IHighLightInterface> ThisActor;
 
 	FHitResult CursorHit;
 

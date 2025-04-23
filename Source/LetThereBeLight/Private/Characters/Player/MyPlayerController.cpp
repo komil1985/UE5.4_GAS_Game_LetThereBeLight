@@ -17,6 +17,7 @@
 #include "Actors/MagicCircle.h"
 #include "Components/DecalComponent.h"
 #include "LetThereBeLight/LetThereBeLight.h"
+#include "Interactions/HighLightInterface.h"
 
 
 
@@ -103,7 +104,7 @@ void AMyPlayerController::CursorTrace()
 	if (!CursorHit.bBlockingHit) return;
 
 	LastActor = ThisActor;
-	ThisActor = (CursorHit.GetActor());
+	ThisActor = CursorHit.GetActor();
 	
 	if (LastActor != ThisActor)
 	{
