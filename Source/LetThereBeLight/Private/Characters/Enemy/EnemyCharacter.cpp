@@ -135,7 +135,7 @@ void AEnemyCharacter::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCo
 	}
 }
 
-void AEnemyCharacter::HighlightActor()
+void AEnemyCharacter::HighlightActor_Implementation()
 {
 	GetMesh()->SetRenderCustomDepth(true);
 	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
@@ -143,7 +143,7 @@ void AEnemyCharacter::HighlightActor()
 	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 }
 
-void AEnemyCharacter::UnHighlightActor()
+void AEnemyCharacter::UnHighlightActor_Implementation()
 {
 	GetMesh()->SetRenderCustomDepth(false);
 	Weapon->SetRenderCustomDepth(false);

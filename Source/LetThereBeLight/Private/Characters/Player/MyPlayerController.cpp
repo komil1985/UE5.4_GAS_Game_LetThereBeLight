@@ -43,7 +43,7 @@ void AMyPlayerController::PlayerTick(float DeltaTime)
 	Super::PlayerTick(DeltaTime);
 
 	CursorTrace();
-	//AutoRunning();
+	AutoRunning();
 	UpdateMagicCircleLocation();
 }
 
@@ -92,8 +92,8 @@ void AMyPlayerController::CursorTrace()
 {
 	if (GetKDASC() && GetKDASC()->HasMatchingGameplayTag(FKDGameplayTags::Get().Player_Block_CursorTrace))
 	{
-		if (LastActor) LastActor->UnHighlightActor();
-		if (ThisActor) ThisActor->UnHighlightActor();
+		UnHighlightActor(LastActor);
+		UnHighlightActor(ThisActor);
 		LastActor = nullptr;
 		ThisActor = nullptr;
 		return;
@@ -104,22 +104,38 @@ void AMyPlayerController::CursorTrace()
 	if (!CursorHit.bBlockingHit) return;
 
 	LastActor = ThisActor;
-	ThisActor = CursorHit.GetActor();
+	if (IsValid(CursorHit.GetActor()) && CursorHit.GetActor()->Implements<UHighLightInterface>())
+	{
+		ThisActor = CursorHit.GetActor();
+	}
+	else
+	{
+		ThisActor = nullptr;
+	}
 	
 	if (LastActor != ThisActor)
 	{
-		if (LastActor)
-		{
-			LastActor->UnHighlightActor();
-		}
-		if (ThisActor)
-		{
-			ThisActor->HighlightActor();
-		}
+		UnHighlightActor(LastActor);
+		HighlightActor(ThisActor);
 	}
-
 }
 
+
+void AMyPlayerController::HighlightActor(AActor* InActor)
+{
+	if (IsValid(InActor) && InActor->Implements<UHighLightInterface>())
+	{
+		IHighLightInterface::Execute_HighlightActor(InActor);
+	}
+}
+
+void AMyPlayerController::UnHighlightActor(AActor* InActor)
+{
+	if (IsValid(InActor) && InActor->Implements<UHighLightInterface>())
+	{
+		IHighLightInterface::Execute_UnHighlightActor(InActor);
+	}
+}
 
 void AMyPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
@@ -127,10 +143,18 @@ void AMyPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 	{
 		return;
 	}
+
 	if(InputTag.MatchesTagExact(FKDGameplayTags::Get().InputTag_LMB))
 	{
-		bTargeting = ThisActor ? true : false;
-		bAutoRunning = false;
+		if (IsValid(ThisActor))
+		{
+			TargetingStatus = ThisActor->Implements<UEnemyInterface>() ? ETargetingStatus::TargetingEnemy : ETargetingStatus::TargetingNonEnemy;
+			bAutoRunning = false;
+		}
+		else
+		{
+			TargetingStatus = ETargetingStatus::NotTargeting;
+		}
 	}
 	if (GetKDASC()) GetKDASC()->AbilityInputTagPressed(InputTag);
 }
@@ -152,7 +176,7 @@ void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 	if (GetKDASC()) GetKDASC()->AbilityInputTagReleased(InputTag);
 
-	if (!bTargeting && !bIsShiftKeyDown)
+	if (TargetingStatus != ETargetingStatus::TargetingEnemy && !bIsShiftKeyDown)
 	{		
 		// Check for short press
 		const APawn* ControlledPawn = GetPawn();
@@ -178,7 +202,7 @@ void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 			}
 		}
 		FollowTime = 0.0f;
-		bTargeting = false;
+		TargetingStatus = ETargetingStatus::NotTargeting;
 	}
 }
 
@@ -197,7 +221,7 @@ void AMyPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 		return;
 	}
 
-	if (bTargeting || bIsShiftKeyDown)
+	if (TargetingStatus == ETargetingStatus::TargetingEnemy || bIsShiftKeyDown)
 	{
 		if (GetKDASC())
 		{
