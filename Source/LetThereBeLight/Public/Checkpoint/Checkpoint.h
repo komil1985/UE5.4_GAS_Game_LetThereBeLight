@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerStart.h"
 #include "Interactions/SaveInterface.h"
+#include "Interactions/HighLightInterface.h"
+#include "LetThereBeLight/LetThereBeLight.h"
 #include "Checkpoint.generated.h"
 
 class USphereComponent;
@@ -12,7 +14,7 @@ class USphereComponent;
  * 
  */
 UCLASS()
-class LETTHEREBELIGHT_API ACheckpoint : public APlayerStart, public ISaveInterface
+class LETTHEREBELIGHT_API ACheckpoint : public APlayerStart, public ISaveInterface, public IHighLightInterface
 {
 	GENERATED_BODY()
 
@@ -29,6 +31,18 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	/* Highlight Interface */
+	virtual void SetMoveToLocation_Implementation(FVector& OutDestination) override;
+	virtual void HighlightActor_Implementation() override;
+	virtual void UnHighlightActor_Implementation() override;
+	/* end Highlight Interface */
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> MoveToComponent;
+
+	UPROPERTY(EditDefaultsOnly)
+	int32 CustomDepthStencilOverride = CUSTOM_DEPTH_TAN;
 
 	UFUNCTION()
 	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

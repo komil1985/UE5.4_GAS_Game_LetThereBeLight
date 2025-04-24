@@ -28,6 +28,11 @@ AEnemyCharacter::AEnemyCharacter()
 
 	AttributeSet = CreateDefaultSubobject<UKDAttributeSet>("AttributeSet");
 
+	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	GetMesh()->MarkRenderStateDirty();
+	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	Weapon->MarkRenderStateDirty();
+
 	HealthBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBar"));
 	HealthBar->SetupAttachment(RootComponent);
 }
@@ -138,15 +143,18 @@ void AEnemyCharacter::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCo
 void AEnemyCharacter::HighlightActor_Implementation()
 {
 	GetMesh()->SetRenderCustomDepth(true);
-	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
-	Weapon->SetRenderCustomDepth(true);
-	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	Weapon->SetRenderCustomDepth(true);	
 }
 
 void AEnemyCharacter::UnHighlightActor_Implementation()
 {
 	GetMesh()->SetRenderCustomDepth(false);
 	Weapon->SetRenderCustomDepth(false);
+}
+
+void AEnemyCharacter::SetMoveToLocation_Implementation(FVector& OutDestination)
+{
+	// Do not change OutDestination //
 }
 
 int32 AEnemyCharacter::GetPlayerLevel_Implementation()

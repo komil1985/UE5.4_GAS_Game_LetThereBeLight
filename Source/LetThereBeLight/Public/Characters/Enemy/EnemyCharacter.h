@@ -24,13 +24,14 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 
-	virtual void HighlightActor_Implementation() override;							// <-- Highlight Interface
-	virtual void UnHighlightActor_Implementation() override;						// <-- Highlight Interface
+	virtual void HighlightActor_Implementation() override;								// <-- Highlight Interface
+	virtual void UnHighlightActor_Implementation() override;							// <-- Highlight Interface
+	virtual void SetMoveToLocation_Implementation(FVector& OutDestination) override;	// <-- Highlight Interface
 
 	virtual int32 GetPlayerLevel_Implementation() override;							// <-- Combat Interface
 	virtual void Die(const FVector& DeathImpulse) override;							// <-- Combat Interface
 	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;	// <-- Combat Interface
-	virtual AActor* GetCombatTarget_Implementation() const override;
+	virtual AActor* GetCombatTarget_Implementation() const override;				// <-- Combat Interface
 
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
