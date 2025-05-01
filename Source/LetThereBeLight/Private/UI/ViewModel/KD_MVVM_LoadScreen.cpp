@@ -35,6 +35,11 @@ UMVVM_LoadSlot* UKD_MVVM_LoadScreen::GetLoadSlotViewModelByIndex(int32 Index) co
 void UKD_MVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& EnteredName)
 {
 	AMyGameModeBase* KDGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (!IsValid(KDGameMode))
+	{
+		GEngine->AddOnScreenDebugMessage(1, 15, FColor::Red, FString("Please switch to single player"));
+		return;
+	}
 
 	LoadSlots[Slot]->SetMapName(KDGameMode->DefaultMapName);
 	LoadSlots[Slot]->SetPlayerName(EnteredName);
@@ -103,6 +108,7 @@ void UKD_MVVM_LoadScreen::PlayButtonPressed()
 void UKD_MVVM_LoadScreen::LoadData()
 {
 	AMyGameModeBase* KDGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (!IsValid(KDGameMode)) return;
 
 	for (const TTuple<int32, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
 	{
