@@ -28,10 +28,10 @@ public:
 	virtual void UnHighlightActor_Implementation() override;							// <-- Highlight Interface
 	virtual void SetMoveToLocation_Implementation(FVector& OutDestination) override;	// <-- Highlight Interface
 
-	virtual int32 GetPlayerLevel_Implementation() override;							// <-- Combat Interface
-	virtual void Die(const FVector& DeathImpulse) override;							// <-- Combat Interface
-	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;	// <-- Combat Interface
-	virtual AActor* GetCombatTarget_Implementation() const override;				// <-- Combat Interface
+	virtual int32 GetPlayerLevel_Implementation() override;								// <-- Combat Interface
+	virtual void Die(const FVector& DeathImpulse) override;								// <-- Combat Interface
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;		// <-- Combat Interface
+	virtual AActor* GetCombatTarget_Implementation() const override;					// <-- Combat Interface
 
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
@@ -51,6 +51,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Combat")
 	TObjectPtr<AActor> CombatTarget;
+
+	int32 SetLevel(int32 InLevel) { Level = InLevel; }
 
 protected:
 	virtual void BeginPlay() override;
