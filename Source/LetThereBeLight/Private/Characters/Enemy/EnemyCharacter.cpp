@@ -140,6 +140,11 @@ void AEnemyCharacter::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCo
 	}
 }
 
+void AEnemyCharacter::SpawnLoot()
+{
+
+}
+
 void AEnemyCharacter::HighlightActor_Implementation()
 {
 	GetMesh()->SetRenderCustomDepth(true);
@@ -167,6 +172,7 @@ void AEnemyCharacter::Die(const FVector& DeathImpulse)
 	SetLifeSpan(LifeSpan);
 	PlayAnimMontage(GetDieMontage(), 1.0f);
 	if (KDAIController) KDAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
+	SpawnLoot();
 	Super::Die(DeathImpulse);
 
 	//AController* NewController = GetController();

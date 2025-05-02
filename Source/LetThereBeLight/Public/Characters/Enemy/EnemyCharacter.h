@@ -71,4 +71,7 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<AKDAIController> KDAIController;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void SpawnLoot();
 };
