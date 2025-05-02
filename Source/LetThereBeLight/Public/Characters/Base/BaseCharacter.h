@@ -105,6 +105,7 @@ protected:
 
 	virtual void InitAbilityActorInfo();
 	
+	UPROPERTY(BlueprintReadOnly)
 	bool bDead = false;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")

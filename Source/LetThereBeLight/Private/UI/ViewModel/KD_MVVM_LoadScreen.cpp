@@ -46,6 +46,8 @@ void UKD_MVVM_LoadScreen::NewSlotButtonPressed(int32 Slot, const FString& Entere
 	LoadSlots[Slot]->SetPlayerLevel(1);
 	LoadSlots[Slot]->SlotStatus = Taken;
 	LoadSlots[Slot]->PlayerStartTag = KDGameMode->DefaultPlayerStartTag;
+	LoadSlots[Slot]->MapAssetName = KDGameMode->DefaultMap.ToSoftObjectPath().GetAssetName();
+
 	
 	KDGameMode->SaveSlotData(LoadSlots[Slot], Slot);
 	LoadSlots[Slot]->InitializeSlot();

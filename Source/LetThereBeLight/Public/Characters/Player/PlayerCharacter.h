@@ -40,7 +40,12 @@ public:
 	virtual int32 GetSpellPoints_Implementation() const override;								//  <-- Player Interface
 	virtual void ShowMagicCircle_Implementation(UMaterialInterface* DecalMaterial) override;	//  <-- Player Interface
 	virtual void HideMagicCircle_Implementation() override;										//  <-- Player Interface
-	virtual void SaveProgress_Implementation(const FName& CheckpointTag) override;										//  <-- Player Interface
+	virtual void SaveProgress_Implementation(const FName& CheckpointTag) override;				//  <-- Player Interface
+
+	UPROPERTY(EditDefaultsOnly)
+	float DeathTime = 5.0f;
+
+	FTimerHandle DeathTimer;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	float LifeSpan = 5.0f;

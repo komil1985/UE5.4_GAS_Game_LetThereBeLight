@@ -19,7 +19,6 @@
 #include "Misc/KDGameplayTags.h"
 #include "GameMode/MyGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
-//#include "GameMode/KDGameInstance.h"
 #include "SaveSystem/LoadScreenSaveGame.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
 
@@ -125,10 +124,26 @@ void APlayerCharacter::OnRep_PlayerState()
 void APlayerCharacter::Die(const FVector& DeathImpulse)
 {
 	Super::Die(DeathImpulse);
-	SetLifeSpan(LifeSpan);
+	//SetLifeSpan(LifeSpan);
 	PlayAnimMontage(GetDieMontage(), 1.0f);
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
-	PlayerController->DisableInput(PlayerController);	
+	PlayerController->DisableInput(PlayerController);
+
+	FTimerDelegate DeathTimerDelegate;
+	DeathTimerDelegate.BindLambda
+	(
+		[this]()
+		{
+			AMyGameModeBase* KDGM = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(this));
+			if (KDGM)
+			{
+				KDGM->PlayerDied(this);
+			}
+		}
+	);
+	GetWorldTimerManager().SetTimer(DeathTimer, DeathTimerDelegate, DeathTime, false);
+	PlayerCamera->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+
 }
 
 int32 APlayerCharacter::GetPlayerLevel_Implementation()
