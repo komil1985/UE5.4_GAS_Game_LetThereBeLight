@@ -140,10 +140,6 @@ void AEnemyCharacter::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCo
 	}
 }
 
-void AEnemyCharacter::SpawnLoot()
-{
-
-}
 
 void AEnemyCharacter::HighlightActor_Implementation()
 {

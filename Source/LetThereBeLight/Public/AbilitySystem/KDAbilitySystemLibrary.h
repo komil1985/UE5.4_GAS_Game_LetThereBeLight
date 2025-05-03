@@ -7,13 +7,14 @@
 #include "Data/CharacterClassInfo.h"
 #include "KDAbilitySystemLibrary.generated.h"
 
+struct FWidgetControllerParams;
 class UOverlayWidgetController;
 class UAttributeMenuWidgetController;
 class USpellMenuWidgetController;
 class UAbilitySystemComponent;
 class UAbilityInfo;
-struct FWidgetControllerParams;
 class ULoadScreenSaveGame;
+class ULootTiers;
 
 /**
  * 
@@ -54,6 +55,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | Character Class Defaults")
 	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category = "KDAbilitySystemLibrary | Character Class Defaults", meta = (DefaultToSelf = "WorldContextObject"))
+	static ULootTiers* GetLootTiers(const UObject* WorldContextObject);
 
 
 

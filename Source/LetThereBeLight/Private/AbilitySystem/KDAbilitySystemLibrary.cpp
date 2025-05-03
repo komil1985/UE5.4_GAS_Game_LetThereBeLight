@@ -15,6 +15,8 @@
 #include <Misc/KDGameplayTags.h>
 #include <AbilitySystemBlueprintLibrary.h>
 #include "SaveSystem/LoadScreenSaveGame.h"
+#include "AbilitySystem/Data/LootTiers.h"
+
 
 bool UKDAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutWCParams, AKDHUD*& OutKDHUD)
 {
@@ -217,6 +219,14 @@ UAbilityInfo* UKDAbilitySystemLibrary::GetAbilityInfo(const UObject* WorldContex
 	if (MyGameMode == nullptr) return nullptr;
 	
 	return MyGameMode->AbilityInfo;
+}
+
+ULootTiers* UKDAbilitySystemLibrary::GetLootTiers(const UObject* WorldContextObject)
+{
+	const AMyGameModeBase* MyGameMode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (MyGameMode == nullptr) return nullptr;
+
+	return MyGameMode->LootTiers;
 }
 
 bool UKDAbilitySystemLibrary::IsSuccessfulDebuff(const FGameplayEffectContextHandle& EffectContextHandle)

@@ -13,6 +13,7 @@ class UMVVM_LoadSlot;
 class USaveGame;
 class ULoadScreenSaveGame;
 class ACharacter;
+class ULootTiers;
 
 /**
  * 
@@ -28,6 +29,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Ability Info")
 	TObjectPtr<UAbilityInfo> AbilityInfo;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Loot Tiers")
+	TObjectPtr<ULootTiers> LootTiers;
 
 	void SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
 	ULoadScreenSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const;
