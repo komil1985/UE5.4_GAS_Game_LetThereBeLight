@@ -27,7 +27,7 @@ APlayerCharacter::APlayerCharacter()
 {
 	PlayerSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("PlayerSpringArm"));
 	PlayerSpringArm->SetupAttachment(GetRootComponent());
-	PlayerSpringArm->TargetArmLength = 2000.0f;
+	PlayerSpringArm->TargetArmLength = 800.0f;
 	PlayerSpringArm->bDoCollisionTest = false;
 	PlayerSpringArm->bUsePawnControlRotation = true;
 	PlayerSpringArm->bInheritPitch = false;
