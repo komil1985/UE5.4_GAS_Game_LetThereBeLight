@@ -55,6 +55,10 @@
 		{
 			"Name": "SkeletalMeshModelingTools",
 			"Enabled": true
+		},
+		{
+			"Name": "GizmoFramework",
+			"Enabled": true
 		}
 	]
 }
