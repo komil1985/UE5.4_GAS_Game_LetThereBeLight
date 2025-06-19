@@ -21,7 +21,7 @@ AEnemyCharacter::AEnemyCharacter()
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
-	BaseWalkSpeed = 250.0f;
+	BaseWalkSpeed = 300.0f;
 
 	AbilitySystemComponent = CreateDefaultSubobject<UKDAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
@@ -166,7 +166,7 @@ int32 AEnemyCharacter::GetPlayerLevel_Implementation()
 void AEnemyCharacter::Die(const FVector& DeathImpulse)
 {
 	SetLifeSpan(LifeSpan);
-	PlayAnimMontage(GetDieMontage(), 1.0f);
+	//PlayAnimMontage(GetDieMontage(), 1.0f);
 	if (KDAIController) KDAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
 	SpawnLoot();
 	Super::Die(DeathImpulse);
