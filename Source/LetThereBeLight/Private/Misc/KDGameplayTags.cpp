@@ -68,6 +68,10 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FName("Attributes.Secondary.MaxMana"),
 		FString("Increases Maximum Mana")
 	);
+	GameplayTags.Attributes_Secondary_MaxStamina = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Secondary.MaxStamina"),
+		FString("Increases Maximum Stamina")
+	);
 
 
 	// Input Tags
@@ -205,6 +209,10 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Summon = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Summon"),
 		FString("Summon Ability Tag")
+	);
+	GameplayTags.Abilities_Dash = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Dash"),
+		FString("Dash Ability Tag")
 	);
 
 	////   Fire Abilities and Cooldown

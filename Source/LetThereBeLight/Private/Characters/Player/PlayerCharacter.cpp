@@ -58,6 +58,8 @@ APlayerCharacter::APlayerCharacter()
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
 
+	GetMesh()->SetSimulatePhysics(false);
+
 	CharacterClass = ECharacterClass::Elementalist;
 }
 
@@ -125,7 +127,7 @@ void APlayerCharacter::Die(const FVector& DeathImpulse)
 {
 	Super::Die(DeathImpulse);
 	//SetLifeSpan(LifeSpan);
-	//PlayAnimMontage(GetDieMontage(), 1.0f);
+	PlayAnimMontage(GetDieMontage(), 1.0f);
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
 	PlayerController->DisableInput(PlayerController);
 

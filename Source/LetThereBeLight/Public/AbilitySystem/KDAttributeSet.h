@@ -139,6 +139,10 @@ public:
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UKDAttributeSet, MaxMana);
 
+	UPROPERTY(BlueprintReadonly, ReplicatedUsing = OnRep_MaxStamina, Category = "Vital Attributes")
+	FGameplayAttributeData MaxStamina;
+	ATTRIBUTE_ACCESSORS(UKDAttributeSet, MaxStamina);
+
 
 	// Resistance Attributes //
 	UPROPERTY(BlueprintReadonly, ReplicatedUsing = OnRep_FireResistance, Category = "Resistance Attributes")
@@ -166,6 +170,11 @@ public:
 	UPROPERTY(BlueprintReadonly, ReplicatedUsing = OnRep_Mana, Category = "Vital Attributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UKDAttributeSet, Mana);
+
+	UPROPERTY(BlueprintReadonly, ReplicatedUsing = OnRep_Stamina, Category = "Vital Attributes")
+	FGameplayAttributeData Stamina;
+	ATTRIBUTE_ACCESSORS(UKDAttributeSet, Stamina);
+
 
 
 	// Meta Attributes //
@@ -223,6 +232,9 @@ public:
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const;
 
+	UFUNCTION()
+	void OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina) const;
+
 	// Resistance Attributes //
 	UFUNCTION()
 	void OnRep_FireResistance(const FGameplayAttributeData& OldFireResistance) const;
@@ -244,6 +256,9 @@ public:
 	UFUNCTION()
 	void OnRep_Mana(const FGameplayAttributeData& OldMana) const;
 
+	UFUNCTION()
+	void OnRep_Stamina(const FGameplayAttributeData& OldStamina) const;
+
 protected:
 
 private:
@@ -256,4 +271,5 @@ private:
 
 	bool bTopOffHealth = false;
 	bool bTopOffMana = false;
+	bool bTopOffStamina = false;
 };

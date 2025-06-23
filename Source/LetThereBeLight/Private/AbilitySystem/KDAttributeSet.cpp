@@ -37,6 +37,7 @@ UKDAttributeSet::UKDAttributeSet()
 	TagsToAttribute.Add(GameplayTags.Attributes_Secondary_ManaRegeneration, GetManaRegenerationAttribute);
 	TagsToAttribute.Add(GameplayTags.Attributes_Secondary_MaxHealth, GetMaxHealthAttribute);
 	TagsToAttribute.Add(GameplayTags.Attributes_Secondary_MaxMana, GetMaxManaAttribute);
+	TagsToAttribute.Add(GameplayTags.Attributes_Secondary_MaxStamina, GetMaxStaminaAttribute);
 
 	// Resistance Attributes
 	TagsToAttribute.Add(GameplayTags.Attributes_Resistance_Fire, GetFireResistanceAttribute);
@@ -67,6 +68,7 @@ void UKDAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, ManaRegeneration, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, MaxStamina, COND_None, REPNOTIFY_Always);
 
 
 	//Resistance Attributes
@@ -79,6 +81,7 @@ void UKDAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	// Vital Attributes
 	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, Mana, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UKDAttributeSet, Stamina, COND_None, REPNOTIFY_Always);
 }
 
 
@@ -94,6 +97,11 @@ void UKDAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, fl
 	if (Attribute == GetManaAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxMana());
+	}
+
+	if (Attribute == GetStaminaAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxStamina());
 	}
 }
 
@@ -176,7 +184,7 @@ void UKDAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 	// Checks to see if target character is dead or not to apply effects
 	if (Props.TargetCharacter->Implements<UCombatInterface>() && ICombatInterface::Execute_IsDead(Props.TargetCharacter)) return;	
 	
-	// Handle Health and Mana
+	// Handle Health, Mana and Stamina
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.0f, GetMaxHealth()));
@@ -184,6 +192,10 @@ void UKDAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
 		SetMana(FMath::Clamp(GetMana(), 0.0f, GetMaxMana()));
+	}
+	if (Data.EvaluatedData.Attribute == GetStaminaAttribute())
+	{
+		SetStamina(FMath::Clamp(GetStamina(), 0.0f, GetMaxStamina()));
 	}
 
 	// Handle Incoming Damage
@@ -339,6 +351,7 @@ void UKDAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
 
 			bTopOffHealth = true;
 			bTopOffMana = true;
+			bTopOffStamina = true;
 
 			IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
 		}
@@ -360,6 +373,11 @@ void UKDAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, f
 	{
 		SetMana(GetMaxMana());
 		bTopOffMana = false;
+	}
+	if (Attribute == GetMaxStaminaAttribute() && bTopOffStamina)
+	{
+		SetStamina(GetMaxStamina());
+		bTopOffStamina = false;
 	}
 }
 
@@ -425,6 +443,10 @@ void UKDAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) co
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, MaxMana, OldMaxMana);
 }
+void UKDAttributeSet::OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, MaxStamina, OldMaxStamina);
+}
 
 
 
@@ -456,6 +478,11 @@ void UKDAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) cons
 void UKDAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, Mana, OldMana);
+}
+
+void UKDAttributeSet::OnRep_Stamina(const FGameplayAttributeData& OldStamina) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UKDAttributeSet, Stamina, OldStamina);
 }
 
 

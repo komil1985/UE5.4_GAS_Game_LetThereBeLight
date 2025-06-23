@@ -34,6 +34,7 @@ public:
 	FGameplayTag Attributes_Secondary_ManaRegeneration;
 	FGameplayTag Attributes_Secondary_MaxHealth;
 	FGameplayTag Attributes_Secondary_MaxMana;
+	FGameplayTag Attributes_Secondary_MaxStamina;
 
 	// Meta Tags
 	FGameplayTag Attributes_Meta_IncomingXP;
@@ -79,6 +80,7 @@ public:
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
 	FGameplayTag Abilities_HitReact;
+	FGameplayTag Abilities_Dash;
 	
 	// Status Type Abilities Tag
 	FGameplayTag Abilities_Status_Eligible;

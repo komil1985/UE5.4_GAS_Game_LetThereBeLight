@@ -15,6 +15,8 @@ void UOverlayWidgetController::BroadcastInitialValues()
 	OnMaxHealthChanged.Broadcast(GetKDAttributeSet()->GetMaxHealth());
 	OnManaChanged.Broadcast((GetKDAttributeSet()->GetMana()));
 	OnMaxManaChanged.Broadcast(GetKDAttributeSet()->GetMaxMana());
+	OnStaminaChanged.Broadcast((GetKDAttributeSet()->GetStamina()));
+	OnMaxStaminaChanged.Broadcast(GetKDAttributeSet()->GetMaxStamina());
 }
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
@@ -52,6 +54,20 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		[this](const FOnAttributeChangeData& Data)
 		{
 			OnMaxManaChanged.Broadcast(Data.NewValue);
+		}
+	);
+
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetKDAttributeSet()->GetStaminaAttribute()).AddLambda(
+		[this](const FOnAttributeChangeData& Data)
+		{
+			OnStaminaChanged.Broadcast(Data.NewValue);
+		}
+	);
+
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetKDAttributeSet()->GetMaxStaminaAttribute()).AddLambda(
+		[this](const FOnAttributeChangeData& Data)
+		{
+			OnMaxStaminaChanged.Broadcast(Data.NewValue);
 		}
 	);
 	
