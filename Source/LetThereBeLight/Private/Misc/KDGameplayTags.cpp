@@ -83,6 +83,10 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FName("InputTag.RMB"),
 		FString("Input Tag For Right Mouse Button")
 		);
+	GameplayTags.InputTag_Spacebar = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.Spacebar"),
+		FString("Input Tag For Spacebar Button")
+	);
 	GameplayTags.InputTag_Num1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("InputTag.Num1"),
 		FString("Input Tag For Number 1 Key")
