@@ -86,6 +86,10 @@
 		{
 			"Name": "N10XSourceCodeAccess",
 			"Enabled": false
+		},
+		{
+			"Name": "SlateModelViewViewModel",
+			"Enabled": true
 		}
 	]
 }
