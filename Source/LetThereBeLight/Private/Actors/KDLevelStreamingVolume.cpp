@@ -16,7 +16,6 @@ AKDLevelStreamingVolume::AKDLevelStreamingVolume()
 	BoxComponent->SetupAttachment(SceneComponent);
 
 	bGenerateOverlapEventsDuringLevelStreaming = true;
-
 }
 
 

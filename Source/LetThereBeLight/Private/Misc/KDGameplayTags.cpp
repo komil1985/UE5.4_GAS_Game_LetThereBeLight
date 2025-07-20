@@ -218,6 +218,10 @@ void FKDGameplayTags::InitializeNativeGameplayTags()
 		FName("Abilities.Dash"),
 		FString("Dash Ability Tag")
 	);
+	GameplayTags.CoolDown_Ability_Dash = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("CoolDown.Ability.Dash"),
+		FString("Dash Ability Cooldown Tag")
+	);
 
 	////   Fire Abilities and Cooldown
 	GameplayTags.Abilities_Fire_FireBall = UGameplayTagsManager::Get().AddNativeGameplayTag(

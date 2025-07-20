@@ -108,6 +108,7 @@ public:
 	FGameplayTag CoolDown_Lightning_LightningBolt;
 	FGameplayTag CoolDown_Lightning_LightningBeam;
 	FGameplayTag CoolDown_Ice_IcyThorns;
+	FGameplayTag CoolDown_Ability_Dash;
 
 	// Passive Ability Tags
 	FGameplayTag Abilities_Passive_Halo;
