@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include <GameplayTagContainer.h>
+#include "Interactions/NPCInterface.h"
 #include "MyPlayerController.generated.h"
 
 enum class ETargetingStatus : uint8
@@ -48,6 +49,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void HideMagicCircle();
 
+	UPROPERTY()
+	TScriptInterface<INPCInterface> CurrentInteractable;											//  <-- NPC Interface
+	void SetCurrentInteractable(TScriptInterface<INPCInterface> NewInteractable);					//  <-- NPC Interface
+	void ClearCurrentInteractable(TScriptInterface<INPCInterface> Interactable);
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -62,10 +68,14 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> ShiftAction;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> Interact;
+
 	void ShiftPressed() { bIsShiftKeyDown = true; };
 	void ShiftReleased() { bIsShiftKeyDown = false; };
 	bool bIsShiftKeyDown = false;
 	void Move(const FInputActionValue& InputActionValue);
+	void InteractPressed();
 
 	void CursorTrace();
 

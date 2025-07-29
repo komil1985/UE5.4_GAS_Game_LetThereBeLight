@@ -2,7 +2,12 @@
 
 
 #include "Characters/NPC/NPCCharacter.h"
+#include "Interactions/NPCInterface.h"
 #include "Components/SphereComponent.h"
+#include "Characters/Player/MyPlayerController.h"
+#include "Characters/Player/PlayerCharacter.h"
+#include "DialogueSystem/KDDialogueManager.h"
+
 
 ANPCCharacter::ANPCCharacter()
 {
@@ -15,6 +20,11 @@ ANPCCharacter::ANPCCharacter()
 
 void ANPCCharacter::Interact_Implementation(AActor* Caller)
 {
+	if (APlayerCharacter* Player = Cast<APlayerCharacter>(Caller)) {
+		if (AKDDialogueManager* Manager = AKDDialogueManager::GetDialogueManager(GetWorld())) {
+			Manager->StartDialogue(this);
+		}
+	}
 }
 
 void ANPCCharacter::BeginPlay()
@@ -28,11 +38,10 @@ void ANPCCharacter::BeginPlay()
 
 void ANPCCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+
 }
 
 void ANPCCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+
 }
-
-
-

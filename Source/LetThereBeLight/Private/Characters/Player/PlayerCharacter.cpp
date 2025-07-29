@@ -20,6 +20,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "SaveSystem/LoadScreenSaveGame.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
+#include "Interactions/NPCInterface.h"
 
 
 APlayerCharacter::APlayerCharacter()

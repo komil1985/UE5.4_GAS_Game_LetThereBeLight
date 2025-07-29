@@ -42,6 +42,7 @@ public:
 	virtual void HideMagicCircle_Implementation() override;										//  <-- Player Interface
 	virtual void SaveProgress_Implementation(const FName& CheckpointTag) override;				//  <-- Player Interface
 
+
 	UPROPERTY(EditDefaultsOnly)
 	float DeathTime = 5.0f;
 
@@ -72,4 +73,5 @@ private:
 
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastLevelUpParticles() const;
+
 };

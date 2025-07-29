@@ -2,6 +2,7 @@
 
 
 #include "Characters/Player/MyPlayerController.h"
+#include "Characters/Player/PlayerCharacter.h"
 #include "Interactions/EnemyInterface.h"
 #include "EnhancedInputSubsystems.h"
 #include <Input/KDInputComponent.h>
@@ -67,6 +68,8 @@ void AMyPlayerController::HideMagicCircle()
 		MagicCircle->Destroy();
 	}
 }
+
+
 
 void AMyPlayerController::UpdateMagicCircleLocation()
 {
@@ -308,6 +311,7 @@ void AMyPlayerController::SetupInputComponent()
 	KDInputComponent->BindAction(ShiftAction, ETriggerEvent::Started, this, &AMyPlayerController::ShiftPressed);
 	KDInputComponent->BindAction(ShiftAction, ETriggerEvent::Completed, this, &AMyPlayerController::ShiftReleased);
 	KDInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
+	KDInputComponent->BindAction(Interact, ETriggerEvent::Started, this, &AMyPlayerController::InteractPressed);
 }
 
 void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -327,5 +331,26 @@ void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
 	{
 		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+	}
+}
+
+void AMyPlayerController::InteractPressed()
+{
+	if (CurrentInteractable)
+	{
+		INPCInterface::Execute_Interact(CurrentInteractable.GetObject(), this);
+	}
+}
+
+void AMyPlayerController::SetCurrentInteractable(TScriptInterface<INPCInterface> NewInteractable)
+{
+	CurrentInteractable = NewInteractable;
+}
+
+void AMyPlayerController::ClearCurrentInteractable(TScriptInterface<INPCInterface> Interactable)
+{
+	if (CurrentInteractable == Interactable)
+	{
+		CurrentInteractable = nullptr;
 	}
 }
