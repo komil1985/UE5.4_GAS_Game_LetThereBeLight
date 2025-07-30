@@ -339,7 +339,7 @@ void AMyPlayerController::InteractPressed()
 	if (CurrentInteractable)
 	{
 		INPCInterface::Execute_Interact(CurrentInteractable.GetObject(), this);
-	}
+	}	
 }
 
 void AMyPlayerController::SetCurrentInteractable(TScriptInterface<INPCInterface> NewInteractable)
