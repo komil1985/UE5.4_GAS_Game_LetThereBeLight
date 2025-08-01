@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Characters/Base/BaseCharacter.h"
 #include "Interactions/PlayerInterface.h"
+#include "Interactions/KDInteractable.h"
 #include "PlayerCharacter.generated.h"
 
 class UNiagaraComponent;
@@ -68,6 +69,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UBoxComponent> CameraBoxComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UBoxComponent> InteractionComponent;
 
 	virtual void InitAbilityActorInfo() override;
 

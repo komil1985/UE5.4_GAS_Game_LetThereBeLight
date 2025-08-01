@@ -179,7 +179,7 @@ void AMyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 	if (GetKDASC()) GetKDASC()->AbilityInputTagReleased(InputTag);
 
-	/* Un comment this if player autorun and should move to mouse clicked location */
+	/* Un comment this for player autorun and should move to mouse clicked location */
 
 	//if (TargetingStatus != ETargetingStatus::TargetingEnemy && !bIsShiftKeyDown)
 	//{		

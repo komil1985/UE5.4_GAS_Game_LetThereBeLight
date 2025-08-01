@@ -42,6 +42,16 @@ APlayerCharacter::APlayerCharacter()
 	CameraBoxComponent->SetupAttachment(PlayerSpringArm, USpringArmComponent::SocketName);
 	CameraBoxComponent->SetBoxExtent(FVector(700.0f, 15.0f, 200.0f));
 
+	InteractionComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("InteractionComponent"));
+	InteractionComponent->SetupAttachment(GetRootComponent());
+	InteractionComponent->SetBoxExtent(FVector(32.0f, 32.0f, 32.0f));
+	InteractionComponent->SetRelativeLocation(FVector(100.0f, 0.0f, 0.0f));
+	InteractionComponent->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
+	InteractionComponent->SetRelativeScale3D(FVector(1.0f, 1.0f, 2.5f));
+	InteractionComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	InteractionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+	InteractionComponent->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+
 	LevelUpNiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("LevelUpNiagaraComponent"));
 	LevelUpNiagaraComponent->SetupAttachment(GetRootComponent());
 	LevelUpNiagaraComponent->bAutoActivate = false;
