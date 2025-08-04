@@ -25,6 +25,8 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
 
+
+	// Interfaces //
 	virtual void Die(const FVector& DeathImpulse) override;										//  <-- Combat Interface
 	virtual int32 GetPlayerLevel_Implementation() override;										//  <-- Combat Interface
 
@@ -42,6 +44,10 @@ public:
 	virtual void ShowMagicCircle_Implementation(UMaterialInterface* DecalMaterial) override;	//  <-- Player Interface
 	virtual void HideMagicCircle_Implementation() override;										//  <-- Player Interface
 	virtual void SaveProgress_Implementation(const FName& CheckpointTag) override;				//  <-- Player Interface
+
+	virtual void StartInteract_Implementation(AActor* Actor);									//  <-- Interactable Interaface
+	virtual void StopInteract_Implementation(AActor* Actor);									//  <-- Interactable Interaface
+	virtual void CanInteract_Implementation(AActor* Actor);										//  <-- Interactable Interaface
 
 
 	UPROPERTY(EditDefaultsOnly)

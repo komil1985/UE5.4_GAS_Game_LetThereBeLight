@@ -43,6 +43,7 @@ public:
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
 	FGameplayTag InputTag_Spacebar;
+	FGameplayTag InputTag_Interact;
 	FGameplayTag InputTag_Num1;
 	FGameplayTag InputTag_Num2;
 	FGameplayTag InputTag_Num3;

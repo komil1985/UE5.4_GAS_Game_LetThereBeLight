@@ -39,7 +39,7 @@ public:
 	void subsystem();
 	void MouseCursorMode();
 	virtual void PlayerTick(float DeltaTime) override;
-	
+
 	UFUNCTION(Client, Reliable)
 	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit);
 
@@ -49,10 +49,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void HideMagicCircle();
 
-	UPROPERTY()
-	TScriptInterface<INPCInterface> CurrentInteractable;											//  <-- NPC Interface
-	void SetCurrentInteractable(TScriptInterface<INPCInterface> NewInteractable);					//  <-- NPC Interface
-	void ClearCurrentInteractable(TScriptInterface<INPCInterface> Interactable);
+	UPROPERTY(BlueprintReadWrite, Category = "Interacts")
+	TObjectPtr<AActor> Interactable;
+
 
 protected:
 	virtual void BeginPlay() override;

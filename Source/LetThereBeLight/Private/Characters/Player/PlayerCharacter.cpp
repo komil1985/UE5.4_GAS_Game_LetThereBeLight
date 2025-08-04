@@ -332,6 +332,39 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 	}
 }
 
+void APlayerCharacter::StartInteract_Implementation(AActor* Actor)
+{
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
+		{
+			MyPC->Interactable = Actor;
+		}
+	}
+}
+
+void APlayerCharacter::StopInteract_Implementation(AActor* Actor)
+{
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
+		{
+			MyPC->Interactable = Actor;
+		}
+	}
+}
+
+void APlayerCharacter::CanInteract_Implementation(AActor* Actor)
+{
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
+		{
+			MyPC->Interactable = Actor;
+		}
+	}
+}
+
 void APlayerCharacter::OnRep_Stunned()
 {
 	if (UKDAbilitySystemComponent* KDASC = Cast<UKDAbilitySystemComponent>(AbilitySystemComponent))

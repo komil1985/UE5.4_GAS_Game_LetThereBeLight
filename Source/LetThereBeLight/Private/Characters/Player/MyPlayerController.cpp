@@ -19,7 +19,7 @@
 #include "Components/DecalComponent.h"
 #include "LetThereBeLight/LetThereBeLight.h"
 #include "Interactions/HighLightInterface.h"
-
+#include "Interactions/KDInteractable.h"
 
 
 AMyPlayerController::AMyPlayerController()
@@ -336,21 +336,9 @@ void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AMyPlayerController::InteractPressed()
 {
-	if (CurrentInteractable)
+	if (IsValid(Interactable))
 	{
-		INPCInterface::Execute_Interact(CurrentInteractable.GetObject(), this);
-	}	
-}
-
-void AMyPlayerController::SetCurrentInteractable(TScriptInterface<INPCInterface> NewInteractable)
-{
-	CurrentInteractable = NewInteractable;
-}
-
-void AMyPlayerController::ClearCurrentInteractable(TScriptInterface<INPCInterface> Interactable)
-{
-	if (CurrentInteractable == Interactable)
-	{
-		CurrentInteractable = nullptr;
+		IKDInteractable::Execute_StartInteract(Interactable.Get(), this);
 	}
 }
+
