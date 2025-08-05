@@ -7,6 +7,13 @@
 #include "Interactions/NPCInterface.h"
 #include "NPCCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum class ESelectedInteractionType : uint8
+{
+	Information,
+	Dialogue
+};
+
 
 class USphereComponent;
 UCLASS()
