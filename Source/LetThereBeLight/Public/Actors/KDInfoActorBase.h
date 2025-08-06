@@ -4,12 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interactions/KDInteractable.h"
 #include "KDInfoActorBase.generated.h"
 
 class UStaticMeshComponent;
 class UWidgetComponent;
+class USphereComponent;
 UCLASS()
-class LETTHEREBELIGHT_API AKDInfoActorBase : public AActor
+class LETTHEREBELIGHT_API AKDInfoActorBase : public AActor, public IKDInteractable
 {
 	GENERATED_BODY()
 	
@@ -24,4 +26,17 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr <UWidgetComponent> Widget;
+
+	UFUNCTION(BlueprintCallable, Category = "Interaction")
+	virtual void Interact_Implementation() override;
+
+	UFUNCTION()
+	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USphereComponent> Sphere;
+
+
+private:
+	bool bIsBig;
 };
