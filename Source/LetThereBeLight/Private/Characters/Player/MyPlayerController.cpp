@@ -20,6 +20,7 @@
 #include "LetThereBeLight/LetThereBeLight.h"
 #include "Interactions/HighLightInterface.h"
 #include "Interactions/KDInteractable.h"
+#include "../KDLogChannles.h"
 
 
 AMyPlayerController::AMyPlayerController()
@@ -27,6 +28,7 @@ AMyPlayerController::AMyPlayerController()
 	bReplicates = true;
 
 	Spline = CreateDefaultSubobject<USplineComponent>("Spline");
+	 
 }
 
 void AMyPlayerController::BeginPlay()
@@ -311,7 +313,7 @@ void AMyPlayerController::SetupInputComponent()
 	KDInputComponent->BindAction(ShiftAction, ETriggerEvent::Started, this, &AMyPlayerController::ShiftPressed);
 	KDInputComponent->BindAction(ShiftAction, ETriggerEvent::Completed, this, &AMyPlayerController::ShiftReleased);
 	KDInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
-	KDInputComponent->BindAction(Interact, ETriggerEvent::Started, this, &AMyPlayerController::InteractPressed);
+	KDInputComponent->BindAction(Interact, ETriggerEvent::Started, this, &AMyPlayerController::FireLineTrace);
 }
 
 void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -334,11 +336,8 @@ void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
 	}
 }
 
-void AMyPlayerController::InteractPressed()
-{
-	if (IsValid(Interactable))
-	{
-		IKDInteractable::Execute_StartInteract(Interactable.Get(), this);
-	}
-}
 
+void AMyPlayerController::FireLineTrace()
+{
+	UE_LOG(LogKD, Warning, TEXT("%s"), TEXT(__FUNCTION__));
+}

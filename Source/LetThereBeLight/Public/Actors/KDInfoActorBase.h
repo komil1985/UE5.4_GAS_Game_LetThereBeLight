@@ -18,6 +18,8 @@ class LETTHEREBELIGHT_API AKDInfoActorBase : public AActor, public IKDInteractab
 public:	
 	AKDInfoActorBase();
 
+	virtual void Tick(float DeltaTime) override;
+
 protected:
 	virtual void BeginPlay() override;
 

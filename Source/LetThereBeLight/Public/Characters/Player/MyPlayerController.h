@@ -52,6 +52,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Interacts")
 	TObjectPtr<AActor> Interactable;
 
+	UFUNCTION()
+	void FireLineTrace();
 
 protected:
 	virtual void BeginPlay() override;

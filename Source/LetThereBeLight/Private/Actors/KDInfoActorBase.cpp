@@ -8,7 +8,7 @@
 
 AKDInfoActorBase::AKDInfoActorBase()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(GetRootComponent());
@@ -26,6 +26,11 @@ AKDInfoActorBase::AKDInfoActorBase()
 
 }
 
+void AKDInfoActorBase::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
 void AKDInfoActorBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -34,10 +39,11 @@ void AKDInfoActorBase::BeginPlay()
 
 void AKDInfoActorBase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Blue, OtherActor->GetName());
-	if (OtherActor->Implements<UKDInteractable>())
+	
+	if (OtherActor || OtherActor->Implements<UKDInteractable>())
 	{
-		IKDInteractable::Execute_Interact(this);
+		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT("Player"));
+		IKDInteractable::Execute_Interact(OtherActor);
 	}
 }
 

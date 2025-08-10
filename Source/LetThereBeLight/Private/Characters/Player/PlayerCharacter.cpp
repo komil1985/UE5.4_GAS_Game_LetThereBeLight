@@ -70,6 +70,9 @@ APlayerCharacter::APlayerCharacter()
 
 	GetMesh()->SetSimulatePhysics(false);
 
+	LineTraceType = ELineTraceType::CAMERA_SINGLE;
+	LineTraceDistance = 100.0f;
+
 	CharacterClass = ECharacterClass::Elementalist;
 }
 
@@ -363,6 +366,11 @@ void APlayerCharacter::CanInteract_Implementation(AActor* Actor)
 			MyPC->Interactable = Actor;
 		}
 	}
+}
+
+void APlayerCharacter::Interact_Implementation()
+{
+
 }
 
 void APlayerCharacter::OnRep_Stunned()

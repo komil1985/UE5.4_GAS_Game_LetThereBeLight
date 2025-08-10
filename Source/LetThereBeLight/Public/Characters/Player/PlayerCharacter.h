@@ -8,6 +8,14 @@
 #include "Interactions/KDInteractable.h"
 #include "PlayerCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum class ELineTraceType : uint8
+{
+	CAMERA_SINGLE UMETA(DisplayName = "Origin - Camera - Single Trace"),
+	PLAYER_SINGLE UMETA(DisplayName = "Origin - Player - Single Trace")
+};
+
+
 class UNiagaraComponent;
 class UCameraComponent;
 class USpringArmComponent;
@@ -16,7 +24,7 @@ class UBoxComponent;
  * 
  */
 UCLASS()
-class LETTHEREBELIGHT_API APlayerCharacter : public ABaseCharacter, public IPlayerInterface
+class LETTHEREBELIGHT_API APlayerCharacter : public ABaseCharacter, public IPlayerInterface, public IKDInteractable
 {
 	GENERATED_BODY()
 public:
@@ -48,6 +56,7 @@ public:
 	virtual void StartInteract_Implementation(AActor* Actor);									//  <-- Interactable Interaface
 	virtual void StopInteract_Implementation(AActor* Actor);									//  <-- Interactable Interaface
 	virtual void CanInteract_Implementation(AActor* Actor);										//  <-- Interactable Interaface
+	virtual void Interact_Implementation();														//  <-- Interactable Interaface
 
 
 	UPROPERTY(EditDefaultsOnly)
@@ -65,6 +74,12 @@ public:
 	virtual void OnRep_Burned() override;
 
 	void LoadProgress();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Line Trace")
+	ELineTraceType LineTraceType;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Line Trace")
+	float LineTraceDistance;
 
 private:
 	UPROPERTY(VisibleAnywhere)
