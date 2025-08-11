@@ -31,6 +31,7 @@ AMyPlayerController::AMyPlayerController()
 	 
 }
 
+
 void AMyPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -313,7 +314,7 @@ void AMyPlayerController::SetupInputComponent()
 	KDInputComponent->BindAction(ShiftAction, ETriggerEvent::Started, this, &AMyPlayerController::ShiftPressed);
 	KDInputComponent->BindAction(ShiftAction, ETriggerEvent::Completed, this, &AMyPlayerController::ShiftReleased);
 	KDInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
-	KDInputComponent->BindAction(Interact, ETriggerEvent::Started, this, &AMyPlayerController::FireLineTrace);
+	KDInputComponent->BindAction(Interact, ETriggerEvent::Started, this, &AMyPlayerController::LineTrace);
 }
 
 void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -337,7 +338,14 @@ void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
 }
 
 
-void AMyPlayerController::FireLineTrace()
+
+void AMyPlayerController::LineTrace()
 {
-	UE_LOG(LogKD, Warning, TEXT("%s"), TEXT(__FUNCTION__));
+	APawn* ControlledPawn = GetPawn();
+	APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(ControlledPawn);
+
+	if (PlayerCharacter)
+	{
+		PlayerCharacter->FireLineTrace();
+	}
 }

@@ -53,7 +53,7 @@ public:
 	TObjectPtr<AActor> Interactable;
 
 	UFUNCTION()
-	void FireLineTrace();
+	void LineTrace();
 
 protected:
 	virtual void BeginPlay() override;

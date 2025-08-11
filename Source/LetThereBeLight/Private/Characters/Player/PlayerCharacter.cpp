@@ -427,3 +427,42 @@ void APlayerCharacter::InitAbilityActorInfo()
 		}
 	}
 }
+
+void APlayerCharacter::FireLineTrace()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT(__FUNCTION__));
+
+	FVector Start, End;
+
+	if (LineTraceType == ELineTraceType::CAMERA_SINGLE)
+	{
+		// get camera point of view
+		FVector CameraLocation = PlayerCamera->GetComponentLocation();
+		FRotator CameraRotation = PlayerCamera->GetComponentRotation();
+
+		Start = CameraLocation;
+		End = CameraLocation + (CameraRotation.Vector() * LineTraceDistance);
+
+	}
+	else if (LineTraceType == ELineTraceType::PLAYER_SINGLE)
+	{
+		// get player point of view
+		FVector PlayerEyesLocation;
+		FRotator PlayerEyesRotation;
+
+		// fill in previously defined variables
+		GetActorEyesViewPoint(PlayerEyesLocation, PlayerEyesRotation);
+
+		Start = PlayerEyesLocation;
+		End = PlayerEyesLocation + (PlayerEyesRotation.Vector() * LineTraceDistance);
+	}
+
+	FHitResult HitResult = FHitResult(ForceInit);
+
+	FCollisionQueryParams TraceParams(FName(TEXT("LineTraceParameters")), true, NULL);
+	TraceParams.bTraceComplex = true;
+	TraceParams.bReturnPhysicalMaterial = true;
+
+	bool bIsHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_GameTraceChannel3, TraceParams);
+
+}

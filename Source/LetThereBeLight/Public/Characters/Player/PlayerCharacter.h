@@ -81,6 +81,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Line Trace")
 	float LineTraceDistance;
 
+	UFUNCTION()
+	void FireLineTrace();
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> PlayerCamera;
