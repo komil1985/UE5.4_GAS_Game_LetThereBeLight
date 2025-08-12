@@ -1,5 +1,6 @@
 // Copyright ASKD Games
 
+
 #include "Characters/Player/PlayerCharacter.h"
 #include "Characters/Player/MyPlayerState.h"
 #include "Characters/Player/MyPlayerController.h"
@@ -21,6 +22,7 @@
 #include "SaveSystem/LoadScreenSaveGame.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "Interactions/NPCInterface.h"
+#include "../KDLogChannles.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -465,4 +467,15 @@ void APlayerCharacter::FireLineTrace()
 
 	bool bIsHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_GameTraceChannel3, TraceParams);
 
+	if (bIsHit)
+	{
+		UE_LOG(LogKD, Warning, TEXT("We hit something!"));
+		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 5.0f, ECC_WorldStatic, 1.0f);
+	}
+	else
+	{
+		UE_LOG(LogKD, Warning, TEXT("We hit nothing!"));
+		DrawDebugLine(GetWorld(), Start, End, FColor::Purple, false, 5.0f, ECC_WorldStatic, 1.0f);
+
+	}
 }

@@ -1,6 +1,7 @@
 // Copyright ASKD Games
 
 #pragma once
+
 #include "CoreMinimal.h"
 #include "AbilitySystem/Abilities/KDGameplayAbility.h"
 #include "Interactions/CombatInterface.h"
