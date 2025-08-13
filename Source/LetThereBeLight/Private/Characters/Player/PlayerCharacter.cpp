@@ -432,7 +432,7 @@ void APlayerCharacter::InitAbilityActorInfo()
 
 void APlayerCharacter::FireLineTrace()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT(__FUNCTION__));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT(__FUNCTION__));
 
 	FVector Start, End;
 
@@ -471,6 +471,9 @@ void APlayerCharacter::FireLineTrace()
 	{
 		UE_LOG(LogKD, Warning, TEXT("We hit something!"));
 		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 5.0f, ECC_WorldStatic, 1.0f);
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, HitResult.GetActor()->GetName());
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::SanitizeFloat(HitResult.Distance));
+		DrawDebugBox(GetWorld(), HitResult.ImpactPoint, FVector(2.0f, 2.0f, 2.0f), FColor::Blue, false, 5.0f, ECC_WorldStatic, 1.0f);
 	}
 	else
 	{

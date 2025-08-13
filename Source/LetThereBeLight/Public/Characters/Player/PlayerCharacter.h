@@ -12,7 +12,9 @@ UENUM(BlueprintType)
 enum class ELineTraceType : uint8
 {
 	CAMERA_SINGLE UMETA(DisplayName = "Origin - Camera - Single Trace"),
-	PLAYER_SINGLE UMETA(DisplayName = "Origin - Player - Single Trace")
+	PLAYER_SINGLE UMETA(DisplayName = "Origin - Player - Single Trace"),
+	CAMERA_SPREAD UMETA(DisplayName = "Origin - Camera - Spread"),
+	PLAYER_SPREAD UMETA(DisplayName = "Origin - Player - Spread")
 };
 
 
@@ -80,6 +82,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Line Trace")
 	float LineTraceDistance;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Line Trace")
+	float LineTraceSpread;
 
 	UFUNCTION()
 	void FireLineTrace();
