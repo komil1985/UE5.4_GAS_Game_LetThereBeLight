@@ -26,7 +26,7 @@ class UBoxComponent;
  * 
  */
 UCLASS()
-class LETTHEREBELIGHT_API APlayerCharacter : public ABaseCharacter, public IPlayerInterface, public IKDInteractable
+class LETTHEREBELIGHT_API APlayerCharacter : public ABaseCharacter, public IPlayerInterface
 {
 	GENERATED_BODY()
 public:
@@ -84,10 +84,13 @@ public:
 	float LineTraceDistance;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Line Trace")
-	float LineTraceSpread;
+	float LineTraceSpread = 10.0f;
 
 	UFUNCTION()
 	void FireLineTrace();
+
+	UFUNCTION()
+	void Interact();
 
 private:
 	UPROPERTY(VisibleAnywhere)

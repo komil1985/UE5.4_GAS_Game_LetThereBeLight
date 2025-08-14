@@ -259,7 +259,6 @@ void AMyPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 
 }
 
-
 UKDAbilitySystemComponent* AMyPlayerController::GetKDASC()
 {
 	if (KDAbilitySystemComponent == nullptr)
@@ -314,7 +313,7 @@ void AMyPlayerController::SetupInputComponent()
 	KDInputComponent->BindAction(ShiftAction, ETriggerEvent::Started, this, &AMyPlayerController::ShiftPressed);
 	KDInputComponent->BindAction(ShiftAction, ETriggerEvent::Completed, this, &AMyPlayerController::ShiftReleased);
 	KDInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
-	KDInputComponent->BindAction(Interact, ETriggerEvent::Started, this, &AMyPlayerController::LineTrace);
+	KDInputComponent->BindAction(Interact, ETriggerEvent::Started, this, &AMyPlayerController::Interaction);
 }
 
 void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -337,8 +336,6 @@ void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
 	}
 }
 
-
-
 void AMyPlayerController::LineTrace()
 {
 	APawn* ControlledPawn = GetPawn();
@@ -347,5 +344,16 @@ void AMyPlayerController::LineTrace()
 	if (PlayerCharacter)
 	{
 		PlayerCharacter->FireLineTrace();
+	}
+}
+
+void AMyPlayerController::Interaction()
+{
+	APawn* ControlledPawn = GetPawn();
+	APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(ControlledPawn);
+
+	if (PlayerCharacter)
+	{
+		PlayerCharacter->Interact();
 	}
 }

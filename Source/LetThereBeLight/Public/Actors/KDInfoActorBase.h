@@ -29,15 +29,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr <UWidgetComponent> Widget;
 
-	UFUNCTION(BlueprintCallable, Category = "Interaction")
+	UFUNCTION(BlueprintCallable, Category = "Interact")
 	virtual void Interact_Implementation() override;
-
-	UFUNCTION()
-	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USphereComponent> Sphere;
-
 
 private:
 	bool bIsBig;

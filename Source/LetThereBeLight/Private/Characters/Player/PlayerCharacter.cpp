@@ -435,18 +435,27 @@ void APlayerCharacter::FireLineTrace()
 	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT(__FUNCTION__));
 
 	FVector Start, End;
+	const float Spread = FMath::DegreesToRadians(LineTraceSpread * 0.5f);
 
-	if (LineTraceType == ELineTraceType::CAMERA_SINGLE)
+	if (LineTraceType == ELineTraceType::CAMERA_SINGLE || LineTraceType == ELineTraceType::CAMERA_SPREAD)
 	{
 		// get camera point of view
 		FVector CameraLocation = PlayerCamera->GetComponentLocation();
 		FRotator CameraRotation = PlayerCamera->GetComponentRotation();
 
 		Start = CameraLocation;
-		End = CameraLocation + (CameraRotation.Vector() * LineTraceDistance);
 
+		if (LineTraceType == ELineTraceType::CAMERA_SPREAD)
+		{
+			End = CameraLocation + FMath::VRandCone(CameraRotation.Vector(), Spread, Spread) * LineTraceDistance;
+		}
+		else
+		{
+			// ending location where the camera is facing based on the line trace distance
+			End = CameraLocation + (CameraRotation.Vector() * LineTraceDistance);
+		}
 	}
-	else if (LineTraceType == ELineTraceType::PLAYER_SINGLE)
+	else if (LineTraceType == ELineTraceType::PLAYER_SINGLE || LineTraceType == ELineTraceType::PLAYER_SPREAD)
 	{
 		// get player point of view
 		FVector PlayerEyesLocation;
@@ -456,7 +465,14 @@ void APlayerCharacter::FireLineTrace()
 		GetActorEyesViewPoint(PlayerEyesLocation, PlayerEyesRotation);
 
 		Start = PlayerEyesLocation;
-		End = PlayerEyesLocation + (PlayerEyesRotation.Vector() * LineTraceDistance);
+		if (LineTraceType == ELineTraceType::PLAYER_SPREAD)
+		{
+			End = PlayerEyesLocation + FMath::VRandCone(PlayerEyesRotation.Vector(), Spread, Spread) * LineTraceDistance;
+		}
+		else
+		{
+			End = PlayerEyesLocation + (PlayerEyesRotation.Vector() * LineTraceDistance);
+		}		
 	}
 
 	FHitResult HitResult = FHitResult(ForceInit);
@@ -479,6 +495,29 @@ void APlayerCharacter::FireLineTrace()
 	{
 		UE_LOG(LogKD, Warning, TEXT("We hit nothing!"));
 		DrawDebugLine(GetWorld(), Start, End, FColor::Purple, false, 5.0f, ECC_WorldStatic, 1.0f);
+
+	}
+}
+
+void APlayerCharacter::Interact()
+{
+	FVector Start, End;
+	FVector PlayerEyeLocation;
+	FRotator PlayerEyeRotation;
+
+	GetActorEyesViewPoint(PlayerEyeLocation, PlayerEyeRotation);
+	Start = PlayerEyeLocation;
+	End = PlayerEyeLocation + (PlayerEyeRotation.Vector() * LineTraceDistance);
+
+	FCollisionQueryParams TraceParams(FName(TEXT("InteractTrace")), true, this);
+	FHitResult InteractHit = FHitResult(ForceInit);
+
+	bool bIsHit = GetWorld()->LineTraceSingleByChannel(InteractHit, Start, End, ECC_GameTraceChannel3, TraceParams);
+
+	if (bIsHit)
+	{
+		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 5.0f, ECC_WorldStatic, 1.0f);
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, InteractHit.GetActor()->GetName());
 
 	}
 }

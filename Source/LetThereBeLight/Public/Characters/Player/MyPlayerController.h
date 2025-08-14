@@ -55,6 +55,9 @@ public:
 	UFUNCTION()
 	void LineTrace();
 
+	UFUNCTION()
+	void Interaction();
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;

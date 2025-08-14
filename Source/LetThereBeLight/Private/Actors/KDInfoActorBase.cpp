@@ -37,25 +37,15 @@ void AKDInfoActorBase::BeginPlay()
 	
 }
 
-void AKDInfoActorBase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	
-	if (OtherActor || OtherActor->Implements<UKDInteractable>())
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT("Player"));
-		IKDInteractable::Execute_Interact(OtherActor);
-	}
-}
-
 void AKDInfoActorBase::Interact_Implementation()
 {
 	if (!bIsBig)
 	{
-		Mesh->SetRelativeScale3D(FVector(2.0f, 2.0f, 2.0f));
+		Mesh->SetWorldScale3D(FVector(2.0f, 2.0f, 2.0f));
 	}
 	else
 	{
-		Mesh->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
+		Mesh->SetWorldScale3D(FVector(1.0f, 1.0f, 1.0f));
 	}
 	bIsBig = true;
 }
