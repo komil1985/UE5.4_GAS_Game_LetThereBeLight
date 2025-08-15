@@ -47,5 +47,5 @@ void AKDInfoActorBase::Interact_Implementation()
 	{
 		Mesh->SetWorldScale3D(FVector(1.0f, 1.0f, 1.0f));
 	}
-	bIsBig = true;
+	bIsBig = !bIsBig;
 }

@@ -519,5 +519,10 @@ void APlayerCharacter::Interact()
 		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 5.0f, ECC_WorldStatic, 1.0f);
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, InteractHit.GetActor()->GetName());
 
+		if (InteractHit.GetActor()->GetClass()->ImplementsInterface(UKDInteractable::StaticClass()))
+		{
+			IKDInteractable::Execute_Interact(InteractHit.GetActor());
+		}
+
 	}
 }
