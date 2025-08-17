@@ -89,7 +89,7 @@ public:
 	UFUNCTION()
 	void FireLineTrace();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Interaction")
 	void Interact();
 
 private:
