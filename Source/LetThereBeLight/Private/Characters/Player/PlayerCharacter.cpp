@@ -337,43 +337,38 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 	}
 }
 
-void APlayerCharacter::StartInteract_Implementation(AActor* Actor)
-{
-	if (APlayerController* PC = Cast<APlayerController>(GetController()))
-	{
-		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
-		{
-			MyPC->Interactable = Actor;
-		}
-	}
-}
-
-void APlayerCharacter::StopInteract_Implementation(AActor* Actor)
-{
-	if (APlayerController* PC = Cast<APlayerController>(GetController()))
-	{
-		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
-		{
-			MyPC->Interactable = Actor;
-		}
-	}
-}
-
-void APlayerCharacter::CanInteract_Implementation(AActor* Actor)
-{
-	if (APlayerController* PC = Cast<APlayerController>(GetController()))
-	{
-		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
-		{
-			MyPC->Interactable = Actor;
-		}
-	}
-}
-
-void APlayerCharacter::Interact_Implementation()
-{
-
-}
+//void APlayerCharacter::StartInteract_Implementation(AActor* Actor)
+//{
+//	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+//	{
+//		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
+//		{
+//			MyPC->Interactable = Actor;
+//		}
+//	}
+//}
+//
+//void APlayerCharacter::StopInteract_Implementation(AActor* Actor)
+//{
+//	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+//	{
+//		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
+//		{
+//			MyPC->Interactable = Actor;
+//		}
+//	}
+//}
+//
+//void APlayerCharacter::CanInteract_Implementation(AActor* Actor)
+//{
+//	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+//	{
+//		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
+//		{
+//			MyPC->Interactable = Actor;
+//		}
+//	}
+//}
 
 void APlayerCharacter::OnRep_Stunned()
 {
@@ -499,7 +494,7 @@ void APlayerCharacter::FireLineTrace()
 	}
 }
 
-void APlayerCharacter::Interact()
+void APlayerCharacter::Interact_Implementation()
 {
 	FVector Start, End;
 	FVector PlayerEyeLocation;
@@ -525,4 +520,9 @@ void APlayerCharacter::Interact()
 		}
 
 	}
+}
+
+void APlayerCharacter::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+
 }

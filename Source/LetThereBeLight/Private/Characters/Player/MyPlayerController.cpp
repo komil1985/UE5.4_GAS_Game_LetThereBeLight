@@ -352,8 +352,8 @@ void AMyPlayerController::Interaction()
 	APawn* ControlledPawn = GetPawn();
 	APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(ControlledPawn);
 
-	if (PlayerCharacter)
+	if (PlayerCharacter->Implements<UKDInteractable>())
 	{
-		PlayerCharacter->Interact();
+		IKDInteractable::Execute_Interact(ControlledPawn);
 	}
 }

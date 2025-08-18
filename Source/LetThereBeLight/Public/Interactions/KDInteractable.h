@@ -24,7 +24,10 @@ class LETTHEREBELIGHT_API IKDInteractable
 public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
-	void StartInteract(AActor* Actor);
+	void CanInteract();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
+	void StoptInteract();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
 	void Interact();

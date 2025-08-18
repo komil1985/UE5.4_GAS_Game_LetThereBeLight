@@ -17,6 +17,7 @@ enum class ESelectedInteractType : uint8
 class UStaticMeshComponent;
 class UWidgetComponent;
 class USphereComponent;
+class USceneComoponent;
 UCLASS()
 class LETTHEREBELIGHT_API AKDInfoActorBase : public AActor, public IKDInteractable
 {
@@ -33,6 +34,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
 	TArray<FText>TextSequence;
 
+	virtual void CanInteract_Implementation() override;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -48,6 +51,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USphereComponent> Sphere;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> SceneComponent;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
 	TMap<ESelectedInteractType, TSubclassOf<UUserWidget>> InteractionTypeMap;
 
@@ -58,7 +64,10 @@ protected:
 	TObjectPtr<UUserWidget> DisplayedWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
-	int32 TextToDisplay;
+	int32 TextToDisplay = 0;
+
+	UFUNCTION()
+	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 
 private:
