@@ -81,18 +81,26 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Line Trace")
 	float LineTraceSpread = 10.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
+	AActor* _Interactable;
+
 	UFUNCTION()
 	void FireLineTrace();
 
 	UFUNCTION()
 	void Interact_Implementation();													//  <-- Interactable Interaface
 
-	//virtual void StopInteract_Implementation();									//  <-- Interactable Interaface
-	//virtual void CanInteract_Implementation();									//  <-- Interactable Interaface
+	UFUNCTION()
+	void StopInteract_Implementation();												//  <-- Interactable Interaface
+
+	UFUNCTION()
+	void CanInteract_Implementation();												//  <-- Interactable Interaface
 
 	UFUNCTION()
 	virtual void OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	UFUNCTION()
+	virtual void OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 private:
 	UPROPERTY(VisibleAnywhere)

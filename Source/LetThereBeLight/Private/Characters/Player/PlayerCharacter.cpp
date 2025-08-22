@@ -337,39 +337,6 @@ void APlayerCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 	}
 }
 
-//void APlayerCharacter::StartInteract_Implementation(AActor* Actor)
-//{
-//	if (APlayerController* PC = Cast<APlayerController>(GetController()))
-//	{
-//		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
-//		{
-//			MyPC->Interactable = Actor;
-//		}
-//	}
-//}
-//
-//void APlayerCharacter::StopInteract_Implementation(AActor* Actor)
-//{
-//	if (APlayerController* PC = Cast<APlayerController>(GetController()))
-//	{
-//		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
-//		{
-//			MyPC->Interactable = Actor;
-//		}
-//	}
-//}
-//
-//void APlayerCharacter::CanInteract_Implementation(AActor* Actor)
-//{
-//	if (APlayerController* PC = Cast<APlayerController>(GetController()))
-//	{
-//		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
-//		{
-//			MyPC->Interactable = Actor;
-//		}
-//	}
-//}
-
 void APlayerCharacter::OnRep_Stunned()
 {
 	if (UKDAbilitySystemComponent* KDASC = Cast<UKDAbilitySystemComponent>(AbilitySystemComponent))
@@ -494,6 +461,28 @@ void APlayerCharacter::FireLineTrace()
 	}
 }
 
+void APlayerCharacter::StopInteract_Implementation()
+{
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
+		{
+
+		}
+	}
+}
+
+void APlayerCharacter::CanInteract_Implementation()
+{
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
+		{
+			
+		}
+	}
+}
+
 void APlayerCharacter::Interact_Implementation()
 {
 	FVector Start, End;
@@ -524,5 +513,19 @@ void APlayerCharacter::Interact_Implementation()
 
 void APlayerCharacter::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (OtherActor->Implements<UKDInteractable>())
+	{
+		IKDInteractable::Execute_CanInteract(_Interactable);
+	}
+}
 
+void APlayerCharacter::OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (OtherActor->Implements<UKDInteractable>())
+	{
+		if (IsValid(_Interactable))
+		{
+			IKDInteractable::Execute_StoptInteract(_Interactable);
+		}
+	}
 }
