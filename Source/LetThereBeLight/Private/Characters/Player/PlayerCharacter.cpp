@@ -51,8 +51,10 @@ APlayerCharacter::APlayerCharacter()
 	InteractionComponent->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
 	InteractionComponent->SetRelativeScale3D(FVector(1.0f, 1.0f, 2.5f));
 	InteractionComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	InteractionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+	InteractionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	InteractionComponent->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	InteractionComponent->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnBoxOverlapBegin);
+	InteractionComponent->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnBoxOverlapEnd);
 
 	LevelUpNiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("LevelUpNiagaraComponent"));
 	LevelUpNiagaraComponent->SetupAttachment(GetRootComponent());
@@ -76,6 +78,9 @@ APlayerCharacter::APlayerCharacter()
 	LineTraceDistance = 100.0f;
 
 	CharacterClass = ECharacterClass::Elementalist;
+
+
+
 }
 
 void APlayerCharacter::PossessedBy(AController* NewController)
@@ -513,19 +518,16 @@ void APlayerCharacter::Interact_Implementation()
 
 void APlayerCharacter::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor->Implements<UKDInteractable>())
+	if (OtherActor->Implements<UKDInteractable>() && OtherActor != this)
 	{
-		IKDInteractable::Execute_CanInteract(_Interactable);
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, *OtherActor->GetName());
 	}
 }
 
 void APlayerCharacter::OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (OtherActor->Implements<UKDInteractable>())
+	if (OtherActor->Implements<UKDInteractable>() && OtherActor != this)
 	{
-		if (IsValid(_Interactable))
-		{
-			IKDInteractable::Execute_StoptInteract(_Interactable);
-		}
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Overlap Ended"));
 	}
 }

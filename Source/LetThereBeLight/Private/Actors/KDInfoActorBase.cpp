@@ -26,9 +26,6 @@ AKDInfoActorBase::AKDInfoActorBase()
 	Widget->SetupAttachment(Mesh);
 	Widget->SetVisibility(false);
 
-	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
-	Sphere->SetupAttachment(Mesh);
-
 }
 
 void AKDInfoActorBase::Tick(float DeltaTime)
@@ -61,13 +58,4 @@ void AKDInfoActorBase::Interact_Implementation()
 		Mesh->SetWorldScale3D(FVector(1.0f, 1.0f, 1.0f));
 	}
 	bIsBig = !bIsBig;
-}
-
-void AKDInfoActorBase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (OtherActor->Implements<UKDInteractable>())
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0, FColor::Green, FString("Player"));
-		IKDInteractable::Execute_Interact(OtherActor);
-	}
 }
