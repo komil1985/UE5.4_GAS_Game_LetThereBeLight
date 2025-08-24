@@ -7,7 +7,7 @@
 #include "KDInteractable.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI)
+UINTERFACE(MinimalAPI, BlueprintType)
 class UKDInteractable : public UInterface
 {
 	GENERATED_BODY()
@@ -27,7 +27,10 @@ public:
 	void CanInteract();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
-	void StoptInteract();
+	void StopInteract();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
+	void StartInteract();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
 	void Interact();

@@ -10,7 +10,7 @@
 
 AKDInfoActorBase::AKDInfoActorBase()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
 	SetRootComponent(SceneComponent);
@@ -28,6 +28,12 @@ AKDInfoActorBase::AKDInfoActorBase()
 
 }
 
+void AKDInfoActorBase::BeginPlay()
+{
+	Super::BeginPlay();
+
+}
+
 void AKDInfoActorBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -35,16 +41,25 @@ void AKDInfoActorBase::Tick(float DeltaTime)
 
 void AKDInfoActorBase::CanInteract_Implementation()
 {
-	if (Widget != nullptr && IsValid(Widget))
+	if (IsValid(Widget))
 	{
-		Widget->SetVisibility(true, false);
+		Widget->SetVisibility(true);
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, TEXT("Can_Interface Activated"));
 	}
 }
 
-void AKDInfoActorBase::BeginPlay()
+void AKDInfoActorBase::StartInteract_Implementation()
 {
-	Super::BeginPlay();
-	
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, TEXT("Start_Interface Activated"));
+}
+
+void AKDInfoActorBase::StopInteract_Implementation()
+{
+	if (IsValid(Widget))
+	{
+		Widget->SetVisibility(false);
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, TEXT("Stop_Interface Activated"));
+	}
 }
 
 void AKDInfoActorBase::Interact_Implementation()

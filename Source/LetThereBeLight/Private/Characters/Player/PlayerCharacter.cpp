@@ -23,6 +23,7 @@
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "Interactions/NPCInterface.h"
 #include "../KDLogChannles.h"
+//#include "Actors/KDInfoActorBase.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -466,27 +467,6 @@ void APlayerCharacter::FireLineTrace()
 	}
 }
 
-void APlayerCharacter::StopInteract_Implementation()
-{
-	if (APlayerController* PC = Cast<APlayerController>(GetController()))
-	{
-		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
-		{
-
-		}
-	}
-}
-
-void APlayerCharacter::CanInteract_Implementation()
-{
-	if (APlayerController* PC = Cast<APlayerController>(GetController()))
-	{
-		if (AMyPlayerController* MyPC = Cast<AMyPlayerController>(PC))
-		{
-			
-		}
-	}
-}
 
 void APlayerCharacter::Interact_Implementation()
 {
@@ -518,16 +498,18 @@ void APlayerCharacter::Interact_Implementation()
 
 void APlayerCharacter::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor->Implements<UKDInteractable>() && OtherActor != this)
+	if (OtherActor && OtherActor->Implements<UKDInteractable>() && OtherActor != this)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, *OtherActor->GetName());
+		IKDInteractable::Execute_CanInteract(OtherActor);
 	}
 }
 
 void APlayerCharacter::OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (OtherActor->Implements<UKDInteractable>() && OtherActor != this)
+	if (OtherActor && OtherActor->Implements<UKDInteractable>() && OtherActor != this)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Overlap Ended"));
+		IKDInteractable::Execute_StopInteract(OtherActor);
 	}
 }

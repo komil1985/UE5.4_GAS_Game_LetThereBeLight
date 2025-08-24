@@ -18,6 +18,7 @@ class UStaticMeshComponent;
 class UWidgetComponent;
 class USphereComponent;
 class USceneComoponent;
+
 UCLASS()
 class LETTHEREBELIGHT_API AKDInfoActorBase : public AActor, public IKDInteractable
 {
@@ -35,6 +36,9 @@ public:
 	TArray<FText>TextSequence;
 
 	virtual void CanInteract_Implementation() override;
+	virtual void StartInteract_Implementation() override;
+	virtual void StopInteract_Implementation() override;
+
 
 protected:
 	virtual void BeginPlay() override;
