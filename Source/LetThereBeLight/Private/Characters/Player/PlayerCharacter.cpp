@@ -470,13 +470,17 @@ void APlayerCharacter::FireLineTrace()
 
 void APlayerCharacter::Interact_Implementation()
 {
-	FVector Start, End;
-	FVector PlayerEyeLocation;
-	FRotator PlayerEyeRotation;
+	FVector Start, End, ForwardVector;
+	
+	//FVector PlayerEyeLocation;
+	//FRotator PlayerEyeRotation;
+	//GetActorEyesViewPoint(PlayerEyeLocation, PlayerEyeRotation);
+	//Start = PlayerEyeLocation;
+	//End = PlayerEyeLocation + (PlayerEyeRotation.Vector() * LineTraceDistance);
 
-	GetActorEyesViewPoint(PlayerEyeLocation, PlayerEyeRotation);
-	Start = PlayerEyeLocation;
-	End = PlayerEyeLocation + (PlayerEyeRotation.Vector() * LineTraceDistance);
+	Start = GetActorLocation();
+	ForwardVector = GetActorForwardVector();
+	End = Start + (ForwardVector * LineTraceDistance);
 
 	FCollisionQueryParams TraceParams(FName(TEXT("InteractTrace")), true, this);
 	FHitResult InteractHit = FHitResult(ForceInit);
@@ -492,7 +496,6 @@ void APlayerCharacter::Interact_Implementation()
 		{
 			IKDInteractable::Execute_Interact(InteractHit.GetActor());
 		}
-
 	}
 }
 

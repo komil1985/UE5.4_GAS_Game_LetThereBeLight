@@ -6,6 +6,7 @@
 #include "Components/WidgetComponent.h"
 #include "Components/SphereComponent.h"
 #include "Interactions/PlayerInterface.h"
+#include "Components\TextBlock.h"
 
 
 AKDInfoActorBase::AKDInfoActorBase()
@@ -64,13 +65,15 @@ void AKDInfoActorBase::StopInteract_Implementation()
 
 void AKDInfoActorBase::Interact_Implementation()
 {
-	if (!bIsBig)
-	{
-		Mesh->SetWorldScale3D(FVector(2.0f, 2.0f, 2.0f));
-	}
-	else
-	{
-		Mesh->SetWorldScale3D(FVector(1.0f, 1.0f, 1.0f));
-	}
-	bIsBig = !bIsBig;
+	//if (!bIsBig)
+	//{
+	//	Mesh->SetWorldScale3D(FVector(2.0f, 2.0f, 2.0f));
+	//}
+	//else
+	//{
+	//	Mesh->SetWorldScale3D(FVector(1.0f, 1.0f, 1.0f));
+	//}
+	//bIsBig = !bIsBig;
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, TEXT("Interact_Interface Activated"));
 }

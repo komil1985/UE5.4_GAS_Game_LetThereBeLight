@@ -17,7 +17,7 @@ enum class ESelectedInteractType : uint8
 class UStaticMeshComponent;
 class UWidgetComponent;
 class USphereComponent;
-class USceneComoponent;
+class USceneComponent;
 
 UCLASS()
 class LETTHEREBELIGHT_API AKDInfoActorBase : public AActor, public IKDInteractable
@@ -38,7 +38,6 @@ public:
 	virtual void CanInteract_Implementation() override;
 	virtual void StartInteract_Implementation() override;
 	virtual void StopInteract_Implementation() override;
-
 
 protected:
 	virtual void BeginPlay() override;
