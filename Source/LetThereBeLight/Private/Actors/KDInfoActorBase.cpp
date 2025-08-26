@@ -58,22 +58,13 @@ void AKDInfoActorBase::StopInteract_Implementation()
 {
 	if (IsValid(Widget))
 	{
-		Widget->SetVisibility(false);
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, TEXT("Stop_Interface Activated"));
+		Widget->SetVisibility(false);
+		TextToDisplay = 0;
 	}
 }
 
 void AKDInfoActorBase::Interact_Implementation()
 {
-	//if (!bIsBig)
-	//{
-	//	Mesh->SetWorldScale3D(FVector(2.0f, 2.0f, 2.0f));
-	//}
-	//else
-	//{
-	//	Mesh->SetWorldScale3D(FVector(1.0f, 1.0f, 1.0f));
-	//}
-	//bIsBig = !bIsBig;
-
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, TEXT("Interact_Interface Activated"));
 }

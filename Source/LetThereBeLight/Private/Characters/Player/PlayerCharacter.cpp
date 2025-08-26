@@ -471,12 +471,6 @@ void APlayerCharacter::FireLineTrace()
 void APlayerCharacter::Interact_Implementation()
 {
 	FVector Start, End, ForwardVector;
-	
-	//FVector PlayerEyeLocation;
-	//FRotator PlayerEyeRotation;
-	//GetActorEyesViewPoint(PlayerEyeLocation, PlayerEyeRotation);
-	//Start = PlayerEyeLocation;
-	//End = PlayerEyeLocation + (PlayerEyeRotation.Vector() * LineTraceDistance);
 
 	Start = GetActorLocation();
 	ForwardVector = GetActorForwardVector();
