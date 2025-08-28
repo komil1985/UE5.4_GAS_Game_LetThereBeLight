@@ -101,7 +101,7 @@
 		},
 		{
 			"Name": "QuestEditor",
-			"Enabled": true,
+			"Enabled": false,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/b60ac0a5d2224b0c8ecebc14d4a1b178"
 		}
 	]
