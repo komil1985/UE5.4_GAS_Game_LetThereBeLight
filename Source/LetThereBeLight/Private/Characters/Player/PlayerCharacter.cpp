@@ -484,7 +484,7 @@ void APlayerCharacter::Interact_Implementation()
 	if (bIsHit)
 	{
 		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 5.0f, ECC_WorldStatic, 1.0f);
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, InteractHit.GetActor()->GetName());
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, InteractHit.GetActor()->GetName());
 
 		if (InteractHit.GetActor()->GetClass()->ImplementsInterface(UKDInteractable::StaticClass()))
 		{
