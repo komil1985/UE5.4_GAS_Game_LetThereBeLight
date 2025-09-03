@@ -27,6 +27,8 @@ AKDInfoActorBase::AKDInfoActorBase()
 	Widget->SetupAttachment(Mesh);
 	Widget->SetVisibility(false);
 
+	DisplayedWidget = CreateDefaultSubobject<UUserWidget>(TEXT("DisplayedWidget"));
+	
 }
 
 void AKDInfoActorBase::BeginPlay()
@@ -60,6 +62,7 @@ void AKDInfoActorBase::StopInteract_Implementation()
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, TEXT("Stop_Interface Activated"));
 		Widget->SetVisibility(false);
+		DisplayedWidget->SetVisibility(ESlateVisibility::Hidden);
 		TextToDisplay = 0;
 	}
 }
@@ -67,4 +70,11 @@ void AKDInfoActorBase::StopInteract_Implementation()
 void AKDInfoActorBase::Interact_Implementation()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, TEXT("Interact_Interface Activated"));
+	if (IsValid(DisplayedWidget) && IsValid(Widget))
+	{
+		DisplayedWidget->SetVisibility(ESlateVisibility::Visible);
+		DisplayedWidget->AddToViewport(0);
+		Widget->SetVisibility(false);
+		TextToDisplay = 1;
+	}
 }
