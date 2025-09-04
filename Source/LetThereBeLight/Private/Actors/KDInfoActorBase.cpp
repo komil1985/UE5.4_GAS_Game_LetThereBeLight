@@ -6,7 +6,8 @@
 #include "Components/WidgetComponent.h"
 #include "Components/SphereComponent.h"
 #include "Interactions/PlayerInterface.h"
-#include "Components\TextBlock.h"
+#include "Components/TextBlock.h"
+#include "Blueprint/WidgetTree.h"
 
 
 AKDInfoActorBase::AKDInfoActorBase()
@@ -76,5 +77,5 @@ void AKDInfoActorBase::Interact_Implementation()
 		DisplayedWidget->AddToViewport(0);
 		Widget->SetVisibility(false);
 		TextToDisplay = 1;
-	}
+	}	
 }

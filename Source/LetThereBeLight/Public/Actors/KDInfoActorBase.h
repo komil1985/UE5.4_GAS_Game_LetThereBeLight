@@ -64,6 +64,9 @@ protected:
 	TObjectPtr<UUserWidget> DisplayedWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
+	TArray<TObjectPtr<UUserWidget>> DisplayedWidgetArray;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
 	int32 TextToDisplay = 0;
 
 private:
