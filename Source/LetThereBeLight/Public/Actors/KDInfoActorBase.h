@@ -68,7 +68,4 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
 	int32 TextToDisplay = 0;
-
-private:
-	bool bIsBig;
 };

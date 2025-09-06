@@ -59,7 +59,7 @@ void AKDInfoActorBase::StartInteract_Implementation()
 
 void AKDInfoActorBase::StopInteract_Implementation()
 {
-	if (IsValid(Widget))
+	if (IsValid(Widget) && IsValid(DisplayedWidget))
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, TEXT("Stop_Interface Activated"));
 		Widget->SetVisibility(false);
