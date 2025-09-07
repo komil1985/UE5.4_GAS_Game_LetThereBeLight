@@ -17,8 +17,8 @@ class LETTHEREBELIGHT_API UKDDialogueWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UTextBlock> MyTextBlock;
+	UPROPERTY()//meta = (BindWidget))
+	TObjectPtr<UTextBlock> MyTextBlock; 
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue Widget")
 	void SetDilogueText(const FText& InText);

@@ -8,6 +8,8 @@
 #include "Interactions/PlayerInterface.h"
 #include "Components/TextBlock.h"
 #include "Blueprint/WidgetTree.h"
+#include "DialogueSystem/KDDialogueComponent.h"
+#include "UI/Widget/KDDialogueWidget.h"
 
 
 AKDInfoActorBase::AKDInfoActorBase()
@@ -27,8 +29,6 @@ AKDInfoActorBase::AKDInfoActorBase()
 	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 	Widget->SetupAttachment(Mesh);
 	Widget->SetVisibility(false);
-
-	DisplayedWidget = CreateDefaultSubobject<UUserWidget>(TEXT("DisplayedWidget"));
 	
 }
 
@@ -77,5 +77,5 @@ void AKDInfoActorBase::Interact_Implementation()
 		DisplayedWidget->AddToViewport(0);
 		Widget->SetVisibility(false);
 		TextToDisplay = 1;
-	}	
+	}
 }

@@ -23,6 +23,7 @@
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "Interactions/NPCInterface.h"
 #include "../KDLogChannles.h"
+#include "DialogueSystem\KDDialogueComponent.h"
 //#include "Actors/KDInfoActorBase.h"
 
 
@@ -477,6 +478,7 @@ void APlayerCharacter::Interact_Implementation()
 	End = Start + (ForwardVector * LineTraceDistance);
 
 	FCollisionQueryParams TraceParams(FName(TEXT("InteractTrace")), true, this);
+	TraceParams.AddIgnoredActor(this);
 	FHitResult InteractHit = FHitResult(ForceInit);
 
 	bool bIsHit = GetWorld()->LineTraceSingleByChannel(InteractHit, Start, End, ECC_GameTraceChannel3, TraceParams);

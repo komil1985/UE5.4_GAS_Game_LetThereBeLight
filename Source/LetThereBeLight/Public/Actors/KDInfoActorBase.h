@@ -18,6 +18,7 @@ class UStaticMeshComponent;
 class UWidgetComponent;
 class USphereComponent;
 class USceneComponent;
+class UKDDialogueComponent;
 
 UCLASS()
 class LETTHEREBELIGHT_API AKDInfoActorBase : public AActor, public IKDInteractable
