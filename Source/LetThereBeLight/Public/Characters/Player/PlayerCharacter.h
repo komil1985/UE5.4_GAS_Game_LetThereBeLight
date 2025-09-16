@@ -96,12 +96,11 @@ public:
 	UFUNCTION()
 	virtual void OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<USpringArmComponent> PlayerSpringArm;
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> PlayerCamera;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USpringArmComponent> PlayerSpringArm;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UBoxComponent> CameraBoxComponent;
