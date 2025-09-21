@@ -499,7 +499,7 @@ void APlayerCharacter::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponen
 {
 	if (OtherActor && OtherActor->Implements<UKDInteractable>() && OtherActor != this)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, *OtherActor->GetName());
+		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, *OtherActor->GetName());
 		IKDInteractable::Execute_CanInteract(OtherActor);
 	}
 }
@@ -508,7 +508,7 @@ void APlayerCharacter::OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 {
 	if (OtherActor && OtherActor->Implements<UKDInteractable>() && OtherActor != this)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Overlap Ended"));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Overlap Ended"));
 		IKDInteractable::Execute_StopInteract(OtherActor);
 	}
 }

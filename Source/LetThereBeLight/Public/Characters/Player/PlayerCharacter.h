@@ -98,15 +98,16 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<USpringArmComponent> PlayerSpringArm;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UBoxComponent> InteractionComponent;
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> PlayerCamera;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UBoxComponent> CameraBoxComponent;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UBoxComponent> InteractionComponent;
 
 	virtual void InitAbilityActorInfo() override;
 
