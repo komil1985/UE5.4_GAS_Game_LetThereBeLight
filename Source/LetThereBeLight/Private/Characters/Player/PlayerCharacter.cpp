@@ -31,7 +31,7 @@ APlayerCharacter::APlayerCharacter()
 {
 	PlayerSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("PlayerSpringArm"));
 	PlayerSpringArm->SetupAttachment(GetRootComponent());
-	PlayerSpringArm->TargetArmLength = 800.0f;
+	PlayerSpringArm->TargetArmLength = 2000.0f;
 	PlayerSpringArm->bDoCollisionTest = false;
 	PlayerSpringArm->bUsePawnControlRotation = true;
 	PlayerSpringArm->bInheritPitch = false;
@@ -501,6 +501,7 @@ void APlayerCharacter::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponen
 	{
 		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, *OtherActor->GetName());
 		IKDInteractable::Execute_CanInteract(OtherActor);
+		PlayerSpringArm->TargetArmLength = 800.0f;
 	}
 }
 
@@ -510,5 +511,6 @@ void APlayerCharacter::OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 	{
 		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Overlap Ended"));
 		IKDInteractable::Execute_StopInteract(OtherActor);
+		PlayerSpringArm->TargetArmLength = 2000.0f;
 	}
 }
