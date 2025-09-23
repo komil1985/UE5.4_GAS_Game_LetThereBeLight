@@ -102,6 +102,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UBoxComponent> InteractionComponent;
 
+protected:
+	virtual void Tick(float DeltaTime) override;
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> PlayerCamera;
@@ -113,5 +116,8 @@ private:
 
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastLevelUpParticles() const;
+
+	float DesiredArmLength = 2000.0f;
+	float InterpSpeed = 2.5f;
 
 };

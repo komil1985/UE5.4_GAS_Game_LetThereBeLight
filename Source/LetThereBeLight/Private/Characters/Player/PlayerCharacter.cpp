@@ -501,7 +501,7 @@ void APlayerCharacter::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponen
 	{
 		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, *OtherActor->GetName());
 		IKDInteractable::Execute_CanInteract(OtherActor);
-		PlayerSpringArm->TargetArmLength = 800.0f;
+		DesiredArmLength = 800.0f;
 	}
 }
 
@@ -511,6 +511,16 @@ void APlayerCharacter::OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 	{
 		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Overlap Ended"));
 		IKDInteractable::Execute_StopInteract(OtherActor);
-		PlayerSpringArm->TargetArmLength = 2000.0f;
+		DesiredArmLength = 2000.0f;
+	}
+}
+
+void APlayerCharacter::Tick(float DeltaTime)
+{
+	if (PlayerSpringArm)
+	{
+		float CurrentLength = PlayerSpringArm->TargetArmLength;
+		float NewLength = FMath::FInterpTo(CurrentLength, DesiredArmLength, DeltaTime, InterpSpeed);
+		PlayerSpringArm->TargetArmLength = NewLength;
 	}
 }
