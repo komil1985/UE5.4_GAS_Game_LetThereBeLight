@@ -6,19 +6,23 @@
 #include "NiagaraComponent.h"
 #include "Components/PointLightComponent.h"
 
+
 AKDIntMainDoorBeach::AKDIntMainDoorBeach()
 {
+	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Default Scene Root"));
+	SetRootComponent(SceneComponent);
+
 	Door1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Door Left"));
-	Door1->SetupAttachment(GetRootComponent());
+	Door1->SetupAttachment(SceneComponent);
 
 	Door2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Door Right"));
-	Door2->SetupAttachment(GetRootComponent());
+	Door2->SetupAttachment(SceneComponent);
 
 	Torch1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Torch Left"));
-	Torch1->SetupAttachment(GetRootComponent());
+	Torch1->SetupAttachment(SceneComponent);
 
 	Torch2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Torch Right"));
-	Torch2->SetupAttachment(GetRootComponent());
+	Torch2->SetupAttachment(SceneComponent);
 
 	Torch1Flame = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Torch Left Flame"));
 	Torch1Flame->SetupAttachment(Torch1);

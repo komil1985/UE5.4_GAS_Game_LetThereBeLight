@@ -9,6 +9,7 @@
 class UStaticMeshComponent;
 class UNiagaraComponent;
 class UPointLightComponent;
+class USceneComponent;
 UCLASS()
 class LETTHEREBELIGHT_API AKDIntMainDoorBeach : public AInteractiveActorBase
 {
@@ -19,29 +20,33 @@ public:
 	virtual void CanInteract_Implementation() override;
 	virtual void Interact_Implementation() override;
 
-private:
-	UPROPERTY(EditDefaultsOnly)
+protected:
+
+	UPROPERTY()
+	TObjectPtr<USceneComponent> SceneComponent;
+
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> Door1;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> Door2;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> Torch1;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> Torch2;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UNiagaraComponent> Torch1Flame;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UNiagaraComponent> Torch2Flame;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UPointLightComponent> Torch1Light;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UPointLightComponent> Torch2Light;
 
 };
