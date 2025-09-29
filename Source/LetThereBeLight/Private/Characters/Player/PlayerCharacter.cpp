@@ -479,6 +479,12 @@ void APlayerCharacter::Interact_Implementation()
 
 	FCollisionQueryParams TraceParams(FName(TEXT("InteractTrace")), true, this);
 	TraceParams.AddIgnoredActor(this);
+
+	if (bIsOverlappingBox && InteractionComponent)
+	{
+		TraceParams.AddIgnoredComponent(InteractionComponent);
+	}
+
 	FHitResult InteractHit = FHitResult(ForceInit);
 
 	bool bIsHit = GetWorld()->LineTraceSingleByChannel(InteractHit, Start, End, ECC_GameTraceChannel3, TraceParams);
@@ -501,7 +507,14 @@ void APlayerCharacter::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponen
 	{
 		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, *OtherActor->GetName());
 		IKDInteractable::Execute_CanInteract(OtherActor);
+	}
+	if (OtherActor->Implements<UNPCInterface>())
+	{
 		DesiredArmLength = 800.0f;
+	}
+	if (OtherActor == this)
+	{
+		bIsOverlappingBox = true;
 	}
 }
 
@@ -511,7 +524,14 @@ void APlayerCharacter::OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 	{
 		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Overlap Ended"));
 		IKDInteractable::Execute_StopInteract(OtherActor);
+	}
+	if (OtherActor->Implements<UNPCInterface>())
+	{
 		DesiredArmLength = 2000.0f;
+	}
+	if (OtherActor == this)
+	{
+		bIsOverlappingBox = false;
 	}
 }
 
