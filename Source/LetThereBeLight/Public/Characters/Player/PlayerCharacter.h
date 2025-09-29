@@ -102,8 +102,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UBoxComponent> InteractionComponent;
 
-	bool bIsOverlappingBox = false;
-
 protected:
 	virtual void Tick(float DeltaTime) override;
 
