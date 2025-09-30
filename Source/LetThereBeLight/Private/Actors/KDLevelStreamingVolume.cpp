@@ -14,6 +14,7 @@ AKDLevelStreamingVolume::AKDLevelStreamingVolume()
 
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 	BoxComponent->SetupAttachment(SceneComponent);
+	BoxComponent->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Ignore);
 
 	bGenerateOverlapEventsDuringLevelStreaming = true;
 }

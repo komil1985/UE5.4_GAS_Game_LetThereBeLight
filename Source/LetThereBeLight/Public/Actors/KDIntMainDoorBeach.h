@@ -59,6 +59,6 @@ private:
 
 	FTimerHandle DoorOpenTimerHandle;
 	float DoorOpenElapsed = 0.0f;
-	float DoorOpenDuration = 1.0f;
+	float DoorOpenDuration = 3.5f;
 
 };

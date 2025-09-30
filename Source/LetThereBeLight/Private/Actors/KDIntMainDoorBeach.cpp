@@ -14,9 +14,11 @@ AKDIntMainDoorBeach::AKDIntMainDoorBeach()
 
 	Door1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Door Left"));
 	Door1->SetupAttachment(SceneComponent);
+	Door1->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	Door2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Door Right"));
 	Door2->SetupAttachment(SceneComponent);
+	Door2->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 
 	Torch1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Torch Left"));
 	Torch1->SetupAttachment(SceneComponent);
@@ -90,15 +92,16 @@ void AKDIntMainDoorBeach::Interact_Implementation()
 	}
 }
 
+
 void AKDIntMainDoorBeach::AnimateDoors()
 {
 	const float DeltaTime = 0.01f;
 	DoorOpenElapsed += DeltaTime;
 	float Alpha = FMath::Clamp(DoorOpenElapsed / DoorOpenDuration, 0.f, 1.f);
 
-	// Interpolate rotation from 0 to 90 degrees yaw
-	FRotator Door1Rot = FMath::Lerp(FRotator::ZeroRotator, FRotator(0.f, 90.f, 0.f), Alpha);
-	FRotator Door2Rot = FMath::Lerp(FRotator::ZeroRotator, FRotator(0.f, -90.f, 0.f), Alpha);
+	// Interpolate rotation from initial to desire degrees yaw
+	FRotator Door1Rot = FMath::Lerp(FRotator(0.0f, -90.0f, 0.0f), FRotator(0.f, -180.0f, 0.f), Alpha);
+	FRotator Door2Rot = FMath::Lerp(FRotator(0.0f, 90.0f, 0.0f), FRotator(0.f, 180.0f, 0.f), Alpha);
 
 	if (Door1) Door1->SetRelativeRotation(Door1Rot);
 	if (Door2) Door2->SetRelativeRotation(Door2Rot);
