@@ -5,6 +5,10 @@
 #include "Components/StaticMeshComponent.h"
 #include "NiagaraComponent.h"
 #include "Components/PointLightComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Camera/CameraShakeBase.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/PlayerController.h"
 
 
 AKDIntMainDoorBeach::AKDIntMainDoorBeach()
@@ -41,6 +45,20 @@ AKDIntMainDoorBeach::AKDIntMainDoorBeach()
 	Torch2Light = CreateDefaultSubobject<UPointLightComponent>(TEXT("Torch Right Light"));
 	Torch2Light->SetupAttachment(Torch2);
 	Torch2Light->SetVisibility(false);
+
+	Door1Effect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Door1 Open Effect"));
+	Door1Effect->SetupAttachment(Door1);
+	Door1Effect->SetVisibility(false);
+
+	Door2Effect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Door2 Open Effect"));
+	Door2Effect->SetupAttachment(Door2);
+	Door2Effect->SetVisibility(false);
+
+	Torch1Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Torch1 Capsule Component"));
+	Torch1Capsule->SetupAttachment(Torch1);
+
+	Torch2Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Torch2 Capsule Component"));
+	Torch2Capsule->SetupAttachment(Torch2);
 }
 
 void AKDIntMainDoorBeach::CanInteract_Implementation()
@@ -86,9 +104,19 @@ void AKDIntMainDoorBeach::Interact_Implementation()
 	if (bTorch1Lit && bTorch2Lit && !bDoorsOpened)
 	{
 		bDoorsOpened = true;
+
+		// Trigger camera shake on player controller
+		APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
+		if (PC && DoorOpenCameraShake)
+		{
+			PC->ClientStartCameraShake(DoorOpenCameraShake, 1.0f); // Shake scale at 1.0
+		}
+
 		GetWorld()->GetTimerManager().SetTimer(DoorOpenTimerHandle, this, &AKDIntMainDoorBeach::AnimateDoors, 0.01f, true);
 		DoorOpenElapsed = 0.f;
 		GEngine->AddOnScreenDebugMessage(1, 5.0, FColor::Cyan, TEXT("Both torches lit. Doors opening"));
+		Door1Effect->SetVisibility(false);
+		Door2Effect->SetVisibility(false);
 	}
 }
 
@@ -103,8 +131,16 @@ void AKDIntMainDoorBeach::AnimateDoors()
 	FRotator Door1Rot = FMath::Lerp(FRotator(0.0f, -90.0f, 0.0f), FRotator(0.f, -180.0f, 0.f), Alpha);
 	FRotator Door2Rot = FMath::Lerp(FRotator(0.0f, 90.0f, 0.0f), FRotator(0.f, 180.0f, 0.f), Alpha);
 
-	if (Door1) Door1->SetRelativeRotation(Door1Rot);
-	if (Door2) Door2->SetRelativeRotation(Door2Rot);
+	if (Door1 && Door1Effect)
+	{
+		Door1->SetRelativeRotation(Door1Rot);
+		Door1Effect->SetVisibility(true);
+	}
+	if (Door2 && Door2Effect)
+	{
+		Door2->SetRelativeRotation(Door2Rot);
+		Door2Effect->SetVisibility(true);
+	}
 
 	if (Alpha >= 1.f)
 	{

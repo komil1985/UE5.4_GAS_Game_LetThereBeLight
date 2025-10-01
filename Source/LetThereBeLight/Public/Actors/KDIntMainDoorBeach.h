@@ -10,6 +10,8 @@ class UStaticMeshComponent;
 class UNiagaraComponent;
 class UPointLightComponent;
 class USceneComponent;
+class UCapsuleComponent;
+class UCameraShakeBase;
 UCLASS()
 class LETTHEREBELIGHT_API AKDIntMainDoorBeach : public AInteractiveActorBase
 {
@@ -39,10 +41,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> Torch2;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	TObjectPtr<UNiagaraComponent> Torch1Flame;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite , Category = "Effects")
 	TObjectPtr<UNiagaraComponent> Torch2Flame;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -50,6 +52,21 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UPointLightComponent> Torch2Light;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite , Category = "Effects")
+	TObjectPtr<UNiagaraComponent> Door1Effect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	TObjectPtr<UNiagaraComponent> Door2Effect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UCapsuleComponent> Torch1Capsule;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UCapsuleComponent> Torch2Capsule;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	TSubclassOf<UCameraShakeBase> DoorOpenCameraShake;
 
 private:
 
