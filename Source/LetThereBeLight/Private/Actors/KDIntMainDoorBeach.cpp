@@ -9,6 +9,7 @@
 #include "Camera/CameraShakeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
+#include "Sound/SoundBase.h"
 
 
 AKDIntMainDoorBeach::AKDIntMainDoorBeach()
@@ -81,42 +82,25 @@ void AKDIntMainDoorBeach::CanInteract_Implementation()
 void AKDIntMainDoorBeach::Interact_Implementation()
 {
 	// Light Torch 1 if unlit
-	if (!bTorch1Lit && Torch1Flame && Torch1Light)
+	if (!bTorch1Lit)
 	{
 		bTorch1Lit = true;
 		Torch1Flame->SetVisibility(true);
 		Torch1Light->SetVisibility(true);
+		OnTorchLit.Broadcast(1);
 		GEngine->AddOnScreenDebugMessage(1, 5.0, FColor::Cyan, TEXT("Torch 1 lit"));
 		return;  // Allow one interaction per call
 	}
 
 	// Light Torch 2 if unlit
-	if (!bTorch2Lit && Torch2Flame && Torch2Light)
+	if (!bTorch2Lit)
 	{
 		bTorch2Lit = true;
 		Torch2Flame->SetVisibility(true);
 		Torch2Light->SetVisibility(true);
+		OnTorchLit.Broadcast(2);
 		GEngine->AddOnScreenDebugMessage(1, 5.0, FColor::Cyan, TEXT("Torch 2 lit"));
 		return;
-	}
-
-	// Open doors once both torches are lit and doors not opened
-	if (bTorch1Lit && bTorch2Lit && !bDoorsOpened)
-	{
-		bDoorsOpened = true;
-
-		// Trigger camera shake on player controller
-		APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
-		if (PC && DoorOpenCameraShake)
-		{
-			PC->ClientStartCameraShake(DoorOpenCameraShake, 1.0f); // Shake scale at 1.0
-		}
-
-		GetWorld()->GetTimerManager().SetTimer(DoorOpenTimerHandle, this, &AKDIntMainDoorBeach::AnimateDoors, 0.01f, true);
-		DoorOpenElapsed = 0.f;
-		GEngine->AddOnScreenDebugMessage(1, 5.0, FColor::Cyan, TEXT("Both torches lit. Doors opening"));
-		Door1Effect->SetVisibility(false);
-		Door2Effect->SetVisibility(false);
 	}
 }
 
@@ -146,4 +130,39 @@ void AKDIntMainDoorBeach::AnimateDoors()
 	{
 		GetWorld()->GetTimerManager().ClearTimer(DoorOpenTimerHandle);
 	}
+}
+
+void AKDIntMainDoorBeach::BeginPlay()
+{
+	Super::BeginPlay();
+
+	OnTorchLit.AddLambda
+	(
+		[this](int32 TorchIndex)
+		{
+			// Open doors once both torches are lit and doors not opened
+			if (bTorch1Lit && bTorch2Lit && !bDoorsOpened)
+			{
+				bDoorsOpened = true;
+
+				// Trigger camera shake on player controller
+				APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
+				if (PC && DoorOpenCameraShake)
+				{
+					PC->ClientStartCameraShake(DoorOpenCameraShake, 1.0f); // Shake scale at 1.0
+				}
+
+				// Play door opening sound at actor location
+				if (DoorOpeningSound)
+				{
+					UGameplayStatics::PlaySoundAtLocation(this, DoorOpeningSound, GetActorLocation());
+				}
+
+				// Start door animation timer
+				GetWorld()->GetTimerManager().SetTimer(DoorOpenTimerHandle, this, &AKDIntMainDoorBeach::AnimateDoors, 0.01f, true);
+				DoorOpenElapsed = 0.f;
+				GEngine->AddOnScreenDebugMessage(1, 5.0, FColor::Cyan, TEXT("Both torches lit. Doors opening"));
+			}
+		}
+	);
 }

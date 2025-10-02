@@ -6,12 +6,16 @@
 #include "Actors/InteractiveActorBase.h"
 #include "KDIntMainDoorBeach.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FTorchLitDelegate, int32 /*TorchIndex*/);
+
+
 class UStaticMeshComponent;
 class UNiagaraComponent;
 class UPointLightComponent;
 class USceneComponent;
 class UCapsuleComponent;
 class UCameraShakeBase;
+class USoundBase;
 UCLASS()
 class LETTHEREBELIGHT_API AKDIntMainDoorBeach : public AInteractiveActorBase
 {
@@ -25,6 +29,7 @@ public:
 	UFUNCTION()
 	void AnimateDoors();
 protected:
+	virtual void BeginPlay() override;
 
 	UPROPERTY()
 	TObjectPtr<USceneComponent> SceneComponent;
@@ -68,6 +73,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	TSubclassOf<UCameraShakeBase> DoorOpenCameraShake;
 
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	TObjectPtr<USoundBase> DoorOpeningSound;
+
 private:
 
 	bool bTorch1Lit = false;
@@ -77,5 +85,7 @@ private:
 	FTimerHandle DoorOpenTimerHandle;
 	float DoorOpenElapsed = 0.0f;
 	float DoorOpenDuration = 3.5f;
+
+	FTorchLitDelegate OnTorchLit;
 
 };
