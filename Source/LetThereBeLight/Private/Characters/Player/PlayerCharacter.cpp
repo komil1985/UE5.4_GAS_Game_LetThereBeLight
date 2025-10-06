@@ -23,8 +23,8 @@
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "Interactions/NPCInterface.h"
 #include "../KDLogChannles.h"
-#include "DialogueSystem\KDDialogueComponent.h"
-//#include "Actors/KDInfoActorBase.h"
+#include "DialogueSystem/KDDialogueComponent.h"
+#include "Actors/KDIntTorchesBeach.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -493,6 +493,11 @@ void APlayerCharacter::Interact_Implementation()
 		{
 			IKDInteractable::Execute_Interact(InteractHit.GetActor());
 		}
+	}
+
+	if (InteractHit.GetActor() && InteractHit.GetActor()->IsA(AKDIntTorchesBeach::StaticClass()))
+	{
+		Cast<AKDIntTorchesBeach>(InteractHit.GetActor())->Interact();
 	}
 }
 
