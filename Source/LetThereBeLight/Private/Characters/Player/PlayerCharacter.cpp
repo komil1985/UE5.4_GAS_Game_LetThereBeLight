@@ -495,10 +495,10 @@ void APlayerCharacter::Interact_Implementation()
 		}
 	}
 
-	if (InteractHit.GetActor() && InteractHit.GetActor()->IsA(AKDIntTorchesBeach::StaticClass()))
-	{
-		Cast<AKDIntTorchesBeach>(InteractHit.GetActor())->Interact();
-	}
+	//if (InteractHit.GetActor() && InteractHit.GetActor()->IsA(AKDIntTorchesBeach::StaticClass()))
+	//{
+	//	Cast<AKDIntTorchesBeach>(InteractHit.GetActor())->Execute_Interact(this);
+	//}
 }
 
 void APlayerCharacter::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -508,7 +508,7 @@ void APlayerCharacter::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponen
 		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, *OtherActor->GetName());
 		IKDInteractable::Execute_CanInteract(OtherActor);
 	}
-	if (OtherActor->Implements<UNPCInterface>())
+	if (OtherActor && OtherActor->Implements<UNPCInterface>() && OtherActor != this)
 	{
 		DesiredArmLength = 800.0f;
 	}
@@ -521,7 +521,7 @@ void APlayerCharacter::OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Overlap Ended"));
 		IKDInteractable::Execute_StopInteract(OtherActor);
 	}
-	if (OtherActor->Implements<UNPCInterface>())
+	if (OtherActor && OtherActor->Implements<UNPCInterface>() && OtherActor != this)
 	{
 		DesiredArmLength = 2000.0f;
 	}

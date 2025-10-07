@@ -35,33 +35,6 @@ AKDIntMainDoorBeach::AKDIntMainDoorBeach()
 	Door2Effect->SetupAttachment(Door2);
 	Door2Effect->SetVisibility(false);
 
-	//Torch1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Torch Left"));
-	//Torch1->SetupAttachment(SceneComponent);
-
-	//Torch2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Torch Right"));
-	//Torch2->SetupAttachment(SceneComponent);
-
-	//Torch1Flame = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Torch Left Flame"));
-	//Torch1Flame->SetupAttachment(Torch1);
-	//Torch1Flame->SetVisibility(false);
-
-	//Torch2Flame = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Torch Right Flame"));
-	//Torch2Flame->SetupAttachment(Torch2);
-	//Torch2Flame->SetVisibility(false);
-
-	//Torch1Light = CreateDefaultSubobject<UPointLightComponent>(TEXT("Torch Left Light"));
-	//Torch1Light->SetupAttachment(Torch1);
-	//Torch1Light->SetVisibility(false);
-
-	//Torch2Light = CreateDefaultSubobject<UPointLightComponent>(TEXT("Torch Right Light"));
-	//Torch2Light->SetupAttachment(Torch2);
-	//Torch2Light->SetVisibility(false);
-
-	//Torch1Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Torch1 Capsule Component"));
-	//Torch1Capsule->SetupAttachment(Torch1);
-
-	//Torch2Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Torch2 Capsule Component"));
-	//Torch2Capsule->SetupAttachment(Torch2);
 }
 
 void AKDIntMainDoorBeach::BeginPlay()
@@ -69,14 +42,14 @@ void AKDIntMainDoorBeach::BeginPlay()
 	Super::BeginPlay();
 
 	LitTorchCount = 0;
-	bDoorsOpened = false;
+	bIsDoorsOpened = false;
 
 	for (auto Torch : TorchesToWatch)
 	{
 		if (Torch)
 		{
 			Torch->OnTorchLit.AddDynamic(this, &AKDIntMainDoorBeach::OnTorchLit);
-			if (Torch->bTorch1Lit || Torch->bTorch2Lit)
+			if (Torch->bIsTorchLit)
 			{
 				++LitTorchCount;
 			}
@@ -88,77 +61,7 @@ void AKDIntMainDoorBeach::BeginPlay()
 		OnTorchLit(nullptr);
 	}
 
-	//OnTorchLit.AddLambda
-	//(
-	//	[this](int32 TorchIndex)
-	//	{
-	//		// Open doors once both torches are lit and doors not opened
-	//		if (bTorch1Lit && bTorch2Lit && !bDoorsOpened)
-	//		{
-	//			bDoorsOpened = true;
-
-	//			// Trigger camera shake on player controller
-	//			APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
-	//			if (PC && DoorOpenCameraShake)
-	//			{
-	//				PC->ClientStartCameraShake(DoorOpenCameraShake, 1.0f); // Shake scale at 1.0
-	//			}
-
-	//			// Play door opening sound at actor location
-	//			if (DoorOpeningSound)
-	//			{
-	//				UGameplayStatics::PlaySoundAtLocation(this, DoorOpeningSound, GetActorLocation());
-	//			}
-
-	//			// Start door animation timer
-	//			GetWorld()->GetTimerManager().SetTimer(DoorOpenTimerHandle, this, &AKDIntMainDoorBeach::AnimateDoors, 0.01f, true);
-	//			DoorOpenElapsed = 0.f;
-	//			GEngine->AddOnScreenDebugMessage(1, 5.0, FColor::Cyan, TEXT("Both torches lit. Doors opening"));
-	//		}
-	//	}
-	//);
 }
-
-//void AKDIntMainDoorBeach::CanInteract_Implementation()
-//{
-	//if (!bTorch1Lit || !bTorch2Lit)
-	//{
-	//	GEngine->AddOnScreenDebugMessage(1, 5.0, FColor::Cyan, TEXT("Can_Interact: Torch available to light"));
-	//}
-	//if (!bDoorsOpened)
-	//{
-	//	GEngine->AddOnScreenDebugMessage(1, 5.0, FColor::Cyan, TEXT("Can_Interact: Both torches lit, doors can open"));
-	//}
-	//else
-	//{
-	//	GEngine->AddOnScreenDebugMessage(1, 5.0, FColor::Cyan, TEXT("Cannot interact: Doors already opened"));
-	//}
-//}
-
-//void AKDIntMainDoorBeach::Interact_Implementation()
-//{
-	//// Light Torch 1 if unlit
-	//if (Torch1 && !bTorch1Lit)
-	//{
-	//	bTorch1Lit = true;
-	//	Torch1Flame->SetVisibility(true);
-	//	Torch1Light->SetVisibility(true);
-	//	OnTorchLit.Broadcast(1);
-	//	GEngine->AddOnScreenDebugMessage(1, 5.0, FColor::Cyan, TEXT("Torch 1 lit"));
-	//	return;  // Allow one interaction per call
-	//}
-
-	//// Light Torch 2 if unlit
-	//if (Torch2 && !bTorch2Lit)
-	//{
-	//	bTorch2Lit = true;
-	//	Torch2Flame->SetVisibility(true);
-	//	Torch2Light->SetVisibility(true);
-	//	OnTorchLit.Broadcast(2);
-	//	GEngine->AddOnScreenDebugMessage(1, 5.0, FColor::Cyan, TEXT("Torch 2 lit"));
-	//	return;
-	//}
-//}
 
 void AKDIntMainDoorBeach::AnimateDoors()
 {
@@ -191,9 +94,9 @@ void AKDIntMainDoorBeach::OnTorchLit(AKDIntTorchesBeach* Torch)
 {
 	++LitTorchCount;
 
-	if (!bDoorsOpened && LitTorchCount == TorchesToWatch.Num())
+	if (!bIsDoorsOpened && LitTorchCount == TorchesToWatch.Num())
 	{
-		bDoorsOpened = true;
+		bIsDoorsOpened = true;
 		GetWorld()->GetTimerManager().SetTimer(DoorOpenTimerHandle, this, &AKDIntMainDoorBeach::AnimateDoors, 0.01f, true);
 		DoorOpenElapsed = 0.f;
 	}

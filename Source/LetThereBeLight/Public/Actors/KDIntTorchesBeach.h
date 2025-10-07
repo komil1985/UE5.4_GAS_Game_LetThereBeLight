@@ -6,7 +6,6 @@
 #include "Actors/InteractiveActorBase.h"
 #include "KDIntTorchesBeach.generated.h"
 
-//DECLARE_MULTICAST_DELEGATE_OneParam(FTorchLitDelegate, int32 /*TorchIndex*/);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTorchLitSignature, AKDIntTorchesBeach*, Torch);
 
 /**
@@ -32,38 +31,22 @@ public:
 	TObjectPtr<USceneComponent> SceneComponent;
 
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> Torch1;
+	TObjectPtr<UStaticMeshComponent> Torch;
 
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> Torch2;
+	TObjectPtr<UCapsuleComponent> TorchCapsule;
 
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UCapsuleComponent> Torch1Capsule;
+	TObjectPtr<UNiagaraComponent> TorchFlame;
 
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UCapsuleComponent> Torch2Capsule;
-
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UNiagaraComponent> Torch1Flame;
-	
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UNiagaraComponent> Torch2Flame;
-
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UPointLightComponent> Torch1Light;
-
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UPointLightComponent> Torch2Light;
+	TObjectPtr<UPointLightComponent> TorchLight;
 
 	UPROPERTY(BlueprintAssignable)
 	FTorchLitSignature OnTorchLit;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bTorch1Lit = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bTorch2Lit = false;
-
-	//FTorchLitDelegate OnTorchLit;
+	bool bIsTorchLit = false;
 
 protected:
 	virtual void BeginPlay() override;
