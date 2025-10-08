@@ -54,7 +54,7 @@ protected:
 
 private:
 
-	bool bIsDoorsOpened = false;
+	bool bDoorsOpened = false;
 	int32 LitTorchCount = 0;
 	FTimerHandle DoorOpenTimerHandle;
 

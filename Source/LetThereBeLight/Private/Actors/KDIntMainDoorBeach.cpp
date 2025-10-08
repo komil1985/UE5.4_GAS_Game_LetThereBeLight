@@ -42,7 +42,7 @@ void AKDIntMainDoorBeach::BeginPlay()
 	Super::BeginPlay();
 
 	LitTorchCount = 0;
-	bIsDoorsOpened = false;
+	bDoorsOpened = false;
 
 	for (auto Torch : TorchesToWatch)
 	{
@@ -77,11 +77,19 @@ void AKDIntMainDoorBeach::AnimateDoors()
 	{
 		Door1->SetRelativeRotation(Door1Rot);
 		Door1Effect->SetVisibility(true);
+		if (Door1Rot == FRotator(0.0f, -180.0f, 0.0f))
+		{
+			Door1Effect->SetVisibility(false);
+		}
 	}
 	if (Door2 && Door2Effect)
 	{
 		Door2->SetRelativeRotation(Door2Rot);
 		Door2Effect->SetVisibility(true);
+		if (Door2Rot == FRotator(0.0f, 180.0f, 0.0f))
+		{
+			Door2Effect->SetVisibility(false);
+		}
 	}
 
 	if (Alpha >= 1.f)
@@ -94,9 +102,23 @@ void AKDIntMainDoorBeach::OnTorchLit(AKDIntTorchesBeach* Torch)
 {
 	++LitTorchCount;
 
-	if (!bIsDoorsOpened && LitTorchCount == TorchesToWatch.Num())
+	if (!bDoorsOpened && LitTorchCount == TorchesToWatch.Num())
 	{
-		bIsDoorsOpened = true;
+		bDoorsOpened = true;
+
+		// Trigger camera shake on player controller
+		APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
+		if (PC && DoorOpenCameraShake)
+		{
+			PC->ClientStartCameraShake(DoorOpenCameraShake, 1.0f); // Shake scale at 1.0
+		}
+
+		// Play door opening sound at actor location
+		if (DoorOpeningSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, DoorOpeningSound, GetActorLocation());
+		}
+
 		GetWorld()->GetTimerManager().SetTimer(DoorOpenTimerHandle, this, &AKDIntMainDoorBeach::AnimateDoors, 0.01f, true);
 		DoorOpenElapsed = 0.f;
 	}
