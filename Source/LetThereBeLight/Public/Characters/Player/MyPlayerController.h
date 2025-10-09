@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include <GameplayTagContainer.h>
-#include "Interactions/NPCInterface.h"
 #include "MyPlayerController.generated.h"
 
 enum class ETargetingStatus : uint8

@@ -7,15 +7,15 @@
 #include "AbilitySystem/KDAbilitySystemComponent.h"
 #include "AbilitySystem/KDAbilitySystemLibrary.h"
 #include "AbilitySystem/KDAttributeSet.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "UI/HUD/KDHUD.h"
-#include "Components/CapsuleComponent.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "NiagaraComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Misc/KDGameplayTags.h"
 #include "GameMode/MyGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
@@ -23,8 +23,6 @@
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "Interactions/NPCInterface.h"
 #include "../KDLogChannles.h"
-#include "DialogueSystem/KDDialogueComponent.h"
-#include "Actors/KDIntTorchesBeach.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -495,10 +493,6 @@ void APlayerCharacter::Interact_Implementation()
 		}
 	}
 
-	//if (InteractHit.GetActor() && InteractHit.GetActor()->IsA(AKDIntTorchesBeach::StaticClass()))
-	//{
-	//	Cast<AKDIntTorchesBeach>(InteractHit.GetActor())->Execute_Interact(this);
-	//}
 }
 
 void APlayerCharacter::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

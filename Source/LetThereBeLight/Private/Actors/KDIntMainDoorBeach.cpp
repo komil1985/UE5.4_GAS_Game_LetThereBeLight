@@ -4,11 +4,9 @@
 #include "Actors/KDIntMainDoorBeach.h"
 #include "Components/StaticMeshComponent.h"
 #include "NiagaraComponent.h"
-#include "Components/PointLightComponent.h"
-#include "Components/CapsuleComponent.h"
-#include "Camera/CameraShakeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
+#include "Camera/CameraShakeBase.h"
 #include "Sound/SoundBase.h"
 
 

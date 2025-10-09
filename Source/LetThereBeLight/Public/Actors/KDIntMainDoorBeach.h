@@ -7,8 +7,6 @@
 #include "KDIntTorchesBeach.h"
 #include "KDIntMainDoorBeach.generated.h"
 
-//DECLARE_MULTICAST_DELEGATE_OneParam(FTorchLitDelegate, int32 /*TorchIndex*/);
-
 
 class UStaticMeshComponent;
 class UNiagaraComponent;
@@ -62,7 +60,7 @@ private:
 	float DoorOpenElapsed = 0.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Door")
-	float DoorOpenDuration = 3.5f;
+	float DoorOpenDuration = 6.5f;
 
 	UFUNCTION()
 	void AnimateDoors();
