@@ -17,6 +17,8 @@ class LETTHEREBELIGHT_API ANPCCharacter : public ACharacter, public INPCInterfac
 public:
 	ANPCCharacter();
 
+	virtual void StartDialogue_Implementation() override;
+
 	virtual void CanInteract_Implementation() override;
 	virtual void StopInteract_Implementation() override;
 

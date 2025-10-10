@@ -12,6 +12,10 @@ ANPCCharacter::ANPCCharacter()
 	Widget->SetVisibility(false);
 }
 
+void ANPCCharacter::StartDialogue_Implementation()
+{
+}
+
 void ANPCCharacter::CanInteract_Implementation()
 {
 	if (IsValid(Widget))

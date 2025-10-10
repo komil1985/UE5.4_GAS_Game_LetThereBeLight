@@ -24,11 +24,5 @@ class LETTHEREBELIGHT_API INPCInterface
 public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interaction")
-	void Interact(AActor* Caller);
-
-	UFUNCTION(BlueprintNativeEvent, Category = "Interaction")
-	void ShowPrompt(AActor* Caller);
-
-	UFUNCTION(BlueprintNativeEvent, Category = "Interaction")
-	void HidePrompt();
+	void StartDialogue(AActor* InteractionActor);
 };
