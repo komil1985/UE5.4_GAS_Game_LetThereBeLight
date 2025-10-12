@@ -491,6 +491,10 @@ void APlayerCharacter::Interact_Implementation()
 		{
 			IKDInteractable::Execute_Interact(InteractHit.GetActor());
 		}
+		if (InteractHit.GetActor()->GetClass()->ImplementsInterface(UNPCInterface::StaticClass()))
+		{
+			INPCInterface::Execute_StartDialogue(InteractHit.GetActor(), this);
+		}
 	}
 
 }

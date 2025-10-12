@@ -9,6 +9,7 @@
 #include "NPCCharacter.generated.h"
 
 class UWidgetComponent;
+
 UCLASS()
 class LETTHEREBELIGHT_API ANPCCharacter : public ACharacter, public INPCInterface, public IKDInteractable
 {
@@ -17,7 +18,7 @@ class LETTHEREBELIGHT_API ANPCCharacter : public ACharacter, public INPCInterfac
 public:
 	ANPCCharacter();
 
-	virtual void StartDialogue_Implementation() override;
+	virtual void StartDialogue_Implementation(AActor* InteractingActor) override;
 
 	virtual void CanInteract_Implementation() override;
 	virtual void StopInteract_Implementation() override;

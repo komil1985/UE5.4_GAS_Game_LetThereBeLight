@@ -1,9 +1,7 @@
 // Copyright ASKD Games
 
-
 #include "Characters/NPC/NPCCharacter.h"
 #include "Components/WidgetComponent.h"
-
 
 ANPCCharacter::ANPCCharacter()
 {
@@ -12,7 +10,7 @@ ANPCCharacter::ANPCCharacter()
 	Widget->SetVisibility(false);
 }
 
-void ANPCCharacter::StartDialogue_Implementation()
+void ANPCCharacter::StartDialogue_Implementation(AActor* InteractingActor)
 {
 }
 
