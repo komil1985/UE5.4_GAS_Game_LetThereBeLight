@@ -1,122 +1,117 @@
 {
-	"FileVersion": 3,
-	"EngineAssociation": "5.4",
-	"Category": "",
-	"Description": "",
-	"Modules": [
-		{
-			"Name": "LetThereBeLight",
-			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine",
-				"GameplayAbilities",
-				"UMG",
-				"CoreUObject",
-				"EnhancedInput",
-				"AIModule",
-				"Niagara",
-				"ModelViewViewModel"
-			]
-		}
-	],
-	"Plugins": [
-		{
-			"Name": "ModelingToolsEditorMode",
-			"Enabled": true,
-			"TargetAllowList": [
-				"Editor"
-			]
-		},
-		{
-			"Name": "VisualStudioTools",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/362651520df94e4fa65492dbcba44ae2",
-			"SupportedTargetPlatforms": [
-				"Win64"
-			]
-		},
-		{
-			"Name": "GameplayAbilities",
-			"Enabled": true
-		},
-		{
-			"Name": "MotionWarping",
-			"Enabled": true
-		},
-		{
-			"Name": "CascadeToNiagaraConverter",
-			"Enabled": true
-		},
-		{
-			"Name": "ModelViewViewModel",
-			"Enabled": true
-		},
-		{
-			"Name": "SkeletalMeshModelingTools",
-			"Enabled": true
-		},
-		{
-			"Name": "GizmoFramework",
-			"Enabled": true
-		},
-		{
-			"Name": "CodeView",
-			"Enabled": true
-		},
-		{
-			"Name": "CodeLiteSourceCodeAccess",
-			"Enabled": false
-		},
-		{
-			"Name": "XCodeSourceCodeAccess",
-			"Enabled": false,
-			"SupportedTargetPlatforms": [
-				"Mac"
-			]
-		},
-		{
-			"Name": "KDevelopSourceCodeAccess",
-			"Enabled": false
-		},
-		{
-			"Name": "CLionSourceCodeAccess",
-			"Enabled": false
-		},
-		{
-			"Name": "N10XSourceCodeAccess",
-			"Enabled": false
-		},
-		{
-			"Name": "SlateModelViewViewModel",
-			"Enabled": true
-		},
-		{
-			"Name": "Water",
-			"Enabled": true
-		},
-		{
-			"Name": "Buoyancy",
-			"Enabled": true
-		},
-		{
-			"Name": "QuestEditor",
-			"Enabled": false,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/b60ac0a5d2224b0c8ecebc14d4a1b178"
-		},
-		{
-			"Name": "MounteaDialogueSystem",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/ea38ae1f87b24807a66fdf4fa65ef521"
-		},
-		{
-			"Name": "HDRIBackdrop",
-			"Enabled": true
-		},
-		{
-			"Name": "InteractiveWorld",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/6fef18d187bf4942abad64f2d98a9a73"
-		}
-	]
+  "FileVersion": 3,
+  "EngineAssociation": "5.4",
+  "Category": "",
+  "Description": "",
+  "Modules": [
+    {
+      "Name": "LetThereBeLight",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "ModelingToolsEditorMode",
+      "Enabled": true
+    },
+    {
+      "Name": "GameplayAbilities",
+      "Enabled": true
+    },
+    {
+      "Name": "MotionWarping",
+      "Enabled": true
+    },
+    {
+      "Name": "CascadeToNiagaraConverter",
+      "Enabled": true
+    },
+    {
+      "Name": "ModelViewViewModel",
+      "Enabled": true
+    },
+    {
+      "Name": "SkeletalMeshModelingTools",
+      "Enabled": true
+    },
+    {
+      "Name": "GizmoFramework",
+      "Enabled": true
+    },
+    {
+      "Name": "CodeView",
+      "Enabled": true
+    },
+    {
+      "Name": "CodeLiteSourceCodeAccess",
+      "Enabled": false
+    },
+    {
+      "Name": "XCodeSourceCodeAccess",
+      "Enabled": false,
+      "SupportedTargetPlatforms": [
+        "Mac"
+      ]
+    },
+    {
+      "Name": "KDevelopSourceCodeAccess",
+      "Enabled": false
+    },
+    {
+      "Name": "CLionSourceCodeAccess",
+      "Enabled": false
+    },
+    {
+      "Name": "N10XSourceCodeAccess",
+      "Enabled": false
+    },
+    {
+      "Name": "SlateModelViewViewModel",
+      "Enabled": true
+    },
+    {
+      "Name": "Water",
+      "Enabled": true
+    },
+    {
+      "Name": "Buoyancy",
+      "Enabled": true
+    },
+    {
+      "Name": "QuestEditor",
+      "Enabled": false
+    },
+    {
+      "Name": "MounteaDialogueSystem",
+      "Enabled": true
+    },
+    {
+      "Name": "HDRIBackdrop",
+      "Enabled": true
+    },
+    {
+      "Name": "InteractiveWorld",
+      "Enabled": true
+    },
+    {
+      "Name": "n00dFootsteps",
+      "Enabled": true
+    },
+    {
+      "Name": "ShaderOptimizationTool",
+      "Enabled": true
+    },
+    {
+      "Name": "VisualStudioTools",
+      "Enabled": true,
+      "SupportedTargetPlatforms": [
+        "Win64"
+      ]
+    }
+  ],
+  "TargetPlatforms": [],
+  "AdditionalRootDirectories": [],
+  "AdditionalPluginDirectories": [],
+  "EpicSampleNameHash": ""
 }
