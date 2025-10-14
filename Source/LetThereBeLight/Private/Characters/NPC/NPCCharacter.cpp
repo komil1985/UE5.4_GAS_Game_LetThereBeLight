@@ -3,6 +3,8 @@
 #include "Characters/NPC/NPCCharacter.h"
 #include "Components/WidgetComponent.h"
 
+
+
 ANPCCharacter::ANPCCharacter()
 {
 	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
