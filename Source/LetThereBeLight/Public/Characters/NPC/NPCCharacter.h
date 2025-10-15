@@ -9,6 +9,7 @@
 #include "NPCCharacter.generated.h"
 
 class UWidgetComponent;
+class UMounteaDialogueManager;
 
 UCLASS()
 class LETTHEREBELIGHT_API ANPCCharacter : public ACharacter, public INPCInterface, public IKDInteractable
@@ -31,5 +32,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TObjectPtr <UWidgetComponent> Widget;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	TObjectPtr<UMounteaDialogueManager> DialogueManager;
 
 };

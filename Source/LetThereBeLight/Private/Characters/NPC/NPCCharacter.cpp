@@ -2,7 +2,7 @@
 
 #include "Characters/NPC/NPCCharacter.h"
 #include "Components/WidgetComponent.h"
-
+#include "Components/MounteaDialogueManager.h"
 
 
 ANPCCharacter::ANPCCharacter()
@@ -12,8 +12,23 @@ ANPCCharacter::ANPCCharacter()
 	Widget->SetVisibility(false);
 }
 
+void ANPCCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	DialogueManager = NewObject<UMounteaDialogueManager>(this);
+}
+
 void ANPCCharacter::StartDialogue_Implementation(AActor* InteractingActor)
 {
+	if (DialogueManager)
+	{
+		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Dialogue Started");
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Dialogue Manager not inistialized");
+	}
 }
 
 void ANPCCharacter::CanInteract_Implementation()
@@ -41,9 +56,4 @@ void ANPCCharacter::Interact_Implementation()
 	{
 		Widget->SetVisibility(false);
 	}
-}
-
-void ANPCCharacter::BeginPlay()
-{
-	Super::BeginPlay();
 }
