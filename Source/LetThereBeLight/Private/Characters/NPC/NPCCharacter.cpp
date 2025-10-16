@@ -27,11 +27,7 @@ void ANPCCharacter::StartDialogue_Implementation(AActor* InteractingActor)
 	DialogueManager = NewObject<UMounteaDialogueManager>(this);
 	if (DialogueManager)
 	{
-		if (DialogueGraph)
-		{
-			//DialogueGraph->StartNode;
-			GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Dialogue Started");
-		}
+		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Dialogue Started");
 	}
 	else
 	{
