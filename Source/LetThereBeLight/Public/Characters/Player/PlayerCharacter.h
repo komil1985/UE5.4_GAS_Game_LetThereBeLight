@@ -88,7 +88,7 @@ public:
 	void FireLineTrace();
 
 	UFUNCTION()
-	void Interact_Implementation();													//  <-- Interactable Interaface
+	void Interact_Implementation();																  //  <-- Interactable Interaface
 
 	UFUNCTION()
 	virtual void OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

@@ -3,6 +3,8 @@
 #include "Characters/NPC/NPCCharacter.h"
 #include "Components/WidgetComponent.h"
 #include "Components/MounteaDialogueManager.h"
+#include "Graph/MounteaDialogueGraph.h"
+#include "Components/MounteaDialogueParticipant.h"
 
 
 ANPCCharacter::ANPCCharacter()
@@ -10,24 +12,30 @@ ANPCCharacter::ANPCCharacter()
 	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 	Widget->SetupAttachment(GetRootComponent());
 	Widget->SetVisibility(false);
+	
+	DialogueGraph = CreateDefaultSubobject<UMounteaDialogueGraph>("Dialogue Graph");
+	DialogueParticipant = CreateDefaultSubobject<UMounteaDialogueParticipant>("Dialogue Participant");
 }
 
 void ANPCCharacter::BeginPlay()
 {
-	Super::BeginPlay();
-
-	DialogueManager = NewObject<UMounteaDialogueManager>(this);
+	Super::BeginPlay();	
 }
 
 void ANPCCharacter::StartDialogue_Implementation(AActor* InteractingActor)
 {
+	DialogueManager = NewObject<UMounteaDialogueManager>(this);
 	if (DialogueManager)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Dialogue Started");
+		if (DialogueGraph)
+		{
+			//DialogueGraph->StartNode;
+			GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Dialogue Started");
+		}
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Dialogue Manager not inistialized");
+		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Dialogue Manager not initialized");
 	}
 }
 

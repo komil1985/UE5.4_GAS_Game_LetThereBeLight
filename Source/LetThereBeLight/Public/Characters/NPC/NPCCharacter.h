@@ -10,6 +10,8 @@
 
 class UWidgetComponent;
 class UMounteaDialogueManager;
+class UMounteaDialogueGraph;
+class UMounteaDialogueParticipant;
 
 UCLASS()
 class LETTHEREBELIGHT_API ANPCCharacter : public ACharacter, public INPCInterface, public IKDInteractable
@@ -35,5 +37,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	TObjectPtr<UMounteaDialogueManager> DialogueManager;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	TObjectPtr<UMounteaDialogueGraph> DialogueGraph;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue | Participant")
+	TObjectPtr<UMounteaDialogueParticipant> DialogueParticipant;
+
 
 };
