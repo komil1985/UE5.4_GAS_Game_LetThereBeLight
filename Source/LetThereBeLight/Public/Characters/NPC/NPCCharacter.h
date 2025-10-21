@@ -9,10 +9,9 @@
 #include "NPCCharacter.generated.h"
 
 class UWidgetComponent;
-class UMounteaDialogueManager;
 class UMounteaDialogueGraph;
 class UMounteaDialogueParticipant;
-
+class UDataTable;
 UCLASS()
 class LETTHEREBELIGHT_API ANPCCharacter : public ACharacter, public INPCInterface, public IKDInteractable
 {
@@ -21,28 +20,31 @@ class LETTHEREBELIGHT_API ANPCCharacter : public ACharacter, public INPCInterfac
 public:
 	ANPCCharacter();
 
-	virtual void StartDialogue_Implementation(AActor* InteractingActor) override;
-
+	// INPCInterface
 	virtual void CanInteract_Implementation() override;
 	virtual void StopInteract_Implementation() override;
+	virtual void StartDialogue_Implementation(AActor* InstigatorActor) override;
 
-	UFUNCTION()
+	// IKDInteractable
 	virtual void Interact_Implementation() override;
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TObjectPtr <UWidgetComponent> Widget;
+	TObjectPtr <UWidgetComponent> PromptWidget;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
-	TObjectPtr<UMounteaDialogueManager> DialogueManager;
+	TObjectPtr <UUserWidget> DialogueWidget;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	TObjectPtr<UDataTable> DialogueDataTable;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	TObjectPtr<UMounteaDialogueGraph> DialogueGraph;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue | Participant")
 	TObjectPtr<UMounteaDialogueParticipant> DialogueParticipant;
-
 
 };

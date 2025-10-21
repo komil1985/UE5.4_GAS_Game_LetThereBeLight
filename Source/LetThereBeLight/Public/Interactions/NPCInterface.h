@@ -23,6 +23,6 @@ class LETTHEREBELIGHT_API INPCInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interaction")
-	void StartDialogue(AActor* InteractionActor);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Dialogue")
+	void StartDialogue(AActor* InstigatorActor);
 };

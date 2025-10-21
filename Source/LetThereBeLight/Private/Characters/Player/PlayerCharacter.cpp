@@ -23,6 +23,8 @@
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "Interactions/NPCInterface.h"
 #include "../KDLogChannles.h"
+#include <Characters/NPC/NPCCharacter.h>
+#include "Interfaces/Core/MounteaDialogueManagerInterface.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -482,11 +484,13 @@ void APlayerCharacter::Interact_Implementation()
 
 	bool bIsHit = GetWorld()->LineTraceSingleByChannel(InteractHit, Start, End, ECC_GameTraceChannel3, TraceParams);
 
+#if !UE_BUILD_SHIPPING
+		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 5.0f, ECC_WorldStatic, 1.0f);
+#endif
+
 	if (bIsHit)
 	{
-		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 5.0f, ECC_WorldStatic, 1.0f);
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, InteractHit.GetActor()->GetName());
-
 		if (InteractHit.GetActor()->GetClass()->ImplementsInterface(UKDInteractable::StaticClass()))
 		{
 			IKDInteractable::Execute_Interact(InteractHit.GetActor());
