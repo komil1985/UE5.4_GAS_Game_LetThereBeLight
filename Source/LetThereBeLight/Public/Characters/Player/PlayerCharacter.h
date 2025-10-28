@@ -87,7 +87,7 @@ public:
 	UFUNCTION()
 	void FireLineTrace();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void Interact_Implementation();																  //  <-- Interactable Interaface
 
 	UFUNCTION()

@@ -23,8 +23,6 @@
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "Interactions/NPCInterface.h"
 #include "../KDLogChannles.h"
-#include <Characters/NPC/NPCCharacter.h>
-#include "Interfaces/Core/MounteaDialogueManagerInterface.h"
 
 
 APlayerCharacter::APlayerCharacter()
@@ -77,11 +75,9 @@ APlayerCharacter::APlayerCharacter()
 	GetMesh()->SetSimulatePhysics(false);
 
 	LineTraceType = ELineTraceType::CAMERA_SINGLE;
-	LineTraceDistance = 100.0f;
+	LineTraceDistance = 200.0f;
 
 	CharacterClass = ECharacterClass::Elementalist;
-
-
 
 }
 

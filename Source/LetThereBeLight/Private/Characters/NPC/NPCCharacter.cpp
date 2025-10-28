@@ -2,19 +2,19 @@
 
 #include "Characters/NPC/NPCCharacter.h"
 #include "Components/WidgetComponent.h"
-#include "Graph/MounteaDialogueGraph.h"
 #include "Components/MounteaDialogueParticipant.h"
+#include "Engine/DataTable.h"
+#include <Kismet/GameplayStatics.h>
 
 ANPCCharacter::ANPCCharacter()
 {
-	PromptWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PromptWidget"));
-	PromptWidget->SetupAttachment(GetRootComponent());
+	PromptWidget = CreateDefaultSubobject<UWidgetComponent>("PromptWidget");
+	PromptWidget->SetupAttachment(RootComponent);
 	PromptWidget->SetVisibility(true);
-	
-	DialogueGraph = CreateDefaultSubobject<UMounteaDialogueGraph>("Dialogue Graph");
+
+	DialogueWidget = CreateDefaultSubobject<UUserWidget>("DialogueWidget");
 	DialogueParticipant = CreateDefaultSubobject<UMounteaDialogueParticipant>("Dialogue Participant");
 	DialogueDataTable = CreateDefaultSubobject<UDataTable>("Dialogue DataTable");
-	DialogueWidget = CreateDefaultSubobject<UUserWidget>(TEXT("Dialogue Widget"));
 	
 }
 
@@ -55,12 +55,15 @@ void ANPCCharacter::Interact_Implementation()
 
 void ANPCCharacter::StartDialogue_Implementation(AActor* InstigatorActor)
 {
-	if (!DialogueGraph) return;
-
 	if (IsValid(DialogueParticipant))
 	{
-		DialogueWidget->AddToViewport();
-		DialogueWidget->SetVisibility(ESlateVisibility::Visible);
+		UObject* WorldContextObject = GetWorld();
+		if (IsValid(InstigatorActor))
+		{
+			InstigatorActor = UGameplayStatics::GetActorOfClass(WorldContextObject, DialogueActor);
+			InstigatorActor->GetComponentByClass(DialogueParticipant->GetClass());
+			return;
+		}
 		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Dialogue Started");
 	}
 	else

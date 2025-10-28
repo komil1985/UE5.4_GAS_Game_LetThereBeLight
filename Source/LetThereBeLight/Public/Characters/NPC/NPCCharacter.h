@@ -9,6 +9,7 @@
 #include "NPCCharacter.generated.h"
 
 class UWidgetComponent;
+class UUserWidget;
 class UMounteaDialogueGraph;
 class UMounteaDialogueParticipant;
 class UDataTable;
@@ -35,16 +36,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TObjectPtr <UWidgetComponent> PromptWidget;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
-	TObjectPtr <UUserWidget> DialogueWidget;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	UPROPERTY(EditAnywhere, Category = "Dialogue")
 	TObjectPtr<UDataTable> DialogueDataTable;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
-	TObjectPtr<UMounteaDialogueGraph> DialogueGraph;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue | Participant")
 	TObjectPtr<UMounteaDialogueParticipant> DialogueParticipant;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	TObjectPtr<UUserWidget> DialogueWidget;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	TSubclassOf<AActor> DialogueActor;
 };
