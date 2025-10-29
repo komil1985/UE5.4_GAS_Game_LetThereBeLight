@@ -45,6 +45,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	TObjectPtr<UUserWidget> DialogueWidget;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Dialogue")
 	TSubclassOf<AActor> DialogueActor;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	TSubclassOf<UMounteaDialogueParticipant> Participant;
 };

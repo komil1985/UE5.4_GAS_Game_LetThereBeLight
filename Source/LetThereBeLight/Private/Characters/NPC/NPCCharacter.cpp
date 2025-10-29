@@ -61,7 +61,7 @@ void ANPCCharacter::StartDialogue_Implementation(AActor* InstigatorActor)
 		if (IsValid(InstigatorActor))
 		{
 			InstigatorActor = UGameplayStatics::GetActorOfClass(WorldContextObject, DialogueActor);
-			InstigatorActor->GetComponentByClass(DialogueParticipant->GetClass());
+			InstigatorActor->GetComponentByClass(Participant);
 			return;
 		}
 		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Dialogue Started");
