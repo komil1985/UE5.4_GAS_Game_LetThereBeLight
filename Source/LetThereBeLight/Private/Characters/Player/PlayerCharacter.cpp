@@ -23,6 +23,7 @@
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "Interactions/NPCInterface.h"
 #include "../KDLogChannles.h"
+#include <Characters/NPC/NPCCharacter.h>
 
 
 APlayerCharacter::APlayerCharacter()
@@ -493,7 +494,19 @@ void APlayerCharacter::Interact_Implementation()
 		}
 		if (InteractHit.GetActor()->GetClass()->ImplementsInterface(UNPCInterface::StaticClass()))
 		{
-			INPCInterface::Execute_StartDialogue(InteractHit.GetActor(), this);
+			//INPCInterface::Execute_StartDialogue(InteractHit.GetActor(), this);
+
+			ANPCCharacter* NPC_Character = Cast<ANPCCharacter>(InteractHit.GetActor());
+			if (UObject* WorldContextObject = GetWorld())
+			{
+				if (IsValid(InteractHit.GetActor()))
+				{
+					AActor* GetInteractActor = InteractHit.GetActor();
+					GetInteractActor = UGameplayStatics::GetActorOfClass(WorldContextObject, NPC_Character->DialogueActor);
+					//GetInteractActor->GetComponentByClass(NPC_Character->DialogueParticipant);
+					return;
+				}
+			}
 		}
 	}
 

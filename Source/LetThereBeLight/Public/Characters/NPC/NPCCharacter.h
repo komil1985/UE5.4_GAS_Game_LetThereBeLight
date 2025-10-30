@@ -29,25 +29,25 @@ public:
 	// IKDInteractable
 	virtual void Interact_Implementation() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
+	TSubclassOf<ACharacter> DialogueActor;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
+	TSubclassOf<UMounteaDialogueParticipant> Participant;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue | Participant")
+	TObjectPtr<UMounteaDialogueParticipant> DialogueParticipant;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr <UWidgetComponent> PromptWidget;
 
 	UPROPERTY(EditAnywhere, Category = "Dialogue")
 	TObjectPtr<UDataTable> DialogueDataTable;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Dialogue | Participant")
-	TObjectPtr<UMounteaDialogueParticipant> DialogueParticipant;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
 	TObjectPtr<UUserWidget> DialogueWidget;
-
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Dialogue")
-	TSubclassOf<AActor> DialogueActor;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
-	TSubclassOf<UMounteaDialogueParticipant> Participant;
 };
