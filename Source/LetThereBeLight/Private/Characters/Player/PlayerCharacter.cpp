@@ -503,7 +503,7 @@ void APlayerCharacter::Interact_Implementation()
 				{
 					AActor* GetInteractActor = InteractHit.GetActor();
 					GetInteractActor = UGameplayStatics::GetActorOfClass(WorldContextObject, NPC_Character->DialogueActor);
-					//GetInteractActor->GetComponentByClass(NPC_Character->DialogueParticipant);
+					//GetInteractActor->GetComponentByClass(NPC_Character->Participant);
 					return;
 				}
 			}

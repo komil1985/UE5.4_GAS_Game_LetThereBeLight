@@ -29,14 +29,14 @@ public:
 	// IKDInteractable
 	virtual void Interact_Implementation() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue | Participant")
+	TObjectPtr<UMounteaDialogueParticipant> DialogueParticipant;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
 	TSubclassOf<ACharacter> DialogueActor;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
-	TSubclassOf<UMounteaDialogueParticipant> Participant;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue | Participant")
-	TObjectPtr<UMounteaDialogueParticipant> DialogueParticipant;
+	UFUNCTION(BlueprintCallable, Category = "Dialogue")
+	TSubclassOf<AActor> GetDialogueActor() { return DialogueActor; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -50,4 +50,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
 	TObjectPtr<UUserWidget> DialogueWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
+	TSubclassOf<UMounteaDialogueParticipant> Participant;
+
 };
