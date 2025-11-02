@@ -105,13 +105,13 @@ public:
 protected:
 	virtual void Tick(float DeltaTime) override;
 
-private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UCameraComponent> PlayerCamera;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UBoxComponent> CameraBoxComponent;
 
+private:
 	virtual void InitAbilityActorInfo() override;
 
 	UFUNCTION(NetMulticast, Reliable)

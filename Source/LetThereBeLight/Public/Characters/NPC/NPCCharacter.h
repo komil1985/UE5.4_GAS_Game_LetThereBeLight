@@ -9,10 +9,8 @@
 #include "NPCCharacter.generated.h"
 
 class UWidgetComponent;
-class UUserWidget;
-class UMounteaDialogueGraph;
 class UMounteaDialogueParticipant;
-class UDataTable;
+class UBoxComponent;
 UCLASS()
 class LETTHEREBELIGHT_API ANPCCharacter : public ACharacter, public INPCInterface, public IKDInteractable
 {
@@ -33,7 +31,7 @@ public:
 	TObjectPtr<UMounteaDialogueParticipant> DialogueParticipant;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
-	TSubclassOf<ACharacter> DialogueActor;
+	TSubclassOf<AActor> DialogueActor;
 
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
 	TSubclassOf<AActor> GetDialogueActor() { return DialogueActor; }
@@ -42,16 +40,21 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
+	TWeakObjectPtr<ACharacter> OverlappingPlayer;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr <UWidgetComponent> PromptWidget;
 
-	UPROPERTY(EditAnywhere, Category = "Dialogue")
-	TObjectPtr<UDataTable> DialogueDataTable;
+	UPROPERTY(VisibleAnywhere, Category = "Collision")
+	TObjectPtr<UBoxComponent> ProximityBox;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
-	TObjectPtr<UUserWidget> DialogueWidget;
+	UPROPERTY(EditAnywhere, Category = "Mesh Rotation")
+	float MeshRotationInterpSpeed = 5.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
-	TSubclassOf<UMounteaDialogueParticipant> Participant;
+	UFUNCTION()
+	virtual void OnProxomityBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	
+	UFUNCTION()
+	virtual void OnProximityBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 };

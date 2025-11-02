@@ -494,19 +494,7 @@ void APlayerCharacter::Interact_Implementation()
 		}
 		if (InteractHit.GetActor()->GetClass()->ImplementsInterface(UNPCInterface::StaticClass()))
 		{
-			//INPCInterface::Execute_StartDialogue(InteractHit.GetActor(), this);
-
-			ANPCCharacter* NPC_Character = Cast<ANPCCharacter>(InteractHit.GetActor());
-			if (UObject* WorldContextObject = GetWorld())
-			{
-				if (IsValid(InteractHit.GetActor()))
-				{
-					AActor* GetInteractActor = InteractHit.GetActor();
-					GetInteractActor = UGameplayStatics::GetActorOfClass(WorldContextObject, NPC_Character->DialogueActor);
-					//GetInteractActor->GetComponentByClass(NPC_Character->Participant);
-					return;
-				}
-			}
+			INPCInterface::Execute_StartDialogue(InteractHit.GetActor(), this);
 		}
 	}
 
