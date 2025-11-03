@@ -81,8 +81,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Line Trace")
 	float LineTraceSpread = 10.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
-	AActor* KD_Interactable;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
+	//AActor* KD_Interactable;
 
 	UFUNCTION()
 	void FireLineTrace();
