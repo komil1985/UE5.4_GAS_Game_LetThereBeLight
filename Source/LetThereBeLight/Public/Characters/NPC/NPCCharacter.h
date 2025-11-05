@@ -36,6 +36,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
 	TSubclassOf<AActor> GetDialogueActor() { return DialogueActor; }
 
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
@@ -49,7 +50,7 @@ protected:
 	TObjectPtr<UBoxComponent> ProximityBox;
 
 	UPROPERTY(EditAnywhere, Category = "Mesh Rotation")
-	float MeshRotationInterpSpeed = 5.0f;
+	float MeshRotationInterpSpeed = 1.0f;
 
 	UFUNCTION()
 	virtual void OnProxomityBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -57,4 +58,11 @@ protected:
 	UFUNCTION()
 	virtual void OnProximityBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+private:
+	FTimerHandle NpcRotationTimer;
+	float NpcRotateElapsed = 0.0f;
+	float NpcRotateDuration = 60.0f;
+
+	UFUNCTION()
+	void NpcRotateToPlayer();
 };

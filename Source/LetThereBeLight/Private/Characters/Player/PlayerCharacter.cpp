@@ -23,6 +23,7 @@
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "Interactions/NPCInterface.h"
 #include "../KDLogChannles.h"
+#include <Characters/NPC/NPCCharacter.h>
 
 
 APlayerCharacter::APlayerCharacter()

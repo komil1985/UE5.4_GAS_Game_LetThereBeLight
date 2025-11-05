@@ -10,7 +10,7 @@
 
 ANPCCharacter::ANPCCharacter()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	PromptWidget = CreateDefaultSubobject<UWidgetComponent>("PromptWidget");
 	PromptWidget->SetupAttachment(RootComponent);
@@ -39,22 +39,6 @@ void ANPCCharacter::BeginPlay()
 void ANPCCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (OverlappingPlayer.IsValid())
-	{
-		FVector NPCPos = GetActorLocation();
-		FVector PlayerPos = OverlappingPlayer->GetActorLocation();
-
-		FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(NPCPos, PlayerPos);
-
-		//float RelativeYaw = LookAtRotation.Yaw + GetActorRotation().Yaw;
-		FRotator TargetMeshRotation(0.f, LookAtRotation.Yaw, 0.f);
-
-		FRotator CurrentRotation = GetMesh()->GetRelativeRotation();
-		FRotator NewRotation = FMath::RInterpTo(CurrentRotation, TargetMeshRotation, DeltaTime, MeshRotationInterpSpeed);
-
-		GetMesh()->SetRelativeRotation(NewRotation);
-	}
 }
 
 void ANPCCharacter::OnProxomityBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -74,6 +58,35 @@ void ANPCCharacter::OnProximityBoxOverlapEnd(UPrimitiveComponent* OverlappedComp
 	if (OverlappingPlayer == PlayerChar)
 	{
 		OverlappingPlayer = nullptr;
+	}
+}
+
+void ANPCCharacter::NpcRotateToPlayer()
+{
+	if (OverlappingPlayer.IsValid())
+	{
+		float DeltaTime = FPlatformTime::Seconds();
+		NpcRotateElapsed += DeltaTime;
+		float Alpha = FMath::Clamp(NpcRotateElapsed / NpcRotateDuration, 0.f, 1.f);
+
+		if (IsValid(GetMesh()))
+		{
+			FVector NPCPos = GetActorLocation();
+			FVector PlayerPos = OverlappingPlayer->GetActorLocation();
+
+			FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(NPCPos, PlayerPos);
+			FRotator TargetMeshRotation(0.f, LookAtRotation.Yaw, 0.f);
+
+			FRotator CurrentRotation = GetMesh()->GetRelativeRotation();
+			FRotator NewRotation = FMath::RInterpTo(CurrentRotation, TargetMeshRotation, Alpha, MeshRotationInterpSpeed);
+
+			GetMesh()->SetRelativeRotation(NewRotation);
+		}
+
+		if (Alpha >= 1.f)
+		{
+			GetWorld()->GetTimerManager().ClearTimer(NpcRotationTimer);
+		}
 	}
 }
 
@@ -106,6 +119,8 @@ void ANPCCharacter::StartDialogue_Implementation(AActor* InstigatorActor)
 {
 	if (IsValid(DialogueParticipant))
 	{
+		NpcRotateToPlayer();
+		GetWorldTimerManager().SetTimer(NpcRotationTimer, this, &ANPCCharacter::NpcRotateToPlayer, 0.01f, true);
 		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Dialogue Started");
 	}
 	else
