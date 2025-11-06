@@ -491,6 +491,7 @@ void APlayerCharacter::Interact_Implementation()
 		if (InteractHit.GetActor()->GetClass()->ImplementsInterface(UKDInteractable::StaticClass()))
 		{
 			IKDInteractable::Execute_Interact(InteractHit.GetActor());
+			PlayAnimMontage(InteractMontage);
 		}
 		if (InteractHit.GetActor()->GetClass()->ImplementsInterface(UNPCInterface::StaticClass()))
 		{

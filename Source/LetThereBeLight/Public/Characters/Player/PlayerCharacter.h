@@ -22,6 +22,7 @@ class UNiagaraComponent;
 class UCameraComponent;
 class USpringArmComponent;
 class UBoxComponent;
+class UAnimMontage;
 /**
  * 
  */
@@ -119,5 +120,8 @@ private:
 
 	float DesiredArmLength = 2000.0f;
 	float InterpSpeed = 2.5f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Interact")
+	TObjectPtr<UAnimMontage> InteractMontage;
 
 };
