@@ -12,7 +12,7 @@ class UWidgetComponent;
 class UMounteaDialogueParticipant;
 class UBoxComponent;
 UCLASS()
-class LETTHEREBELIGHT_API ANPCCharacter : public ACharacter, public INPCInterface, public IKDInteractable
+class LETTHEREBELIGHT_API ANPCCharacter : public ACharacter, public INPCInterface
 {
 	GENERATED_BODY()
 
@@ -20,12 +20,12 @@ public:
 	ANPCCharacter();
 
 	// INPCInterface
-	virtual void CanInteract_Implementation() override;
-	virtual void StopInteract_Implementation() override;
 	virtual void StartDialogue_Implementation(AActor* InstigatorActor) override;
 
 	// IKDInteractable
-	virtual void Interact_Implementation() override;
+	//virtual void CanInteract_Implementation() override;
+	//virtual void StopInteract_Implementation() override;
+	//virtual void Interact_Implementation() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue | Participant")
 	TObjectPtr<UMounteaDialogueParticipant> DialogueParticipant;
