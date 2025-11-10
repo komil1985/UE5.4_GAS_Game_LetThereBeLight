@@ -19,13 +19,8 @@ class LETTHEREBELIGHT_API ANPCCharacter : public ACharacter, public INPCInterfac
 public:
 	ANPCCharacter();
 
-	// INPCInterface
+	// NPC Interface
 	virtual void StartDialogue_Implementation(AActor* InstigatorActor) override;
-
-	// IKDInteractable
-	//virtual void CanInteract_Implementation() override;
-	//virtual void StopInteract_Implementation() override;
-	//virtual void Interact_Implementation() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue | Participant")
 	TObjectPtr<UMounteaDialogueParticipant> DialogueParticipant;
@@ -36,6 +31,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Dialogue")
 	TSubclassOf<AActor> GetDialogueActor() { return DialogueActor; }
 
+	UFUNCTION()
+	void OnPlayerTalkedTo(APlayerCharacter* Player);
 
 protected:
 	virtual void BeginPlay() override;
@@ -50,7 +47,7 @@ protected:
 	TObjectPtr<UBoxComponent> ProximityBox;
 
 	UPROPERTY(EditAnywhere, Category = "Mesh Rotation")
-	float MeshRotationInterpSpeed = 1.0f;
+	float MeshRotationInterpSpeed = 0.5f;
 
 	UFUNCTION()
 	virtual void OnProxomityBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

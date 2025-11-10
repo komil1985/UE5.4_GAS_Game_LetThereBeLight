@@ -24,6 +24,7 @@
 #include "Interactions/NPCInterface.h"
 #include "../KDLogChannles.h"
 #include <Characters/NPC/NPCCharacter.h>
+#include <Actors/KDIntTorchesBeach.h>
 
 
 APlayerCharacter::APlayerCharacter()
