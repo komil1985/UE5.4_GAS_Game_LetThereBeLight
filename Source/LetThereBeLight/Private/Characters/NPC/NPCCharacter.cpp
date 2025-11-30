@@ -94,7 +94,6 @@ void ANPCCharacter::NpcRotateToPlayer()
 
 		if (Alpha >= 1.f)
 		{
-			GetWorld()->GetTimerManager().ClearTimer(NpcRotationTimer);
 			GetWorldTimerManager().ClearTimer(NpcRotationTimer);
 		}
 	}
@@ -104,6 +103,8 @@ void ANPCCharacter::StartDialogue_Implementation(AActor* InstigatorActor)
 {
 	if (IsValid(DialogueParticipant))
 	{
+		APlayerCharacter* PlayerChar = Cast<APlayerCharacter>(InstigatorActor);
+		PlayerChar->bHasSpokenToNPC = true;
 		NpcRotateToPlayer();
 		GetWorld()->GetTimerManager().SetTimer(NpcRotationTimer, this, &ANPCCharacter::NpcRotateToPlayer, 0.01f, true);
 		PromptWidget->SetVisibility(false);

@@ -5,7 +5,6 @@
 #include "Components/CapsuleComponent.h"
 #include "NiagaraComponent.h"
 #include "Components/PointLightComponent.h"
-#include <Characters/Player/PlayerCharacter.h>
 
 AKDIntTorchesBeach::AKDIntTorchesBeach()
 {
@@ -50,21 +49,14 @@ void AKDIntTorchesBeach::CanInteract_Implementation()
 
 void AKDIntTorchesBeach::Interact_Implementation()
 {
-	APlayerCharacter* Player = Cast<APlayerCharacter>(this);
-	if (!Player || !Player->bHasSpokenToNPC)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0, FColor::Blue, TEXT("You must talk to Slock the wanderer"));
-		return;
-	}
-
 	// Light Torch if unlit
-	if (Torch && !bIsTorchLit && Player->bHasSpokenToNPC)
+	if (Torch && !bIsTorchLit)
 	{
-		bIsTorchLit = true;
-		TorchFlame->SetVisibility(true);
-		TorchLight->SetVisibility(true);
-		OnTorchLit.Broadcast(this);
-		GEngine->AddOnScreenDebugMessage(1, 5.0, FColor::Cyan, TEXT("Torches lit"));
-		return;  // Allow one interaction per call
+			bIsTorchLit = true;
+			TorchFlame->SetVisibility(true);
+			TorchLight->SetVisibility(true);
+			OnTorchLit.Broadcast(this);
+			GEngine->AddOnScreenDebugMessage(1, 5.0, FColor::Cyan, TEXT("Torches lit"));
+			return;  // Allow one interaction per call	
 	}
 }
