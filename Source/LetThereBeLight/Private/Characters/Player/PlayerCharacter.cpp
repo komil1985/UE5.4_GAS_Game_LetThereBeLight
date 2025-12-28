@@ -31,7 +31,7 @@ APlayerCharacter::APlayerCharacter()
 {
 	PlayerSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("PlayerSpringArm"));
 	PlayerSpringArm->SetupAttachment(GetRootComponent());
-	PlayerSpringArm->TargetArmLength = 2500.0f;
+	PlayerSpringArm->TargetArmLength = 2000.0f;
 	PlayerSpringArm->bDoCollisionTest = false;
 	PlayerSpringArm->bUsePawnControlRotation = true;
 	PlayerSpringArm->bInheritPitch = false;
@@ -524,7 +524,7 @@ void APlayerCharacter::OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 	}
 	if (OtherActor && OtherActor->Implements<UNPCInterface>() && OtherActor != this)
 	{
-		DesiredArmLength = 2500.0f;
+		DesiredArmLength = 2000.0f;
 	}
 }
 

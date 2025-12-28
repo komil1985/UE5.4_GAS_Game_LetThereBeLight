@@ -118,7 +118,7 @@ private:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastLevelUpParticles() const;
 
-	float DesiredArmLength = 2500.0f;
+	float DesiredArmLength = 2000.0f;
 	float InterpSpeed = 2.5f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Interact")
